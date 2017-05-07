@@ -14,8 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
-        let items = NSKeyedUnarchiver.unarchiveObject(withFile: Item.ArchiveURL.path) as? [Item] ?? []
+
+        let items = ItemObject.unarchived().map(toItem)
         let rootViewController = TableViewController(items: items)
 
         window = UIWindow()
