@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableViewController: UITableViewController, EditViewControllerDelegate {
+final class TableViewController: UITableViewController, EditViewControllerDelegate {
 
     private var items: [Item] = [] {
         didSet {
@@ -18,16 +18,19 @@ class TableViewController: UITableViewController, EditViewControllerDelegate {
             } else {
                 print("error")
             }
+
+            navigationItem.rightBarButtonItem?.isEnabled = !items.isEmpty
         }
     }
 
     private var selectedIndexPath: IndexPath?
+    private let cellIdentifier = TableViewCell.identifier
 
     // MARK: - Life Cycle
 
     init(items: [Item]) {
         self.items = items
-        super.init(style: .grouped)
+        super.init(style: .plain)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -41,59 +44,44 @@ class TableViewController: UITableViewController, EditViewControllerDelegate {
 
         navigationItem.title = "All Items"
 
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 44
+        tableView.rowHeight = 100
+        tableView.backgroundColor = .lightGray
+        tableView.separatorStyle = .none
+        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: cellIdentifier)
 
         let addAction = #selector(didTapAddBarButtonItem)
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: addAction)
         navigationItem.leftBarButtonItem = addButton
 
-        let editAction = #selector(didTapEditBarButtonItem)
-        let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: editAction)
-        navigationItem.rightBarButtonItem = editButton
+        navigationItem.rightBarButtonItem = editButtonItem
+        editButtonItem.isEnabled = !items.isEmpty
     }
 
     // MARK: - UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return items.isEmpty ? 1 : items.count
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: "myCell")
-        let cell = dequeuedCell ?? UITableViewCell(style: .default, reuseIdentifier: "myCell")
-        cell.textLabel?.numberOfLines = 0
-
-        let text: String
-
-        if items.isEmpty {
-            text = "Add Something"
-            cell.accessoryView = UIButton(type: .contactAdd)
-        } else {
-            text = items[indexPath.section].body
-            cell.accessoryType = .none
-            cell.accessoryView = nil
-        }
-
-        cell.textLabel?.text = text
-        return cell
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.isEmpty ? 1 : items.count
     }
 
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        let title: String?
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+        let cell = dequeuedCell as? TableViewCell ?? TableViewCell()
+
+        let bodyText: String
 
         if items.isEmpty {
-            title = nil
+            bodyText = "Add Item"
         } else {
-            let item = items[section]
-            title = "Copy count: \(item.copyCount)"
+            bodyText = items[indexPath.row].body
         }
 
-        return title
+        cell.bodyText = bodyText
+        return cell
     }
 
     // MARK: - UITableViewDelegate
@@ -110,28 +98,44 @@ class TableViewController: UITableViewController, EditViewControllerDelegate {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 
-        guard !items.isEmpty else {
-            return
-        }
-
         switch editingStyle {
         case .delete:
-            items.remove(at: indexPath.section)
+            items.remove(at: indexPath.row)
+
             if items.isEmpty {
-                tableView.reloadData()
+//                tableView.setEditing(false, animated: true)
+                tableView.reloadRows(at: [indexPath], with: .none)
             } else {
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
-        case .insert: break
+
+        case .insert:
+            presentEditViewController()
         case .none: break
         }
+    }
+
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        let style: UITableViewCellEditingStyle
+
+        if items.isEmpty && indexPath.row == 0 {
+            style = .none
+        } else {
+            style = .delete
+        }
+
+        return style
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return !(items.isEmpty && indexPath.row == 0)
     }
 
     // MARK: - Private Functions
 
     private func copyItem(at indexPath: IndexPath) {
-        let index = indexPath.section
-        let item = items[indexPath.section]
+        let index = indexPath.row
+        let item = items[indexPath.row]
 
         UIPasteboard.general.string = item.body
         presentAlert()
@@ -153,7 +157,9 @@ class TableViewController: UITableViewController, EditViewControllerDelegate {
                 if let _ = self.presentedViewController as? UIAlertController {
                     self.dismiss(animated: true) {
                         if let indexPath = self.selectedIndexPath {
+                            self.tableView.reloadRows(at: [indexPath], with: .automatic)
                             self.tableView.deselectRow(at: indexPath, animated: true)
+                            self.selectedIndexPath = nil
                         }
                     }
                 }
@@ -169,17 +175,18 @@ class TableViewController: UITableViewController, EditViewControllerDelegate {
     }
 
     private func editHandler(sender: UIAlertAction) {
-        if let indexPath = tableView.indexPathForSelectedRow {
-            let item = items[indexPath.section]
+        if let indexPath = selectedIndexPath {
+            let item = items[indexPath.row]
             presentEditViewController(itemToEdit: item)
         } else {
             fatalError("Expects IndexPath!")
         }
     }
 
-    private func presentEditViewController(itemToEdit item: Item = Item(body: "")) {
+    private func presentEditViewController(itemToEdit item: Item = Item()) {
         let viewController = EditViewController(itemToEdit: item)
         viewController.delegate = self
+        viewController.navigationItem.title = item.body.isEmpty ? "Add Item" : "Edit Item"
 
         let navigationController = UINavigationController(rootViewController: viewController)
         present(navigationController, animated: true, completion: nil)
@@ -198,35 +205,46 @@ class TableViewController: UITableViewController, EditViewControllerDelegate {
     // MARK: - EditViewControllerDelegate
 
     func didCancelEditing(_ item: Item, in viewController: EditViewController) {
-        dismiss(animated: true) {
-            if let indexPath = self.selectedIndexPath {
-                self.tableView.deselectRow(at: indexPath, animated: true)
-                self.selectedIndexPath = nil
-            }
+
+        if let indexPath = selectedIndexPath {
+            tableView.deselectRow(at: indexPath, animated: false)
+            selectedIndexPath = nil
         }
+
+        dismiss(animated: true)
     }
 
     func didFinishEditing(_ item: Item, in viewController: EditViewController) {
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
+
+        if tableView.isEditing  {
+            tableView.setEditing(false, animated: false)
+        }
+
         dismiss(animated: true) {
-
-            let indexPath: IndexPath
-
             if let selectedIndexPath = self.selectedIndexPath {
-                indexPath = selectedIndexPath
 
                 if self.items.isEmpty {
                     self.items.append(item)
                 } else {
-                    self.items[selectedIndexPath.section] = item
+                    self.items[selectedIndexPath.row] = item
                 }
 
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                self.tableView.deselectRow(at: indexPath, animated: true)
+                self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
                 self.selectedIndexPath = nil
+
             } else {
-                indexPath = IndexPath(row: 0, section: self.items.count)
-                self.items.insert(item, at: indexPath.section)
-                self.tableView.reloadData()
+                self.items.append(item)
+
+                let indexPath = IndexPath(row: self.items.count - 1, section: 0)
+
+                if self.items.count == 1 {
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                } else {
+                    self.tableView.insertRows(at: [indexPath], with: .automatic)
+                }
             }
         }
     }
