@@ -38,6 +38,7 @@ final class TableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         backgroundColor = .clear
+        selectionStyle = .none
         configureContainerView()
         configureBodyLabel()
         configureCountLabel()
@@ -81,7 +82,7 @@ final class TableViewCell: UITableViewCell {
     private func configureCountLabel() {
         containerView.addSubview(countLabel)
         countLabel.numberOfLines = 1
-        countLabel.textColor = .gray
+        countLabel.textColor = .lightGray
         countLabel.setContentHuggingPriority(751, for: .vertical)
         countLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -100,5 +101,27 @@ final class TableViewCell: UITableViewCell {
                 bodyLabel.bottomAnchor.constraint(equalTo: countLabel.topAnchor, constant: -4)
             ]
         )
+    }
+
+    private let duration: TimeInterval = 0.4
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        if animated {
+            UIView.animate(withDuration: duration) {
+                self.containerView.backgroundColor = selected ? .gray : .white
+            }
+        } else {
+            containerView.backgroundColor = selected ? .gray : .white
+        }
+    }
+
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        if animated {
+            UIView.animate(withDuration: duration) {
+                self.containerView.backgroundColor = highlighted ? .gray : .white
+            }
+        } else {
+            containerView.backgroundColor = highlighted ? .gray : .white
+        }
     }
 }
