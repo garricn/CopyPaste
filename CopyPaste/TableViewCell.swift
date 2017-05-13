@@ -21,8 +21,18 @@ final class TableViewCell: UITableViewCell {
         }
     }
 
+    var countText: String? {
+        get {
+            return countLabel.text
+        }
+        set {
+            countLabel.text = newValue
+        }
+    }
+
     private let containerView = UIView()
     private let bodyLabel = UILabel()
+    private let countLabel = UILabel()
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,6 +40,8 @@ final class TableViewCell: UITableViewCell {
         backgroundColor = .clear
         configureContainerView()
         configureBodyLabel()
+        configureCountLabel()
+        configureCommonConstraints()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -61,9 +73,32 @@ final class TableViewCell: UITableViewCell {
             bodyLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
             bodyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
             bodyLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
-            bodyLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
             ]
         
         NSLayoutConstraint.activate(constraints)
+    }
+
+    private func configureCountLabel() {
+        containerView.addSubview(countLabel)
+        countLabel.numberOfLines = 1
+        countLabel.textColor = .gray
+        countLabel.setContentHuggingPriority(751, for: .vertical)
+        countLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        let constraints: [NSLayoutConstraint] = [
+            countLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
+            countLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
+            countLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
+        ]
+
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    private func configureCommonConstraints() {
+        NSLayoutConstraint.activate(
+            [
+                bodyLabel.bottomAnchor.constraint(equalTo: countLabel.topAnchor, constant: -4)
+            ]
+        )
     }
 }
