@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        let items = ItemObject.unarchived().map(toItem)
+        let items = ItemObject.unarchived().map(toItem).sorted(by: copyCountDescending)
         let rootViewController = TableViewController(items: items)
 
         window = UIWindow()
@@ -23,4 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         return true
     }
+}
+
+func copyCountDescending(a: Item, b: Item) -> Bool {
+    return a.copyCount > b.copyCount
 }
