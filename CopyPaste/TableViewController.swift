@@ -93,6 +93,8 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
         selectedIndexPath = indexPath
 
         if items.isEmpty {
@@ -142,11 +144,13 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
         let index = indexPath.row
         let item = items[indexPath.row]
 
+        // Copy body to pasteboard
         UIPasteboard.general.string = item.body
+
+        // Alert user to successful copy
         presentAlert()
 
         // Increment copy count
-
         let newItem = Item(body: item.body, copyCount: item.copyCount + 1)
         items.remove(at: index)
         items.insert(newItem, at: index)
@@ -163,7 +167,6 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
                     self.dismiss(animated: true) {
                         if let indexPath = self.selectedIndexPath {
                             self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                            self.tableView.deselectRow(at: indexPath, animated: true)
                             self.selectedIndexPath = nil
                         }
                     }
@@ -220,14 +223,6 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     }
 
     func didFinishEditing(_ item: Item, in viewController: EditViewController) {
-        if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: indexPath, animated: false)
-        }
-
-        if tableView.isEditing  {
-            tableView.setEditing(false, animated: false)
-        }
-
         dismiss(animated: true) {
             if let selectedIndexPath = self.selectedIndexPath {
 
