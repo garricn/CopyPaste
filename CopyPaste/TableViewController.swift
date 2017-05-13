@@ -44,7 +44,8 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
 
         navigationItem.title = "All Items"
 
-        tableView.rowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 100
         tableView.backgroundColor = .lightGray
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
@@ -73,14 +74,19 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
         let cell = dequeuedCell as? TableViewCell ?? TableViewCell()
 
         let bodyText: String
+        let countText: String
 
         if items.isEmpty {
             bodyText = "Add Item"
+            countText = ""
         } else {
-            bodyText = items[indexPath.row].body
+            let item = items[indexPath.row]
+            bodyText = item.body
+            countText = "Copy Count: \(item.copyCount)"
         }
 
         cell.bodyText = bodyText
+        cell.countText = countText
         return cell
     }
 
@@ -103,7 +109,6 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
             items.remove(at: indexPath.row)
 
             if items.isEmpty {
-//                tableView.setEditing(false, animated: true)
                 tableView.reloadRows(at: [indexPath], with: .none)
             } else {
                 tableView.deleteRows(at: [indexPath], with: .automatic)
