@@ -48,7 +48,7 @@ final class ItemObject: NSObject, NSCoding {
         return Item.init(itemObject: object)
     }
 
-    static func archive(_ objects: [ItemObject]) -> Bool {
+    @discardableResult static func archive(_ objects: [ItemObject]) -> Bool {
         if NSKeyedArchiver.archiveRootObject(objects, toFile: ItemObject.ArchiveURL.path) {
             return true
         } else {

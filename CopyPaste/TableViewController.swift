@@ -52,7 +52,7 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
         let addAction = #selector(didTapAddBarButtonItem)
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: addAction)
         navigationItem.leftBarButtonItem = addButton
-        navigationItem.leftBarButtonItem?.accessibilityLabel = "Add New Item"
+        navigationItem.leftBarButtonItem?.accessibilityLabel = "Add Item"
         navigationItem.rightBarButtonItem = editButtonItem
         editButtonItem.isEnabled = !items.isEmpty
         navigationItem.title = "All Items"
@@ -90,7 +90,7 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
         if items.isEmpty {
             bodyText = "Add Item"
             countText = ""
-            accessLabel = "Add New Item"
+            accessLabel = "Add Item"
             accessHint = ""
         } else {
             let item = items[index]
