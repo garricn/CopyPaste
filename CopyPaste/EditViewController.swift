@@ -51,6 +51,7 @@ final class EditViewController: UIViewController {
     }
 
     private func configureTextView() {
+        textView.accessibilityLabel = "Body"
         textView.font = UIFont.preferredFont(forTextStyle: .body)
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.insertText(item.body)

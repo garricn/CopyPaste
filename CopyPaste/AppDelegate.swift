@@ -15,11 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        let items = ItemObject.unarchived().map(toItem).sorted(by: copyCountDescending)
-        let rootViewController = TableViewController(items: items)
+        let items: [Item]
+        if CommandLine.arguments.contains("reset") {
+            items = []
+            ItemObject.archive([])
+        } else {
+            items = ItemObject.unarchived().map(toItem).sorted(by: copyCountDescending)
+        }
 
         window = UIWindow()
-        window?.rootViewController = UINavigationController(rootViewController: rootViewController)
+        window?.rootViewController = UINavigationController(rootViewController: TableViewController(items: items))
         window?.makeKeyAndVisible()
         return true
     }
