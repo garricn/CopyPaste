@@ -68,13 +68,14 @@ final class TableViewCell: UITableViewCell {
     private func configureBodyLabel() {
         containerView.addSubview(bodyLabel)
         bodyLabel.numberOfLines = 0
+        bodyLabel.accessibilityLabel = "Body"
         bodyLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let constraints: [NSLayoutConstraint] = [
             bodyLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
             bodyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -10),
             bodyLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
-            ]
+        ]
         
         NSLayoutConstraint.activate(constraints)
     }
@@ -82,6 +83,7 @@ final class TableViewCell: UITableViewCell {
     private func configureCountLabel() {
         containerView.addSubview(countLabel)
         countLabel.numberOfLines = 1
+        countLabel.accessibilityLabel = "Copy Count"
         countLabel.textColor = .lightGray
         countLabel.setContentHuggingPriority(751, for: .vertical)
         countLabel.translatesAutoresizingMaskIntoConstraints = false
