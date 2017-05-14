@@ -32,23 +32,29 @@ final class EditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let cancelAction = #selector(didTapCancelBarButtonItem)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: cancelAction)
-
-        let saveAction = #selector(didTapSaveBarButtonItem)
-        let saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: saveAction)
-
-        navigationItem.leftBarButtonItem = cancelButton
-        navigationItem.rightBarButtonItem = saveButton
-
-        textView.font = UIFont.preferredFont(forTextStyle: .body)
-        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        textView.insertText(item.body)
-        textView.becomeFirstResponder()
+        configureNavigationItem()
+        configureTextView()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func configureNavigationItem() {
+        let cancelAction = #selector(didTapCancelBarButtonItem)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: cancelAction)
+        navigationItem.leftBarButtonItem = cancelButton
+
+        let saveAction = #selector(didTapSaveBarButtonItem)
+        let saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: saveAction)
+        navigationItem.rightBarButtonItem = saveButton
+    }
+
+    private func configureTextView() {
+        textView.font = UIFont.preferredFont(forTextStyle: .body)
+        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        textView.insertText(item.body)
+        textView.becomeFirstResponder()
     }
 
     @objc private func didTapCancelBarButtonItem(sender: UIBarButtonItem) {
