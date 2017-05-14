@@ -42,21 +42,29 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "All Items"
+        configureNavigationItem()
+        configureTableView()
+    }
 
+    // MARK: - View Configuration
+
+    private func configureNavigationItem() {
+        let addAction = #selector(didTapAddBarButtonItem)
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: addAction)
+        navigationItem.leftBarButtonItem = addButton
+        navigationItem.leftBarButtonItem?.accessibilityLabel = "Add New Item"
+        navigationItem.rightBarButtonItem = editButtonItem
+        editButtonItem.isEnabled = !items.isEmpty
+        navigationItem.title = "All Items"
+    }
+
+    private func configureTableView() {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
         tableView.backgroundColor = .lightGray
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
         tableView.register(TableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-
-        let addAction = #selector(didTapAddBarButtonItem)
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: addAction)
-        navigationItem.leftBarButtonItem = addButton
-
-        navigationItem.rightBarButtonItem = editButtonItem
-        editButtonItem.isEnabled = !items.isEmpty
     }
 
     // MARK: - UITableViewDataSource
@@ -72,21 +80,30 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         let cell = dequeuedCell as? TableViewCell ?? TableViewCell()
+        let index = indexPath.row
 
         let bodyText: String
         let countText: String
+        let accessLabel: String
+        let accessHint: String
 
         if items.isEmpty {
             bodyText = "Add Item"
             countText = ""
+            accessLabel = "Add New Item"
+            accessHint = ""
         } else {
-            let item = items[indexPath.row]
+            let item = items[index]
             bodyText = item.body
             countText = "Copy Count: \(item.copyCount)"
+            accessLabel = "Item \(index)"
+            accessHint = "Copies body text of Item \(index)."
         }
 
         cell.bodyText = bodyText
         cell.countText = countText
+        cell.accessibilityLabel = accessLabel
+        cell.accessibilityHint = accessHint
         return cell
     }
 
@@ -158,8 +175,10 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
 
     private func presentAlert() {
         let editAction = UIAlertAction(title: "Edit", style: .destructive, handler: editHandler)
-        let alert = UIAlertController(title: nil, message: "Copied to Pasteboard!", preferredStyle: .alert)
+
+        let alert = UIAlertController(title: nil, message: "Item Copied to Pasteboard.", preferredStyle: .alert)
         alert.addAction(editAction)
+        alert.accessibilityLabel = "Copy successful"
 
         present(alert, animated: true) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -172,13 +191,6 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
                     }
                 }
             }
-        }
-    }
-
-    private func okHandler(sender: UIAlertAction) {
-        if let indexPath = selectedIndexPath {
-            tableView.deselectRow(at: indexPath, animated: true)
-            self.selectedIndexPath = nil
         }
     }
 
