@@ -14,7 +14,7 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
         didSet {
             let objects = items.map(toItemObject)
             if ItemObject.archive(objects) {
-                print("saved")
+                print("")
             } else {
                 print("error")
             }
@@ -59,6 +59,10 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     }
 
     private func configureTableView() {
+        let gestureRecognizer = UILongPressGestureRecognizer()
+        gestureRecognizer.addTarget(self, action: #selector(didLongPress))
+
+        tableView.addGestureRecognizer(gestureRecognizer)
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
         tableView.backgroundColor = .lightGray
@@ -83,27 +87,16 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
         let index = indexPath.row
 
         let bodyText: String
-        let countText: String
-        let accessLabel: String
-        let accessHint: String
 
         if items.isEmpty {
             bodyText = "Add Item"
-            countText = ""
-            accessLabel = "Add Item"
-            accessHint = ""
         } else {
             let item = items[index]
             bodyText = item.body
-            countText = "Copy Count: \(item.copyCount)"
-            accessLabel = "Item \(index)"
-            accessHint = "Copies body text of Item \(index)."
+            cell.accessibilityHint = "Copies content of Item."
         }
 
         cell.bodyText = bodyText
-        cell.countText = countText
-        cell.accessibilityLabel = accessLabel
-        cell.accessibilityHint = accessHint
         return cell
     }
 
@@ -128,7 +121,8 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
             items.remove(at: indexPath.row)
 
             if items.isEmpty {
-                tableView.reloadRows(at: [indexPath], with: .none)
+                tableView.reloadRows(at: [indexPath], with: .left)
+                setEditing(false, animated: true)
             } else {
                 tableView.deleteRows(at: [indexPath], with: .automatic)
             }
@@ -171,35 +165,21 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
         let newItem = Item(body: item.body, copyCount: item.copyCount + 1)
         items.remove(at: index)
         items.insert(newItem, at: index)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
     private func presentAlert() {
-        let editAction = UIAlertAction(title: "Edit", style: .destructive, handler: editHandler)
-
         let alert = UIAlertController(title: nil, message: "Item Copied to Pasteboard.", preferredStyle: .alert)
-        alert.addAction(editAction)
         alert.accessibilityLabel = "Copy successful"
 
-        present(alert, animated: true) {
+        present(alert, animated: false) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 if let _ = self.presentedViewController as? UIAlertController {
                     self.dismiss(animated: true) {
-                        if let indexPath = self.selectedIndexPath {
-                            self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                            self.selectedIndexPath = nil
-                        }
+                        self.selectedIndexPath = nil
                     }
                 }
             }
-        }
-    }
-
-    private func editHandler(sender: UIAlertAction) {
-        if let indexPath = selectedIndexPath {
-            let item = items[indexPath.row]
-            presentEditViewController(itemToEdit: item)
-        } else {
-            fatalError("Expects IndexPath!")
         }
     }
 
@@ -214,6 +194,28 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
 
     // MARK: - Private Selectors
 
+    @objc private func didLongPress(sender: UILongPressGestureRecognizer) {
+        guard sender.state == .began else {
+            return
+        }
+
+        let point = sender.location(in: sender.view)
+
+        if let indexPath = tableView.indexPathForRow(at: point) {
+            selectedIndexPath = indexPath
+
+            let item: Item
+
+            if items.isEmpty {
+                item = Item()
+            } else {
+                item = items[indexPath.row]
+            }
+
+            presentEditViewController(itemToEdit: item)
+        }
+    }
+
     @objc private func didTapAddBarButtonItem(sender: UIBarButtonItem) {
         presentEditViewController()
     }
@@ -225,12 +227,7 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     // MARK: - EditViewControllerDelegate
 
     func didCancelEditing(_ item: Item, in viewController: EditViewController) {
-
-        if let indexPath = selectedIndexPath {
-            tableView.deselectRow(at: indexPath, animated: false)
-            selectedIndexPath = nil
-        }
-
+        selectedIndexPath = nil
         dismiss(animated: true)
     }
 
