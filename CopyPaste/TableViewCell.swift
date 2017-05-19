@@ -10,14 +10,23 @@ import UIKit
 
 final class TableViewCell: UITableViewCell {
 
-    static let identifier = "myCell"
+    static let identifier = String(describing: TableViewCell.self)
+
+    // MARK: - Accessibility
+
+    override var isAccessibilityElement: Bool {
+        get { return true }
+        set {}
+    }
 
     var bodyText: String? {
         get {
             return bodyLabel.text
         }
         set {
-            bodyLabel.text = newValue
+            let string = NSLocalizedString(newValue ?? "", comment: "")
+            bodyLabel.text = string
+            accessibilityLabel = string
         }
     }
 
@@ -26,7 +35,7 @@ final class TableViewCell: UITableViewCell {
             return countLabel.text
         }
         set {
-            countLabel.text = newValue
+            countLabel.text = NSLocalizedString(newValue ?? "", comment: "")
         }
     }
 
@@ -39,6 +48,9 @@ final class TableViewCell: UITableViewCell {
 
         backgroundColor = .clear
         selectionStyle = .none
+        accessibilityTraits |= UIAccessibilityTraitButton
+
+        isAccessibilityElement = true
         configureContainerView()
         configureBodyLabel()
         configureCountLabel()

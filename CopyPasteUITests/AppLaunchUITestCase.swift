@@ -1,5 +1,5 @@
 //
-//  AppLaunchTestCase.swift
+//  AppLaunchUITestCase.swift
 //  CopyPaste
 //
 //  Created by Garric G. Nahapetian on 5/13/17.
@@ -8,9 +8,9 @@
 
 import XCTest
 
-final class AppLaunchTestCase: TestCase {
+final class AppLaunchUITestCase: UITestCase {
 
-    func testNormalAppLaunch() {
+    func test_Normal_App_Launch() {
         assertAppIsDisplayingAllItems()
         let element = XCUIApplication().tables.cells["Add Item"]
         assertApp(isDisplaying: element)

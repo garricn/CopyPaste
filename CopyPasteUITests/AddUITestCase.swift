@@ -1,5 +1,5 @@
 //
-//  AddItemTestCase.swift
+//  AddUITestCase.swift
 //  CopyPaste
 //
 //  Created by Garric G. Nahapetian on 5/13/17.
@@ -8,10 +8,9 @@
 
 import XCTest
 
-final class AddItemTestCase: TestCase {
-    
-    private var addItemCell: XCUIElement { return app.tables.cells["Add Item"] }
-    private var item0: XCUIElement { return app.tables.cells["Item 0"] }
+final class AddUITestCase: UITestCase {
+
+    private var item0: XCUIElement { return app.tables.cells["This is just a test."] }
 
     // MARK: - Helper Functions
 
