@@ -1,5 +1,5 @@
 //
-//  TestCase.swift
+//  UITestCase.swift
 //  CopyPaste
 //
 //  Created by Garric G. Nahapetian on 5/13/17.
@@ -8,11 +8,19 @@
 
 import XCTest
 
-class TestCase: XCTestCase {
+class UITestCase: XCTestCase {
 
     var app: XCUIApplication { return XCUIApplication() }
 
     var navigationBars: XCUIElementQuery { return app.navigationBars }
+
+    var allItemsNavigationBar: XCUIElement { return app.navigationBars["All Items"] }
+
+    var addItemBarButton: XCUIElement { return allItemsNavigationBar.buttons["Add Item"] }
+
+    var editBarButton: XCUIElement { return allItemsNavigationBar.buttons["Edit"] }
+
+    var addItemCell: XCUIElement { return app.tables.cells["Add Item"] }
 
     override func setUp() {
         super.setUp()
