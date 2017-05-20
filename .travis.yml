@@ -1,0 +1,6 @@
+language: objective-c
+osx_image: xcode8.3
+xcode_project: CopyPaste.xcodeproj
+xcode_scheme: CopyPaste
+script:
+- xcodebuild -project CopyPaste.xcodeproj -scheme CopyPaste CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
