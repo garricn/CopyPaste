@@ -61,7 +61,21 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     }
 
     private func configureTableView() {
-        myTableView.onLongPress = didLongPress(tableView:indexPath:)
+        myTableView.onLongPress = { [weak self] tableView, indexPath in
+            guard let weakSelf = self else { return }
+
+            weakSelf.selectedIndexPath = indexPath
+
+            let item: Item
+
+            if weakSelf.items.isEmpty {
+                item = Item()
+            } else {
+                item = weakSelf.items[indexPath.row]
+            }
+
+            weakSelf.presentEditViewController(itemToEdit: item)
+        }
     }
 
     // MARK: - UITableViewDataSource
@@ -174,20 +188,6 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
                 }
             }
         }
-    }
-
-    private func didLongPress(tableView: TableView, indexPath: IndexPath) {
-        selectedIndexPath = indexPath
-
-        let item: Item
-
-        if items.isEmpty {
-            item = Item()
-        } else {
-            item = items[indexPath.row]
-        }
-
-        presentEditViewController(itemToEdit: item)
     }
 
     private func presentEditViewController(itemToEdit item: Item = Item()) {
