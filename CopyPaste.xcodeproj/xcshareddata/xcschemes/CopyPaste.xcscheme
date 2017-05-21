@@ -38,6 +38,16 @@
                ReferencedContainer = "container:CopyPaste.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "607B17971ED23F3F00CCAFD1"
+               BuildableName = "CopyPasteTests.xctest"
+               BlueprintName = "CopyPasteTests"
+               ReferencedContainer = "container:CopyPaste.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

@@ -35,6 +35,8 @@ final class TableViewController: UITableViewController {
         }
 
         configureViewModel()
+
+        viewModel.viewDidLoad()
     }
 
     private func configureViewModel() {
@@ -72,7 +74,7 @@ final class TableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        viewModel.commit(style: editingStyle, forRowAt: indexPath, in: self)
+        viewModel.commit(edit: editingStyle, forRowAt: indexPath, in: self)
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
