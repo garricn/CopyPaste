@@ -21,6 +21,8 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
 
     private var selectedIndexPath: IndexPath?
     private let cellIdentifier = TableViewCell.identifier
+    private let myTableView = TableView(frame: CGRect.zero, style: .plain)
+
 
     // MARK: - Life Cycle
 
@@ -34,6 +36,10 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     }
 
     // MARK: - View Life Cycle
+
+    override func loadView() {
+        tableView = myTableView
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,16 +61,7 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     }
 
     private func configureTableView() {
-        let gestureRecognizer = UILongPressGestureRecognizer()
-        gestureRecognizer.addTarget(self, action: #selector(didLongPress))
-
-        tableView.addGestureRecognizer(gestureRecognizer)
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 100
-        tableView.backgroundColor = .lightGray
-        tableView.separatorStyle = .none
-        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
-        tableView.register(TableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        myTableView.onLongPress = didLongPress(tableView:indexPath:)
     }
 
     // MARK: - UITableViewDataSource
@@ -179,6 +176,20 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
         }
     }
 
+    private func didLongPress(tableView: TableView, indexPath: IndexPath) {
+        selectedIndexPath = indexPath
+
+        let item: Item
+
+        if items.isEmpty {
+            item = Item()
+        } else {
+            item = items[indexPath.row]
+        }
+
+        presentEditViewController(itemToEdit: item)
+    }
+
     private func presentEditViewController(itemToEdit item: Item = Item()) {
         let viewController = EditViewController(itemToEdit: item)
         viewController.delegate = self
@@ -189,28 +200,6 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     }
 
     // MARK: - Private Selectors
-
-    @objc private func didLongPress(sender: UILongPressGestureRecognizer) {
-        guard sender.state == .began else {
-            return
-        }
-
-        let point = sender.location(in: sender.view)
-
-        if let indexPath = tableView.indexPathForRow(at: point) {
-            selectedIndexPath = indexPath
-
-            let item: Item
-
-            if items.isEmpty {
-                item = Item()
-            } else {
-                item = items[indexPath.row]
-            }
-
-            presentEditViewController(itemToEdit: item)
-        }
-    }
 
     @objc private func didTapAddBarButtonItem(sender: UIBarButtonItem) {
         presentEditViewController()
