@@ -1,8 +1,4 @@
 //
-//  AppDelegate.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 4/5/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
