@@ -6,7 +6,7 @@ import UIKit
 
 final class TableView: UITableView {
 
-    var onLongPress: ((TableView, IndexPath) -> Void)?
+    var didLongPressRow: ((IndexPath, UITableView) -> Void)?
 
     override init(frame: CGRect, style: UITableViewStyle) {
         super.init(frame: frame, style: style)
@@ -35,7 +35,7 @@ final class TableView: UITableView {
         let point = sender.location(in: sender.view)
 
         if let indexPath = indexPathForRow(at: point) {
-            onLongPress?(self, indexPath)
+            didLongPressRow?(indexPath, self)
         }
     }
 }
