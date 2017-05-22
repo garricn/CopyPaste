@@ -74,3 +74,7 @@ struct Item {
 func toItem(from object: ItemObject) -> Item {
     return Item(itemObject: object)
 }
+
+func copyCountDescending(a: Item, b: Item) -> Bool {
+    return a.copyCount > b.copyCount
+}

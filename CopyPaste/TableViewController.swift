@@ -4,30 +4,16 @@
 
 import UIKit
 
-final class TableViewController: UITableViewController, EditViewControllerDelegate {
+final class TableViewController: UITableViewController {
 
-    private var items: [Item] = [] {
-        didSet {
-            let objects = items.map(toItemObject)
-            if ItemObject.archive(objects) {
-                print("")
-            } else {
-                print("error")
-            }
-
-            navigationItem.rightBarButtonItem?.isEnabled = !items.isEmpty
-        }
-    }
-
-    private var selectedIndexPath: IndexPath?
-    private let cellIdentifier = TableViewCell.identifier
     private let myTableView = TableView(frame: CGRect.zero, style: .plain)
+    private let viewModel: TableViewModeling
 
 
     // MARK: - Life Cycle
 
-    init(items: [Item]) {
-        self.items = items
+    init(viewModel: TableViewModeling) {
+        self.viewModel = viewModel
         super.init(style: .plain)
     }
 
@@ -44,202 +30,56 @@ final class TableViewController: UITableViewController, EditViewControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureNavigationItem()
-        configureTableView()
+        myTableView.didLongPressRow = { [weak self] indexPath, tableView in
+            self?.viewModel.didLongPressRow(at: indexPath, in: tableView)
+        }
+
+        configureViewModel()
     }
 
-    // MARK: - View Configuration
+    private func configureViewModel() {
+        viewModel.isEditButtonEnabled = { [weak self] isEnabled in
+            self?.editButtonItem.isEnabled = isEnabled
+        }
 
-    private func configureNavigationItem() {
-        let addAction = #selector(didTapAddBarButtonItem)
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: addAction)
-        navigationItem.leftBarButtonItem = addButton
-        navigationItem.leftBarButtonItem?.accessibilityLabel = "Add Item"
-        navigationItem.rightBarButtonItem = editButtonItem
-        editButtonItem.isEnabled = !items.isEmpty
-        navigationItem.title = "All Items"
-    }
+        viewModel.reloadRowsAtIndexPaths = { [weak self] indexPaths in
+            self?.tableView.reloadRows(at: indexPaths, with: .automatic)
+        }
 
-    private func configureTableView() {
-        myTableView.onLongPress = { [weak self] tableView, indexPath in
-            guard let weakSelf = self else { return }
-
-            weakSelf.selectedIndexPath = indexPath
-
-            let item: Item
-
-            if weakSelf.items.isEmpty {
-                item = Item()
-            } else {
-                item = weakSelf.items[indexPath.row]
-            }
-
-            weakSelf.presentEditViewController(itemToEdit: item)
+        viewModel.insertRowsAtIndexPaths = { [weak self] indexPaths in
+            self?.tableView.insertRows(at: indexPaths, with: .automatic)
         }
     }
 
     // MARK: - UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return viewModel.numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.isEmpty ? 1 : items.count
+        return viewModel.numberOfRows(inSection: section)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        let cell = dequeuedCell as? TableViewCell ?? TableViewCell()
-        let index = indexPath.row
-
-        let bodyText: String
-
-        if items.isEmpty {
-            bodyText = "Add Item"
-        } else {
-            let item = items[index]
-            bodyText = item.body
-            cell.accessibilityHint = "Copies content of Item."
-        }
-
-        cell.bodyText = bodyText
-        return cell
+        return viewModel.cellForRow(at: indexPath, in: tableView)
     }
 
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-
-        selectedIndexPath = indexPath
-
-        if items.isEmpty {
-            presentEditViewController()
-        } else {
-            copyItem(at: indexPath)
-        }
+        viewModel.didSelectRow(at: indexPath, in: tableView)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-
-        switch editingStyle {
-        case .delete:
-            items.remove(at: indexPath.row)
-
-            if items.isEmpty {
-                tableView.reloadRows(at: [indexPath], with: .left)
-                setEditing(false, animated: true)
-            } else {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-
-        case .insert:
-            presentEditViewController()
-        case .none: break
-        }
+        viewModel.commit(style: editingStyle, forRowAt: indexPath, in: self)
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        let style: UITableViewCellEditingStyle
-
-        if items.isEmpty && indexPath.row == 0 {
-            style = .none
-        } else {
-            style = .delete
-        }
-
-        return style
+        return viewModel.editingStyleForRow(at: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return !(items.isEmpty && indexPath.row == 0)
-    }
-
-    // MARK: - Private Functions
-
-    private func copyItem(at indexPath: IndexPath) {
-        let index = indexPath.row
-        let item = items[indexPath.row]
-
-        // Copy body to pasteboard
-        UIPasteboard.general.string = item.body
-
-        // Alert user to successful copy
-        presentAlert()
-
-        // Increment copy count
-        let newItem = Item(body: item.body, copyCount: item.copyCount + 1)
-        items.remove(at: index)
-        items.insert(newItem, at: index)
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-    }
-
-    private func presentAlert() {
-        let alert = UIAlertController(title: nil, message: "Item Copied to Pasteboard.", preferredStyle: .alert)
-        alert.accessibilityLabel = "Copy successful"
-
-        present(alert, animated: false) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                if let _ = self.presentedViewController as? UIAlertController {
-                    self.dismiss(animated: true) {
-                        self.selectedIndexPath = nil
-                    }
-                }
-            }
-        }
-    }
-
-    private func presentEditViewController(itemToEdit item: Item = Item()) {
-        let viewController = EditViewController(itemToEdit: item)
-        viewController.delegate = self
-        viewController.navigationItem.title = item.body.isEmpty ? "Add Item" : "Edit Item"
-
-        let navigationController = UINavigationController(rootViewController: viewController)
-        present(navigationController, animated: true, completion: nil)
-    }
-
-    // MARK: - Private Selectors
-
-    @objc private func didTapAddBarButtonItem(sender: UIBarButtonItem) {
-        presentEditViewController()
-    }
-
-    @objc private func didTapEditBarButtonItem(sender: UIBarButtonItem) {
-        tableView.setEditing(!tableView.isEditing, animated: true)
-    }
-
-    // MARK: - EditViewControllerDelegate
-
-    func didCancelEditing(_ item: Item, in viewController: EditViewController) {
-        selectedIndexPath = nil
-        dismiss(animated: true)
-    }
-
-    func didFinishEditing(_ item: Item, in viewController: EditViewController) {
-        dismiss(animated: true) {
-            if let selectedIndexPath = self.selectedIndexPath {
-
-                if self.items.isEmpty {
-                    self.items.append(item)
-                } else {
-                    self.items[selectedIndexPath.row] = item
-                }
-
-                self.tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
-                self.selectedIndexPath = nil
-
-            } else {
-                self.items.append(item)
-
-                let indexPath = IndexPath(row: self.items.count - 1, section: 0)
-
-                if self.items.count == 1 {
-                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
-                } else {
-                    self.tableView.insertRows(at: [indexPath], with: .automatic)
-                }
-            }
-        }
+        return viewModel.canEditRow(at: indexPath)
     }
 }
