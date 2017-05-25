@@ -14,17 +14,21 @@ protocol TableViewModeling: class {
 
     // Outputs
     var isEditButtonEnabled: ((Bool) -> Void)? { get set }
-    var reloadRowsAtIndexPaths: (([IndexPath]) -> Void)? { get set }
-    var insertRowsAtIndexPaths: (([IndexPath]) -> Void)? { get set }
+    var reloadRows: (([IndexPath], UITableViewRowAnimation) -> Void)? { get set }
+    var insertRows: (([IndexPath], UITableViewRowAnimation) -> Void)? { get set }
+    var deleteRows: (([IndexPath], UITableViewRowAnimation) -> Void)? { get set }
+    var deselectRow: ((IndexPath, Bool) -> Void)? { get set }
+    var setEditing: ((Bool, Bool) -> Void)? { get set }
 
     // Inputs
+    var cellIdentifier: String { get }
     var numberOfSections: Int { get }
     func viewDidLoad()
     func numberOfRows(inSection section: Int) -> Int
-    func cellForRow(at indexPath: IndexPath, in tableView: UITableView) -> TableViewCell
-    func didSelectRow(at indexPath: IndexPath, in tableView: UITableView)
-    func didLongPressRow(at indexPath: IndexPath, in tableView: UITableView)
-    func commit(edit: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath, in viewController: UITableViewController)
+    func configured(cell: UITableViewCell, forRowAt indexPath: IndexPath) -> TableViewCell
+    func didSelectRow(at indexPath: IndexPath)
+    func didLongPressRow(at indexPath: IndexPath)
+    func commit(edit: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
     func editingStyleForRow(at indexPath: IndexPath) -> UITableViewCellEditingStyle
     func canEditRow(at indexPath: IndexPath) -> Bool
 }
@@ -35,12 +39,11 @@ protocol TableViewModelConfigurable: class {
     func configureWithCanceled(item: Item)
 }
 
-
 final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
 
     weak var delegate: TableViewModelingDelegate?
 
-    private var items: [Item] = [] {
+    private var items: [Item] {
         didSet {
             let objects = items.map(toItemObject)
             if ItemObject.archive(objects) {
@@ -53,27 +56,33 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
         }
     }
 
+    private let pasteboard: PasteboardProtocol
     private var selectedIndexPath: IndexPath?
 
-    init(items: [Item]) {
+    init(items: [Item] = [], pasteboard: PasteboardProtocol = UIPasteboard.general) {
         self.items = items
+        self.pasteboard = pasteboard
     }
 
     // MARK: - TableViewModeling
 
-    // MARK: - Outputs
-
     var isEditButtonEnabled: ((Bool) -> Void)?
 
-    var reloadRowsAtIndexPaths: (([IndexPath]) -> Void)?
+    var reloadRows: (([IndexPath], UITableViewRowAnimation) -> Void)?
 
-    var insertRowsAtIndexPaths: (([IndexPath]) -> Void)?
+    var insertRows: (([IndexPath], UITableViewRowAnimation) -> Void)?
 
-    // MARK: - Inputs
+    var deleteRows: (([IndexPath], UITableViewRowAnimation) -> Void)?
+
+    var deselectRow: ((IndexPath, Bool) -> Void)?
+
+    var setEditing: ((Bool, Bool) -> Void)?
 
     func viewDidLoad() {
         isEditButtonEnabled?(!items.isEmpty)
     }
+
+    var cellIdentifier: String { return TableViewCell.identifier }
 
     var numberOfSections: Int { return 1 }
 
@@ -81,10 +90,11 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
         return items.isEmpty ? 1 : items.count
     }
 
-    func cellForRow(at indexPath: IndexPath, in tableView: UITableView) -> TableViewCell {
-        let identifier = TableViewCell.identifier
-        let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        let cell = dequeuedCell as? TableViewCell ?? TableViewCell()
+    func configured(cell: UITableViewCell, forRowAt indexPath: IndexPath) -> TableViewCell {
+        guard let _cell = cell as? TableViewCell else {
+            fatalError("Expects a TableViewCell")
+        }
+
         let index = indexPath.row
 
         let bodyText: String
@@ -94,15 +104,15 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
         } else {
             let item = items[index]
             bodyText = item.body
-            cell.accessibilityHint = "Copies content of Item."
+            _cell.accessibilityHint = "Copies content of Item."
         }
 
-        cell.bodyText = bodyText
-        return cell
+        _cell.bodyText = bodyText
+        return _cell
     }
 
-    func didSelectRow(at indexPath: IndexPath, in tableView: UITableView) {
-        tableView.deselectRow(at: indexPath, animated: true)
+    func didSelectRow(at indexPath: IndexPath) {
+        deselectRow?(indexPath, true)
 
         selectedIndexPath = indexPath
 
@@ -116,10 +126,9 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
             let newItem = Item(body: item.body, copyCount: item.copyCount + 1)
             items.remove(at: index)
             items.insert(newItem, at: index)
-            tableView.reloadRows(at: [indexPath], with: .automatic)
 
             // Copy body to pasteboard
-            UIPasteboard.general.string = newItem.body
+            pasteboard.string = newItem.body
 
             // Alert user to successful copy
             delegate?.didCopy(item: newItem, in: self)
@@ -127,21 +136,18 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
         }
     }
 
-    func didLongPressRow(at indexPath: IndexPath, in tableView: UITableView) {
+    func didLongPressRow(at indexPath: IndexPath) {
         selectedIndexPath = indexPath
 
-        let item: Item
-
         if items.isEmpty {
-            item = Item()
+            delegate?.didTapAddItem(in: self)
         } else {
-            item = items[indexPath.row]
+            let item = items[indexPath.row]
+            delegate?.didLongPress(on: item, in: self)
         }
-
-        delegate?.didLongPress(on: item, in: self)
     }
 
-    func commit(edit: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath, in viewController: UITableViewController) {
+    func commit(edit: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard edit == .delete, !items.isEmpty else {
             return
         }
@@ -149,10 +155,10 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
         items.remove(at: indexPath.row)
 
         if items.isEmpty {
-            viewController.tableView.reloadRows(at: [indexPath], with: .left)
-            viewController.setEditing(false, animated: true)
+            reloadRows?([indexPath], .left)
+            setEditing?(false, true)
         } else {
-            viewController.tableView.deleteRows(at: [indexPath], with: .automatic)
+            deleteRows?([indexPath], .automatic)
         }
     }
 
@@ -179,27 +185,29 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
     }
 
     func configureWithEdited(item: Item) {
-        if let selectedIndexPath = self.selectedIndexPath {
+        if let indexPath = selectedIndexPath {
 
-            if self.items.isEmpty {
-                self.items.append(item)
+            if items.isEmpty {
+                items.append(item)
             } else {
-                self.items[selectedIndexPath.row] = item
+                items[indexPath.row] = item
             }
 
-            reloadRowsAtIndexPaths?([selectedIndexPath])
+            reloadRows?([indexPath], .automatic)
             self.selectedIndexPath = nil
 
         } else {
-            self.items.append(item)
+            items.append(item)
 
             let indexPath = IndexPath(row: self.items.count - 1, section: 0)
 
-            if self.items.count == 1 {
-                reloadRowsAtIndexPaths?([indexPath])
+            if items.count == 1 {
+                reloadRows?([indexPath], .automatic)
             } else {
-                insertRowsAtIndexPaths?([indexPath])
+                insertRows?([indexPath], .automatic)
             }
         }
     }
 }
+
+

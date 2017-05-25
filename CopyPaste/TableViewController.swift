@@ -6,9 +6,8 @@ import UIKit
 
 final class TableViewController: UITableViewController {
 
-    private let myTableView = TableView(frame: CGRect.zero, style: .plain)
+    private let _tableView = TableView(frame: CGRect.zero, style: .plain)
     private let viewModel: TableViewModeling
-
 
     // MARK: - Life Cycle
 
@@ -24,19 +23,21 @@ final class TableViewController: UITableViewController {
     // MARK: - View Life Cycle
 
     override func loadView() {
-        tableView = myTableView
+        tableView = _tableView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        myTableView.didLongPressRow = { [weak self] indexPath, tableView in
-            self?.viewModel.didLongPressRow(at: indexPath, in: tableView)
-        }
-
+        configureTableView()
         configureViewModel()
+        viewModel.viewDidLoad() // Must be called after ViewModel configured
+    }
 
-        viewModel.viewDidLoad()
+    private func configureTableView() {
+        _tableView.didLongPressRow = { [weak self] indexPath, tableView in
+            self?.viewModel.didLongPressRow(at: indexPath)
+        }
     }
 
     private func configureViewModel() {
@@ -44,12 +45,24 @@ final class TableViewController: UITableViewController {
             self?.editButtonItem.isEnabled = isEnabled
         }
 
-        viewModel.reloadRowsAtIndexPaths = { [weak self] indexPaths in
-            self?.tableView.reloadRows(at: indexPaths, with: .automatic)
+        viewModel.reloadRows = { [weak self] indexPaths, animationStyle in
+            self?.tableView.reloadRows(at: indexPaths, with: animationStyle)
         }
 
-        viewModel.insertRowsAtIndexPaths = { [weak self] indexPaths in
-            self?.tableView.insertRows(at: indexPaths, with: .automatic)
+        viewModel.insertRows = { [weak self] indexPaths, animationStyle in
+            self?.tableView.insertRows(at: indexPaths, with: animationStyle)
+        }
+
+        viewModel.deleteRows = { [weak self] indexPaths, animationStyle in
+            self?.tableView.deleteRows(at: indexPaths, with: animationStyle)
+        }
+
+        viewModel.deselectRow = { [weak self] indexPath, animated in
+            self?.tableView.deselectRow(at: indexPath, animated: animated)
+        }
+
+        viewModel.setEditing = { [weak self] bool, animated in
+            self?.setEditing(bool, animated: animated)
         }
     }
 
@@ -64,17 +77,19 @@ final class TableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return viewModel.cellForRow(at: indexPath, in: tableView)
+        let identifier = viewModel.cellIdentifier
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        return viewModel.configured(cell: cell, forRowAt: indexPath)
     }
 
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectRow(at: indexPath, in: tableView)
+        viewModel.didSelectRow(at: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        viewModel.commit(edit: editingStyle, forRowAt: indexPath, in: self)
+        viewModel.commit(edit: editingStyle, forRowAt: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
