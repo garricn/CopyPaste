@@ -13,6 +13,8 @@
 		601D8BC51ED177E100AC1407 /* TableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601D8BC41ED177E100AC1407 /* TableViewModel.swift */; };
 		601D8BC71ED2067500AC1407 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 601D8BC61ED2067500AC1407 /* AppCoordinator.swift */; };
 		60360A591ED1695B00ED0739 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60360A581ED1695B00ED0739 /* TableView.swift */; };
+		6049C9621ED68B7B00DD688D /* PasteboardProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049C9611ED68B7B00DD688D /* PasteboardProtocol.swift */; };
+		6049C9641ED68BA600DD688D /* UIPasteboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */; };
 		604B48551EC78FBF00DBA243 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604B48541EC78FBF00DBA243 /* TableViewCell.swift */; };
 		604B48651EC7ED4200DBA243 /* AddUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604B48641EC7ED4200DBA243 /* AddUITestCase.swift */; };
 		60762C371ECFD48300503ADB /* DeleteUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60762C361ECFD48300503ADB /* DeleteUITestCase.swift */; };
@@ -50,6 +52,8 @@
 		601D8BC41ED177E100AC1407 /* TableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewModel.swift; sourceTree = "<group>"; };
 		601D8BC61ED2067500AC1407 /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		60360A581ED1695B00ED0739 /* TableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
+		6049C9611ED68B7B00DD688D /* PasteboardProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasteboardProtocol.swift; sourceTree = "<group>"; };
+		6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIPasteboardExtensions.swift; sourceTree = "<group>"; };
 		604B48541EC78FBF00DBA243 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		604B485A1EC7EC4A00DBA243 /* CopyPasteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPasteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		604B485E1EC7EC4A00DBA243 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -142,6 +146,8 @@
 			children = (
 				60AB4EE81E9582A70002AAE8 /* AppDelegate.swift */,
 				601D8BC61ED2067500AC1407 /* AppCoordinator.swift */,
+				6049C9611ED68B7B00DD688D /* PasteboardProtocol.swift */,
+				6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */,
 				60E73F2F1EBEA9D700F559A1 /* Item.swift */,
 				60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */,
 				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
@@ -315,11 +321,13 @@
 			files = (
 				604B48551EC78FBF00DBA243 /* TableViewCell.swift in Sources */,
 				601D8BC51ED177E100AC1407 /* TableViewModel.swift in Sources */,
+				6049C9621ED68B7B00DD688D /* PasteboardProtocol.swift in Sources */,
 				60360A591ED1695B00ED0739 /* TableView.swift in Sources */,
 				60E73F301EBEA9D700F559A1 /* Item.swift in Sources */,
 				601D8BC71ED2067500AC1407 /* AppCoordinator.swift in Sources */,
 				60AB4EEB1E9582A70002AAE8 /* TableViewController.swift in Sources */,
 				60AB4EE91E9582A70002AAE8 /* AppDelegate.swift in Sources */,
+				6049C9641ED68BA600DD688D /* UIPasteboardExtensions.swift in Sources */,
 				60E73F2C1EBE8E4100F559A1 /* EditViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -548,6 +556,7 @@
 				607B17A11ED23F3F00CCAFD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		60AB4EE01E9582A70002AAE8 /* Build configuration list for PBXProject "CopyPaste" */ = {
 			isa = XCConfigurationList;
