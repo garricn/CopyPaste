@@ -210,6 +210,7 @@
 				60AB4EE11E9582A70002AAE8 /* Sources */,
 				60AB4EE21E9582A70002AAE8 /* Frameworks */,
 				60AB4EE31E9582A70002AAE8 /* Resources */,
+				60A6E6E11ED7EBCD0033FB7F /* Twix Run Script */,
 			);
 			buildRules = (
 			);
@@ -295,6 +296,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		60A6E6E11ED7EBCD0033FB7F /* Twix Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Twix Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which twix >/dev/null; then\ntwix\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		604B48561EC7EC4A00DBA243 /* Sources */ = {
