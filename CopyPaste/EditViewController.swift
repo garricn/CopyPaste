@@ -4,19 +4,19 @@
 
 import UIKit
 
-protocol EditViewControllerDelegate: class {
-    func didCancelEditing(_ item: Item, in viewController: EditViewController)
-    func didFinishEditing(_ item: Item, in viewController: EditViewController)
+protocol EditItemViewControllerDelegate: class {
+    func didCancelEditing(_ item: Item, in viewController: EditItemViewController)
+    func didFinishEditing(_ item: Item, in viewController: EditItemViewController)
 }
 
-final class EditViewController: UIViewController {
+class EditItemViewController: UIViewController {
 
-    weak var delegate: EditViewControllerDelegate?
+    weak var delegate: EditItemViewControllerDelegate?
 
     private let textView = UITextView()
     private let item: Item
 
-    init(itemToEdit: Item) {
+    init(itemToEdit: Item = Item()) {
         item = itemToEdit
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,6 +44,8 @@ final class EditViewController: UIViewController {
         let saveAction = #selector(didTapSaveBarButtonItem)
         let saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: saveAction)
         navigationItem.rightBarButtonItem = saveButton
+
+        navigationItem.title = "Edit Item"
     }
 
     private func configureTextView() {
