@@ -1,8 +1,4 @@
 //
-//  CopyPasteTests.swift
-//  CopyPasteTests
-//
-//  Created by Garric G. Nahapetian on 5/21/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
