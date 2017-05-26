@@ -5,9 +5,9 @@
 import UIKit
 
 protocol TableViewModelingDelegate: class {
-    func didLongPress(on item: Item, in viewModel: TableViewModeling)
-    func didTapAddItem(in viewModel: TableViewModeling)
-    func didCopy(item: Item, in viewModel: TableViewModeling)
+    func didTapAddItem()
+    func didCopy(item: Item)
+    func didLongPress(on item: Item, at indexPath: IndexPath)
 }
 
 protocol TableViewModeling: class {
@@ -35,8 +35,8 @@ protocol TableViewModeling: class {
 
 protocol TableViewModelConfigurable: class {
     weak var delegate: TableViewModelingDelegate? { get set }
-    func configureWithEdited(item: Item)
-    func configureWithCanceled(item: Item)
+    func configureWithAdded(item: Item)
+    func configureWithEdited(item: Item, at indexPath: IndexPath)
 }
 
 final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
@@ -57,7 +57,6 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
     }
 
     private let pasteboard: PasteboardProtocol
-    private var selectedIndexPath: IndexPath?
 
     init(items: [Item] = [], pasteboard: PasteboardProtocol = UIPasteboard.general) {
         self.items = items
@@ -114,10 +113,8 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
     func didSelectRow(at indexPath: IndexPath) {
         deselectRow?(indexPath, true)
 
-        selectedIndexPath = indexPath
-
         if items.isEmpty {
-            delegate?.didTapAddItem(in: self)
+            delegate?.didTapAddItem()
         } else {
             let index = indexPath.row
             let item = items[indexPath.row]
@@ -131,19 +128,16 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
             pasteboard.string = newItem.body
 
             // Alert user to successful copy
-            delegate?.didCopy(item: newItem, in: self)
-            selectedIndexPath = nil
+            delegate?.didCopy(item: newItem)
         }
     }
 
     func didLongPressRow(at indexPath: IndexPath) {
-        selectedIndexPath = indexPath
-
         if items.isEmpty {
-            delegate?.didTapAddItem(in: self)
+            delegate?.didTapAddItem()
         } else {
             let item = items[indexPath.row]
-            delegate?.didLongPress(on: item, in: self)
+            delegate?.didLongPress(on: item, at: indexPath)
         }
     }
 
@@ -180,34 +174,25 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
 
     // MARK: - TableViewModelConfigurable
 
-    func configureWithCanceled(item: Item) {
-         selectedIndexPath = nil
-    }
+    func configureWithAdded(item: Item) {
+        items.append(item)
 
-    func configureWithEdited(item: Item) {
-        if let indexPath = selectedIndexPath {
+        let indexPath = IndexPath(row: self.items.count - 1, section: 0)
 
-            if items.isEmpty {
-                items.append(item)
-            } else {
-                items[indexPath.row] = item
-            }
-
+        if items.count == 1 {
             reloadRows?([indexPath], .automatic)
-            self.selectedIndexPath = nil
-
         } else {
-            items.append(item)
-
-            let indexPath = IndexPath(row: self.items.count - 1, section: 0)
-
-            if items.count == 1 {
-                reloadRows?([indexPath], .automatic)
-            } else {
-                insertRows?([indexPath], .automatic)
-            }
+            insertRows?([indexPath], .automatic)
         }
     }
+
+    func configureWithEdited(item: Item, at indexPath: IndexPath) {
+        if items.isEmpty {
+            items.append(item)
+        } else {
+            items[indexPath.row] = item
+        }
+
+        reloadRows?([indexPath], .automatic)
+    }
 }
-
-

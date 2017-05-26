@@ -4,11 +4,13 @@
 
 import UIKit
 
-final class AppCoordinator: TableViewModelingDelegate, EditViewControllerDelegate {
+final class AppCoordinator: TableViewModelingDelegate, EditItemViewControllerDelegate {
     let rootViewController: UINavigationController
 
     private let items: [Item]
     private let viewModel: TableViewModelConfigurable
+
+    private var indexPath = IndexPath(row: 0, section: 0)
 
     init() {
         if CommandLine.arguments.contains("reset") {
@@ -36,15 +38,21 @@ final class AppCoordinator: TableViewModelingDelegate, EditViewControllerDelegat
 
     // MARK: - TableViewModelingDelegate
 
-    func didTapAddItem(in viewModel: TableViewModeling) {
+    func didTapAddItem() {
         presentAddItemViewController()
     }
 
-    func didLongPress(on item: Item, in viewModel: TableViewModeling) {
-        presentAddItemViewController(title: "Edit Item", itemToEdit: item)
+    func didLongPress(on item: Item, at indexPath: IndexPath) {
+        self.indexPath = indexPath
+
+        let viewController = EditItemViewController(itemToEdit: item)
+        viewController.delegate = self
+
+        let navigationController = UINavigationController(rootViewController: viewController)
+        rootViewController.present(navigationController, animated: true, completion: nil)
     }
 
-    func didCopy(item: Item, in viewModel: TableViewModeling) {
+    func didCopy(item: Item) {
         let alert = UIAlertController(title: nil, message: "Item Copied to Pasteboard.", preferredStyle: .alert)
         alert.accessibilityLabel = "Copy successful"
 
@@ -57,16 +65,19 @@ final class AppCoordinator: TableViewModelingDelegate, EditViewControllerDelegat
         }
     }
 
-    // MARK: - EditViewControllerDelegate
+    // MARK: - EditItemViewControllerDelegate
 
-    func didCancelEditing(_ item: Item, in viewController: EditViewController) {
-        viewModel.configureWithCanceled(item: item)
+    func didCancelEditing(_ item: Item, in viewController: EditItemViewController) {
         rootViewController.dismiss(animated: true)
     }
 
-    func didFinishEditing(_ item: Item, in viewController: EditViewController) {
+    func didFinishEditing(_ item: Item, in viewController: EditItemViewController) {
         rootViewController.dismiss(animated: true) {
-            self.viewModel.configureWithEdited(item: item)
+            if let _ = viewController as? AddItemViewController {
+                self.viewModel.configureWithAdded(item: item)
+            } else {
+                self.viewModel.configureWithEdited(item: item, at: self.indexPath)
+            }
         }
     }
 
@@ -76,10 +87,9 @@ final class AppCoordinator: TableViewModelingDelegate, EditViewControllerDelegat
         presentAddItemViewController()
     }
 
-    private func presentAddItemViewController(title: String = "Add Item", itemToEdit item: Item = Item()) {
-        let viewController = EditViewController(itemToEdit: item)
+    private func presentAddItemViewController() {
+        let viewController = AddItemViewController()
         viewController.delegate = self
-        viewController.navigationItem.title = title
 
         let navigationController = UINavigationController(rootViewController: viewController)
         rootViewController.present(navigationController, animated: true, completion: nil)
