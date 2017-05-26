@@ -20,6 +20,7 @@
 		60762C371ECFD48300503ADB /* DeleteUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60762C361ECFD48300503ADB /* DeleteUITestCase.swift */; };
 		60762C391ECFF63C00503ADB /* EditUIITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60762C381ECFF63C00503ADB /* EditUIITestCase.swift */; };
 		607B179B1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607B179A1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift */; };
+		60A6E6E01ED7E8100033FB7F /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A6E6DF1ED7E8100033FB7F /* AddItemViewController.swift */; };
 		60AB4EE91E9582A70002AAE8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AB4EE81E9582A70002AAE8 /* AppDelegate.swift */; };
 		60AB4EEB1E9582A70002AAE8 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */; };
 		60AB4EF01E9582A70002AAE8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60AB4EEF1E9582A70002AAE8 /* Assets.xcassets */; };
@@ -63,6 +64,7 @@
 		607B17981ED23F3F00CCAFD1 /* CopyPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607B179A1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewModelTestCase.swift; sourceTree = "<group>"; };
 		607B179C1ED23F3F00CCAFD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		60A6E6DF1ED7E8100033FB7F /* AddItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		60AB4EE51E9582A70002AAE8 /* CopyPaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopyPaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60AB4EE81E9582A70002AAE8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				60360A581ED1695B00ED0739 /* TableView.swift */,
 				604B48541EC78FBF00DBA243 /* TableViewCell.swift */,
 				60E73F2B1EBE8E4100F559A1 /* EditViewController.swift */,
+				60A6E6DF1ED7E8100033FB7F /* AddItemViewController.swift */,
 				60AB4EEF1E9582A70002AAE8 /* Assets.xcassets */,
 				60AB4EF11E9582A70002AAE8 /* LaunchScreen.storyboard */,
 				60AB4EF41E9582A70002AAE8 /* Info.plist */,
@@ -329,6 +332,7 @@
 				60AB4EE91E9582A70002AAE8 /* AppDelegate.swift in Sources */,
 				6049C9641ED68BA600DD688D /* UIPasteboardExtensions.swift in Sources */,
 				60E73F2C1EBE8E4100F559A1 /* EditViewController.swift in Sources */,
+				60A6E6E01ED7E8100033FB7F /* AddItemViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

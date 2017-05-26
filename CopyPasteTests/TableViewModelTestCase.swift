@@ -22,7 +22,7 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
     // MARK: - Private Variables
 
     private var isEditButtonEnabled: Bool = false
-    private var didTapAddItem: Bool = false
+    private var _didTapAddItem: Bool = false
     private var didCopyItem: (bool: Bool, item: Item?) =  (false, nil)
     private var didLongPressItem: (bool: Bool, item: Item?) = (false, nil)
     private var didReloadRows: (bool: Bool, indexPaths: [IndexPath]) = (false, [])
@@ -146,7 +146,7 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
 
         XCTAssertTrue(didDeselectRow.bool)
         XCTAssertTrue(didDeselectRow.indexPath == indexPath)
-        XCTAssertTrue(didTapAddItem)
+        XCTAssertTrue(_didTapAddItem)
         XCTAssertFalse(didCopyItem.bool)
         XCTAssertNil(pasteboard.string)
     }
@@ -161,7 +161,7 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
 
         XCTAssertTrue(didDeselectRow.bool)
         XCTAssertTrue(didDeselectRow.indexPath == indexPath)
-        XCTAssertFalse(didTapAddItem)
+        XCTAssertFalse(_didTapAddItem)
         XCTAssertTrue(didCopyItem.bool)
         XCTAssertNotNil(didCopyItem.item)
 
@@ -188,7 +188,7 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
 
         XCTAssertTrue(didDeselectRow.bool)
         XCTAssertTrue(didDeselectRow.indexPath == indexPath)
-        XCTAssertFalse(didTapAddItem)
+        XCTAssertFalse(_didTapAddItem)
         XCTAssertTrue(didCopyItem.bool)
         XCTAssertNotNil(didCopyItem.item)
 
@@ -215,7 +215,7 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
 
         XCTAssertTrue(didDeselectRow.bool)
         XCTAssertTrue(didDeselectRow.indexPath == indexPath)
-        XCTAssertFalse(didTapAddItem)
+        XCTAssertFalse(_didTapAddItem)
         XCTAssertTrue(didCopyItem.bool)
         XCTAssertNotNil(didCopyItem.item)
 
@@ -239,7 +239,7 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
         let indexPath = IndexPath(row: 0, section: 0)
         subject.didLongPressRow(at: indexPath)
 
-        XCTAssertTrue(didTapAddItem)
+        XCTAssertTrue(_didTapAddItem)
         XCTAssertFalse(didLongPressItem.bool)
     }
 
@@ -251,7 +251,7 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
         subject.didLongPressRow(at: indexPath)
 
         XCTAssertTrue(didLongPressItem.bool)
-        XCTAssertFalse(didTapAddItem)
+        XCTAssertFalse(_didTapAddItem)
     }
 
     func test_Did_Long_Press_Item_0_Given_Two_Items() {
@@ -268,7 +268,7 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
             XCTAssertTrue(longPressedItem.body == "Item 0")
         }
 
-        XCTAssertFalse(didTapAddItem)
+        XCTAssertFalse(_didTapAddItem)
     }
 
     func test_Did_Long_Press_Item_1_Given_Two_Items() {
@@ -285,7 +285,7 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
             XCTAssertTrue(longPressedItem.body == "Item 1")
         }
 
-        XCTAssertFalse(didTapAddItem)
+        XCTAssertFalse(_didTapAddItem)
     }
 
     // MARK: commit(edit:forRowAt:)
@@ -404,7 +404,8 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
         subject = TableViewModel()
 
         let item = Item(body: "Item")
-        subject.configureWithEdited(item: item)
+        let indexPath = IndexPath(row: 0, section: 0)
+        subject.configureWithEdited(item: item, at: indexPath)
         XCTAssertTrue(didReloadRows.bool)
         XCTAssertTrue(didReloadRows.indexPaths[0].row == 0)
         XCTAssertTrue(didReloadRows.indexPaths[0].section == 0)
@@ -416,11 +417,12 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
         subject = TableViewModel(items: [item0])
 
         let editedItem = Item(body: "Edited Item")
-        subject.configureWithEdited(item: editedItem)
-        XCTAssertTrue(didInsertRows.bool)
-        XCTAssertTrue(didInsertRows.indexPaths[0].row == 1)
-        XCTAssertTrue(didInsertRows.indexPaths[0].section == 0)
-        XCTAssertFalse(didReloadRows.bool)
+        let indexPath = IndexPath(row: 0, section: 0)
+        subject.configureWithEdited(item: editedItem, at: indexPath)
+        XCTAssertTrue(didReloadRows.bool)
+        XCTAssertTrue(didReloadRows.indexPaths[0].row == 0)
+        XCTAssertTrue(didReloadRows.indexPaths[0].section == 0)
+        XCTAssertFalse(didInsertRows.bool)
     }
 
     func test_Configure_With_Edited_Given_Two_Items() {
@@ -429,24 +431,25 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
         subject = TableViewModel(items: [item0, item1])
 
         let editedItem = Item(body: "Edited Item")
-        subject.configureWithEdited(item: editedItem)
-        XCTAssertTrue(didInsertRows.bool)
-        XCTAssertTrue(didInsertRows.indexPaths[0].row == 2)
-        XCTAssertTrue(didInsertRows.indexPaths[0].section == 0)
-        XCTAssertFalse(didReloadRows.bool)
+        let indexPath = IndexPath(row: 1, section: 0)
+        subject.configureWithEdited(item: editedItem, at: indexPath)
+        XCTAssertTrue(didReloadRows.bool)
+        XCTAssertTrue(didReloadRows.indexPaths[0].row == 1)
+        XCTAssertTrue(didReloadRows.indexPaths[0].section == 0)
+        XCTAssertFalse(didInsertRows.bool)
     }
 
     // MARK: - TableViewModelingDelegate
 
-    func didLongPress(on item: Item, in viewModel: TableViewModeling) {
+    func didLongPress(on item: Item, at indexPath: IndexPath) {
         didLongPressItem = (true, item)
     }
 
-    func didTapAddItem(in viewModel: TableViewModeling) {
-        didTapAddItem = true
+    func didTapAddItem() {
+        _didTapAddItem = true
     }
 
-    func didCopy(item: Item, in viewModel: TableViewModeling) {
+    func didCopy(item: Item) {
         didCopyItem = (true, item)
     }
 }
