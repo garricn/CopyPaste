@@ -93,7 +93,7 @@ final class TableViewCell: UITableViewCell {
         countLabel.numberOfLines = 1
         countLabel.accessibilityLabel = "Copy Count"
         countLabel.textColor = .lightGray
-        countLabel.setContentHuggingPriority(751, for: .vertical)
+        countLabel.setContentHuggingPriority(UILayoutPriority(rawValue: 751), for: .vertical)
         countLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let constraints: [NSLayoutConstraint] = [
