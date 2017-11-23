@@ -9,15 +9,21 @@ final class AppCoordinator: TableViewModelingDelegate, EditItemViewControllerDel
 
     private let items: [Item]
     private let viewModel: TableViewModelConfigurable
-
+    private let dataStore: DataStore = {
+        let encoder = JSONEncoder()
+        let decoder = JSONDecoder()
+        let location = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        return DataStore(encoder: encoder, decoder: decoder, location: location)
+    }()
+    
     private var indexPath = IndexPath(row: 0, section: 0)
 
     init() {
         if CommandLine.arguments.contains("reset") {
             items = []
-            ItemObject.archive([])
+            dataStore.encode(items)
         } else {
-            items = ItemObject.unarchived().map(toItem).sorted(by: copyCountDescending)
+            items = dataStore.decode([Item].self).sorted(by: copyCountDescending)
         }
 
         let viewModel = TableViewModel(items: items)
