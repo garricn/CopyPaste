@@ -57,7 +57,7 @@ func toItemObject(from item: Item) -> ItemObject {
     return ItemObject(item: item)
 }
 
-struct Item {
+struct Item: Codable {
     let body: String
     let copyCount: Int
 
