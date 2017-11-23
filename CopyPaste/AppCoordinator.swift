@@ -72,6 +72,9 @@ final class AppCoordinator: TableViewModelingDelegate, EditItemViewControllerDel
         }
     }
 
+    func didSet(_ items: [Item]) {
+        dataStore.encode(items)
+    }
     // MARK: - EditItemViewControllerDelegate
 
     func didCancelEditing(_ item: Item, in viewController: EditItemViewController) {
