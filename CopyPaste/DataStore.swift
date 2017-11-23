@@ -39,11 +39,6 @@ final class DataStore {
             fatalError("\(error)")
         }
     }
-    
-    func json<E: Encodable>(from encodable: E) throws -> String {
-        let data = try encoder.encode(encodable)
-        return String(data: data, encoding: .utf8) ?? ""
-    }
 }
 
 protocol JSONEncoding {
