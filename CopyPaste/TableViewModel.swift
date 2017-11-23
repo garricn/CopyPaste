@@ -45,13 +45,6 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
 
     private var items: [Item] {
         didSet {
-            let objects = items.map(toItemObject)
-            if ItemObject.archive(objects) {
-                print("")
-            } else {
-                print("error")
-            }
-
             isEditButtonEnabled?(!items.isEmpty)
         }
     }
