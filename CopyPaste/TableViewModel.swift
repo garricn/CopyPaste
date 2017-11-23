@@ -8,6 +8,7 @@ protocol TableViewModelingDelegate: class {
     func didTapAddItem()
     func didCopy(item: Item)
     func didLongPress(on item: Item, at indexPath: IndexPath)
+    func didSet(_ items: [Item])
 }
 
 protocol TableViewModeling: class {
@@ -45,6 +46,7 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
 
     private var items: [Item] {
         didSet {
+            delegate?.didSet(items)
             isEditButtonEnabled?(!items.isEmpty)
         }
     }
