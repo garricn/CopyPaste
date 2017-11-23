@@ -23,7 +23,8 @@ final class AppCoordinator: TableViewModelingDelegate, EditItemViewControllerDel
             items = []
             dataStore.encode(items)
         } else {
-            items = dataStore.decode([Item].self).sorted(by: copyCountDescending)
+            let decoded = dataStore.decode([Item].self) ?? []
+            items = decoded.sorted(by: copyCountDescending)
         }
 
         let viewModel = TableViewModel(items: items)

@@ -30,13 +30,13 @@ final class DataStore {
         }
     }
     
-    func decode<D: Decodable>(_ type: D.Type) -> D {
+    func decode<D: Decodable>(_ type: D.Type) -> D? {
         do {
             let data = try Data(contentsOf: location.appendingPathComponent(D.pathComponent))
             let decodable = try decoder.decode(type, from: data)
             return decodable
         } catch {
-            fatalError("\(error)")
+            return nil
         }
     }
 }
