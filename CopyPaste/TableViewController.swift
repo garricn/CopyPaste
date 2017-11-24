@@ -35,9 +35,19 @@ final class TableViewController: UITableViewController {
     }
 
     private func configureTableView() {
-        _tableView.didLongPressRow = { [weak self] indexPath, tableView in
-            self?.viewModel.didLongPressRow(at: indexPath)
+        let gestureRecognizer = UILongPressGestureRecognizer()
+        gestureRecognizer.addTarget(self, action: #selector(didLongPress))
+        tableView.addGestureRecognizer(gestureRecognizer)
+    @objc private func didLongPress(sender: UILongPressGestureRecognizer) {
+        let point = sender.location(in: sender.view)
+        let tableView = sender.view as? UITableView
+        let indexPath = tableView?.indexPathForRow(at: point)
+
+        guard let index = indexPath, sender.state == .began else {
+            return
         }
+
+        viewModel.didLongPressRow(at: index)
     }
 
     private func configureViewModel() {
