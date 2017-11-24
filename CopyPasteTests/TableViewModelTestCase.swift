@@ -448,6 +448,9 @@ final class TableViewModelTestCase: XCTestCase, TableViewModelingDelegate {
     func didCopy(item: Item) {
         didCopyItem = (true, item)
     }
+
+    func didSet(_ items: [Item]) {}
+
 }
 
 private final class MockPasteboard: PasteboardProtocol {
