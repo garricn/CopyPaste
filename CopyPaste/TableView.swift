@@ -6,15 +6,9 @@ import UIKit
 
 final class TableView: UITableView {
 
-    var didLongPressRow: ((IndexPath, UITableView) -> Void)?
-
     override init(frame: CGRect, style: UITableViewStyle) {
         super.init(frame: frame, style: style)
 
-        let gestureRecognizer = UILongPressGestureRecognizer()
-        gestureRecognizer.addTarget(self, action: #selector(didLongPress))
-
-        addGestureRecognizer(gestureRecognizer)
         rowHeight = UITableViewAutomaticDimension
         estimatedRowHeight = 100
         backgroundColor = .lightGray
@@ -25,17 +19,5 @@ final class TableView: UITableView {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    @objc private func didLongPress(sender: UILongPressGestureRecognizer) {
-        guard sender.state == .began else {
-            return
-        }
-
-        let point = sender.location(in: sender.view)
-
-        if let indexPath = indexPathForRow(at: point) {
-            didLongPressRow?(indexPath, self)
-        }
     }
 }
