@@ -4,16 +4,16 @@
 
 import UIKit
 
-final class TableViewController: UITableViewController {
+final class TableViewController: UIViewController {
 
-    private let _tableView = TableView(frame: CGRect.zero, style: .plain)
+    private let tableView = TableView(frame: CGRect.zero, style: .plain)
     private let viewModel: TableViewModeling
 
     // MARK: - Life Cycle
 
     init(viewModel: TableViewModeling) {
         self.viewModel = viewModel
-        super.init(style: .plain)
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -23,7 +23,7 @@ final class TableViewController: UITableViewController {
     // MARK: - View Life Cycle
 
     override func loadView() {
-        tableView = _tableView
+        view = tableView
     }
 
     override func viewDidLoad() {
@@ -34,10 +34,19 @@ final class TableViewController: UITableViewController {
         viewModel.viewDidLoad() // Must be called after ViewModel configured
     }
 
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        tableView.setEditing(editing, animated: animated)
+    }
+
     private func configureTableView() {
         let gestureRecognizer = UILongPressGestureRecognizer()
         gestureRecognizer.addTarget(self, action: #selector(didLongPress))
         tableView.addGestureRecognizer(gestureRecognizer)
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+
     @objc private func didLongPress(sender: UILongPressGestureRecognizer) {
         let point = sender.location(in: sender.view)
         let tableView = sender.view as? UITableView
@@ -75,38 +84,44 @@ final class TableViewController: UITableViewController {
             self?.setEditing(bool, animated: animated)
         }
     }
+}
 
-    // MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+extension TableViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfSections
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRows(inSection: section)
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = viewModel.cellIdentifier
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         return viewModel.configured(cell: cell, forRowAt: indexPath)
     }
+}
 
-    // MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension TableViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didSelectRow(at: indexPath)
     }
-
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         viewModel.commit(edit: editingStyle, forRowAt: indexPath)
     }
-
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return viewModel.editingStyleForRow(at: indexPath)
     }
-
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return viewModel.canEditRow(at: indexPath)
     }
 }
