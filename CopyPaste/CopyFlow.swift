@@ -4,21 +4,20 @@
 
 import UIKit
 
-final class AppCoordinator: TableViewModelingDelegate, EditItemViewControllerDelegate {
-    let rootViewController: UINavigationController
-
-    private let items: [Item]
-    private let viewModel: TableViewModelConfigurable
+final class CopyFlow: TableViewModelingDelegate, EditItemViewControllerDelegate {
+    private var rootViewController: UINavigationController!
+    private var items: [Item] = []
+    private var viewModel: TableViewModelConfigurable!
     private let dataStore: DataStore = {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
         let location = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
         return DataStore(encoder: encoder, decoder: decoder, location: location)
     }()
-    
+
     private var indexPath = IndexPath(row: 0, section: 0)
 
-    init() {
+    func start(withParentViewController parentViewController: UIViewController) {
         if CommandLine.arguments.contains("reset") {
             items = []
             dataStore.encode(items)
@@ -28,12 +27,10 @@ final class AppCoordinator: TableViewModelingDelegate, EditItemViewControllerDel
         }
 
         let viewModel = TableViewModel(items: items)
-        let viewController = TableViewController(viewModel: viewModel)
-        rootViewController = UINavigationController(rootViewController: viewController)
-
         self.viewModel = viewModel
         self.viewModel.delegate = self
 
+        let viewController = TableViewController(viewModel: viewModel)
         let addAction = #selector(didTapAddBarButtonItem)
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: addAction)
         viewController.navigationItem.leftBarButtonItem = addButton
@@ -41,6 +38,11 @@ final class AppCoordinator: TableViewModelingDelegate, EditItemViewControllerDel
         viewController.navigationItem.rightBarButtonItem = viewController.editButtonItem
         viewController.editButtonItem.isEnabled = !items.isEmpty
         viewController.navigationItem.title = "All Items"
+
+        rootViewController = UINavigationController(rootViewController: viewController)
+        parentViewController.addChildViewController(rootViewController)
+        parentViewController.view.addSubview(rootViewController.view)
+        rootViewController.didMove(toParentViewController: parentViewController)
     }
 
     // MARK: - TableViewModelingDelegate
