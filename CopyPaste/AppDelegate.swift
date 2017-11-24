@@ -9,12 +9,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private let coordinator = AppCoordinator()
+    private var appFlow: AppFlow!
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        window = UIWindow()
-        window?.rootViewController = coordinator.rootViewController
-        window?.makeKeyAndVisible()
-        return true
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: LaunchOptions?) -> Bool {
+        let context = AppContext(application: application, launchOptions: launchOptions)
+        appFlow = AppFlow(context: context, window: window)
+        return appFlow.didFinishLaunching()
     }
 }
+
+typealias LaunchOptions = [UIApplicationLaunchOptionsKey: Any]
