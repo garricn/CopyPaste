@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D0300621FC8BB2D00FBF8FB /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300611FC8BB2D00FBF8FB /* AppFlow.swift */; };
+		0D0300641FC8BB7000FBF8FB /* AppContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300631FC8BB7000FBF8FB /* AppContext.swift */; };
 		0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA0AF51FC6783800839814 /* DataStore.swift */; };
 		600AB6C21EC7FD590051B426 /* AppLaunchUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C11EC7FD590051B426 /* AppLaunchUITestCase.swift */; };
 		600AB6C41EC7FF390051B426 /* XCTestCaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C31EC7FF390051B426 /* XCTestCaseExtensions.swift */; };
@@ -48,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D0300611FC8BB2D00FBF8FB /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
+		0D0300631FC8BB7000FBF8FB /* AppContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContext.swift; sourceTree = "<group>"; };
 		0DDA0AF51FC6783800839814 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		600AB6C11EC7FD590051B426 /* AppLaunchUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchUITestCase.swift; sourceTree = "<group>"; };
 		600AB6C31EC7FF390051B426 /* XCTestCaseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtensions.swift; sourceTree = "<group>"; };
@@ -148,21 +152,23 @@
 		60AB4EE71E9582A70002AAE8 /* CopyPaste */ = {
 			isa = PBXGroup;
 			children = (
+				60AB4EF41E9582A70002AAE8 /* Info.plist */,
+				60A6E6DF1ED7E8100033FB7F /* AddItemViewController.swift */,
+				0D0300631FC8BB7000FBF8FB /* AppContext.swift */,
 				601D8BC61ED2067500AC1407 /* CopyFlow.swift */,
 				60AB4EE81E9582A70002AAE8 /* AppDelegate.swift */,
+				0D0300611FC8BB2D00FBF8FB /* AppFlow.swift */,
 				0DDA0AF51FC6783800839814 /* DataStore.swift */,
-				6049C9611ED68B7B00DD688D /* PasteboardProtocol.swift */,
-				6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */,
+				60E73F2B1EBE8E4100F559A1 /* EditViewController.swift */,
 				60E73F2F1EBEA9D700F559A1 /* Item.swift */,
-				60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */,
-				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
+				6049C9611ED68B7B00DD688D /* PasteboardProtocol.swift */,
 				60360A581ED1695B00ED0739 /* TableView.swift */,
 				604B48541EC78FBF00DBA243 /* TableViewCell.swift */,
-				60E73F2B1EBE8E4100F559A1 /* EditViewController.swift */,
-				60A6E6DF1ED7E8100033FB7F /* AddItemViewController.swift */,
+				60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */,
+				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
+				6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */,
 				60AB4EEF1E9582A70002AAE8 /* Assets.xcassets */,
 				60AB4EF11E9582A70002AAE8 /* LaunchScreen.storyboard */,
-				60AB4EF41E9582A70002AAE8 /* Info.plist */,
 			);
 			path = CopyPaste;
 			sourceTree = "<group>";
@@ -345,8 +351,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D0300621FC8BB2D00FBF8FB /* AppFlow.swift in Sources */,
 				604B48551EC78FBF00DBA243 /* TableViewCell.swift in Sources */,
 				0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */,
+				0D0300641FC8BB7000FBF8FB /* AppContext.swift in Sources */,
 				601D8BC51ED177E100AC1407 /* TableViewModel.swift in Sources */,
 				6049C9621ED68B7B00DD688D /* PasteboardProtocol.swift in Sources */,
 				60360A591ED1695B00ED0739 /* TableView.swift in Sources */,
