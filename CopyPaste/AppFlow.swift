@@ -9,10 +9,11 @@
 import UIKit
 
 final class AppFlow {
+
     private let context: AppContext
     private var window: UIWindow?
 
-    private lazy var copyFlow: CopyFlow = .init()
+    private lazy var copyFlow: CopyFlow? = .init()
 
     init(context: AppContext, window: UIWindow?) {
         self.context = context
@@ -28,7 +29,7 @@ final class AppFlow {
 
     private func didStartCopyFlow() -> Bool {
         setupWindowIfNeeded()
-        copyFlow.start(withParentViewController: window!.rootViewController!)
+        copyFlow?.start(withParentViewController: window!.rootViewController!)
         return true
     }
 
