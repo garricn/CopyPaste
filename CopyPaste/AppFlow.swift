@@ -11,9 +11,17 @@ import UIKit
 final class AppFlow {
 
     private let context: AppContext
+
     private var window: UIWindow?
 
-    private lazy var copyFlow: CopyFlow? = .init()
+    private lazy var subFlows: [Flow] = [copyFlow].flatMap { $0 }
+
+    private lazy var copyFlow: Flow? = {
+        let location = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+        let dataStore = DataStore(encoder: JSONEncoder(), decoder: JSONDecoder(), location: location)
+        let context = CopyContext(dataStore: dataStore, shouldResetItems: CommandLine.arguments.contains("reset"))
+        return CopyFlow(context: context)
+    }()
 
     init(context: AppContext, window: UIWindow?) {
         self.context = context
@@ -27,9 +35,13 @@ final class AppFlow {
         }
     }
 
+    func applicationWillTerminate() {
+        subFlows.forEach { $0.applicationWillTerminate() }
+    }
+
     private func didStartCopyFlow() -> Bool {
         setupWindowIfNeeded()
-        copyFlow?.start(withParentViewController: window!.rootViewController!)
+        copyFlow?.start(with: window!.rootViewController!)
         return true
     }
 

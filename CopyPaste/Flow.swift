@@ -8,7 +8,10 @@
 
 import UIKit
 
-protocol Flow {}
+protocol Flow {
+    func start(with parentViewController: UIViewController)
+    func applicationWillTerminate()
+}
 
 extension Flow {
     func add(_ child: UIViewController, to parent: UIViewController) {
