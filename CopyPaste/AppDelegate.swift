@@ -16,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         appFlow = AppFlow(context: context, window: window)
         return appFlow.didFinishLaunching()
     }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+        appFlow.applicationWillTerminate()
+    }
 }
 
 typealias LaunchOptions = [UIApplicationLaunchOptionsKey: Any]
