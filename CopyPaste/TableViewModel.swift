@@ -25,24 +25,25 @@ final class TableViewModel {
     }
 
     func configured(cell: UITableViewCell, forRowAt indexPath: IndexPath) -> TableViewCell {
-        guard let _cell = cell as? TableViewCell else {
+        guard let cell = cell as? TableViewCell else {
             fatalError("Expects a TableViewCell")
         }
 
-        let index = indexPath.row
-
         let bodyText: String
-
+        let countText: String?
         if items.isEmpty {
             bodyText = "Add Item"
+            countText = nil
         } else {
-            let item = items[index]
+            let item = items[indexPath.row]
             bodyText = item.body
-            _cell.accessibilityHint = "Copies content of Item."
+            countText = String(item.copyCount)
+            cell.accessibilityHint = "Copies content of Item."
         }
 
-        _cell.bodyText = bodyText
-        return _cell
+        cell.bodyText = bodyText
+        cell.countText = countText
+        return cell
     }
 
     func editingStyleForRow(at indexPath: IndexPath) -> UITableViewCellEditingStyle {
