@@ -6,35 +6,26 @@ import UIKit
 
 final class CopyFlow: Flow {
 
-    private let dataStore: DataStore = {
-        let encoder = JSONEncoder()
-        let decoder = JSONDecoder()
-        let location = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        return DataStore(encoder: encoder, decoder: decoder, location: location)
-    }()
-
     private let pasteboard: PasteboardProtocol = UIPasteboard.general
+    private let context: CopyContext
 
-    func start(withParentViewController parentViewController: UIViewController) {
-        let decodedItems = dataStore.decode([Item].self) ?? []
+    init(context: CopyContext) {
+        self.context = context
+    }
+
+    func start(with parentViewController: UIViewController) {
         let tableViewController: TableViewController
 
-        var items: [Item] = decodedItems.sorted(by: copyCountDescending) {
+        var items: [Item] = context.items.sorted(by: copyCountDescending) {
             didSet {
-                dataStore.encode(items) // TODO: - Encode only on background/termination?
+                context.set(items: items)
                 tableViewController.viewModel = TableViewModel(items: items)
             }
         }
 
-
         let viewModel = TableViewModel(items: items)
-        let tableView = TableView(frame: CGRect.zero, style: .plain)
+        let tableView = TableView()
         tableViewController = TableViewController(viewModel: viewModel, tableView: tableView)
-
-        if CommandLine.arguments.contains("reset") {
-            items = []
-        }
-
         let rootViewController = UINavigationController(rootViewController: tableViewController)
         add(rootViewController, to: parentViewController)
 
@@ -70,10 +61,9 @@ final class CopyFlow: Flow {
                 return
             }
 
+            // Increment copy count
             let row = indexPath.row
             let item = items[row]
-
-            // Increment copy count
             let newItem = Item(body: item.body, copyCount: item.copyCount + 1)
             items.remove(at: row)
             items.insert(newItem, at: row)
@@ -84,7 +74,6 @@ final class CopyFlow: Flow {
             // Alert user to successful copy
             let alert = UIAlertController(title: nil, message: "Item Copied to Pasteboard.", preferredStyle: .alert)
             alert.accessibilityLabel = "Copy successful"
-
             rootViewController.present(alert, animated: false, completion: nil)
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 guard let alert = rootViewController.presentedViewController as? UIAlertController else {
