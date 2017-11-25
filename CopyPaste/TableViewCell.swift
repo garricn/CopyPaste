@@ -113,25 +113,21 @@ final class TableViewCell: UITableViewCell {
         )
     }
 
-    private let duration: TimeInterval = 0.4
+    private let duration: TimeInterval = 0.8
 
     override func setSelected(_ selected: Bool, animated: Bool) {
-        if animated {
-            UIView.animate(withDuration: duration) {
-                self.containerView.backgroundColor = selected ? .gray : .white
-            }
+        if selected {
+            containerView.backgroundColor = .gray
         } else {
-            containerView.backgroundColor = selected ? .gray : .white
+            self.containerView.backgroundColor = .white
         }
     }
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if animated {
-            UIView.animate(withDuration: duration) {
-                self.containerView.backgroundColor = highlighted ? .gray : .white
-            }
+        if highlighted {
+            containerView.backgroundColor = .gray
         } else {
-            containerView.backgroundColor = highlighted ? .gray : .white
+            self.containerView.backgroundColor = .white
         }
     }
 }
