@@ -16,12 +16,18 @@ final class Defaults {
         }
         set {
             standard.set(newValue, forKey: .shouldShowWelcomeScreen)
+            standard.synchronize()
         }
     }
 
     private var shouldResetUserDefaults: Bool {
-        get { return standard.bool(forKey: .shouldResetUserDefaults) }
-        set { standard.set(newValue, forKey: .shouldResetUserDefaults) }
+        get {
+            return standard.bool(forKey: .shouldResetUserDefaults)
+        }
+        set {
+            standard.set(newValue, forKey: .shouldResetUserDefaults)
+            standard.synchronize()
+        }
     }
 
     private let standard: UserDefaults = .standard
