@@ -19,6 +19,7 @@ final class CopyFlow: Flow {
         var items: [Item] = context.items.sorted(by: copyCountDescending) {
             didSet {
                 context.set(items: items)
+                context.saveItems()
                 tableViewController.viewModel = TableViewModel(items: items)
             }
         }
