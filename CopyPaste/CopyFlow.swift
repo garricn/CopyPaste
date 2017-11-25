@@ -33,19 +33,15 @@ final class CopyFlow: Flow {
             let navigationController = UINavigationController(rootViewController: viewController)
             navigationController.navigationBar.prefersLargeTitles = true
             rootViewController.present(navigationController, animated: true, completion: nil)
-
             viewController.onDidTapCancelWhileEditing { item, viewController in
                 viewController.dismiss(animated: true, completion: nil)
             }
-
             viewController.onDidTapSaveWhileEditing { item, viewController in
                 viewController.dismiss(animated: true, completion: nil)
-
                 guard case .editing(_, let indexPath) = action, !item.body.isEmpty, !items.isEmpty else {
                     items.append(item)
                     return
                 }
-
                 items[indexPath.row] = item
             }
         }
@@ -71,18 +67,6 @@ final class CopyFlow: Flow {
 
             // Copy body to pasteboard
             self?.pasteboard.string = newItem.body
-
-            // Alert user to successful copy
-            let alert = UIAlertController(title: nil, message: "Item Copied to Pasteboard.", preferredStyle: .alert)
-            alert.accessibilityLabel = "Copy successful"
-            rootViewController.present(alert, animated: false, completion: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                guard let alert = rootViewController.presentedViewController as? UIAlertController else {
-                    return
-                }
-
-                alert.dismiss(animated: true, completion: nil)
-            }
         }
 
         tableViewController.onDidLongPress { indexPath, tableView in
@@ -107,11 +91,5 @@ final class CopyFlow: Flow {
 
     func applicationWillTerminate() {
         context.saveItems()
-    }
-}
-
-extension IndexPath {
-    static var zero: IndexPath {
-        return IndexPath(row: 0, section: 0)
     }
 }
