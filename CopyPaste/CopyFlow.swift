@@ -28,7 +28,7 @@ final class CopyFlow: Flow {
         parent.add(rootViewController)
 
         func presentAddItemViewController() {
-            let viewController = AddItemViewController()
+            let viewController = EditItemViewController(title: "Add Item")
             let navigationController = UINavigationController(rootViewController: viewController)
             rootViewController.present(navigationController, animated: true, completion: nil)
 
