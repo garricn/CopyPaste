@@ -13,7 +13,7 @@ final class CopyFlow: Flow {
         self.context = context
     }
 
-    func start(with parentViewController: UIViewController) {
+    func start(with parent: UIViewController) {
         let tableViewController: TableViewController
 
         var items: [Item] = context.items.sorted(by: copyCountDescending) {
@@ -23,11 +23,9 @@ final class CopyFlow: Flow {
             }
         }
 
-        let viewModel = TableViewModel(items: items)
-        let tableView = TableView()
-        tableViewController = TableViewController(viewModel: viewModel, tableView: tableView)
+        tableViewController = TableViewController(viewModel: TableViewModel(items: items), tableView: TableView())
         let rootViewController = UINavigationController(rootViewController: tableViewController)
-        add(rootViewController, to: parentViewController)
+        parent.add(rootViewController)
 
         func presentAddItemViewController() {
             let viewController = AddItemViewController()

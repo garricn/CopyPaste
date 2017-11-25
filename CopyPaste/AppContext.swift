@@ -9,19 +9,38 @@
 import UIKit
 
 final class AppContext {
+
     enum State {
+        case welcome
         case session
     }
+
     private let application: UIApplication
+    private let defaults = Defaults()
     private let launch: Launch
+
     var state: State { return determineState() }
+    var isForegroundLaunch: Bool { return launch.kind == .foreground }
+    
     init(application: UIApplication, launchOptions: LaunchOptions?) {
         self.application = application
         self.launch = Launch(launchOptions: launchOptions)
     }
+
+    func didViewWelcomeScreen() {
+        defaults.shouldShowWelcomeScreen = false
+    }
     private func determineState() -> State {
         switch launch.reason {
         case .normal:
+            return determineStateForNormalLaunch()
+        }
+    }
+
+    private func determineStateForNormalLaunch() -> State {
+        if defaults.shouldShowWelcomeScreen {
+            return .welcome
+        } else {
             return .session
         }
     }
