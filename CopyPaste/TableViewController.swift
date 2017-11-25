@@ -85,6 +85,7 @@ final class TableViewController: UIViewController {
 
     private func didSetViewModel() {
         tableView.reloadData()
+        setEditing(false, animated: true)
         editButtonItem.isEnabled = viewModel.isEditButtonEnabled
     }
 
