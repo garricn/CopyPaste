@@ -121,4 +121,8 @@ final class CopyFlow: Flow {
             items.remove(at: indexPath.row)
         }
     }
+
+    func applicationWillTerminate() {
+        context.saveItems()
+    }
 }
