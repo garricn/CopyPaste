@@ -4,29 +4,6 @@
 
 import UIKit
 
-protocol TableViewModeling: class {
-
-    // Outputs
-    var isEditButtonEnabled: ((Bool) -> Void)? { get set }
-    var reloadRows: (([IndexPath], UITableViewRowAnimation) -> Void)? { get set }
-    var insertRows: (([IndexPath], UITableViewRowAnimation) -> Void)? { get set }
-    var deleteRows: (([IndexPath], UITableViewRowAnimation) -> Void)? { get set }
-    var deselectRow: ((IndexPath, Bool) -> Void)? { get set }
-    var setEditing: ((Bool, Bool) -> Void)? { get set }
-
-    // Inputs
-    var cellIdentifier: String { get }
-    var numberOfSections: Int { get }
-    func viewDidLoad()
-    func numberOfRows(inSection section: Int) -> Int
-    func configured(cell: UITableViewCell, forRowAt indexPath: IndexPath) -> TableViewCell
-    func didSelectRow(at indexPath: IndexPath)
-    func didLongPressRow(at indexPath: IndexPath)
-    func commit(edit: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
-    func editingStyleForRow(at indexPath: IndexPath) -> UITableViewCellEditingStyle
-    func canEditRow(at indexPath: IndexPath) -> Bool
-}
-
 
 final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
 
