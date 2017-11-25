@@ -73,6 +73,7 @@ final class TableViewController: UIViewController {
         navigationItem.rightBarButtonItem = editButtonItem
         navigationItem.leftBarButtonItem?.accessibilityLabel = "Add Item"
         navigationItem.title = "All Items"
+        
     }
 
     private func configureTableView() {
