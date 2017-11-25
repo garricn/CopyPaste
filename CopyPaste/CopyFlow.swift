@@ -4,10 +4,8 @@
 
 import UIKit
 
-final class CopyFlow: TableViewModelingDelegate, EditItemViewControllerDelegate {
-    private var rootViewController: UINavigationController!
-    private var items: [Item] = []
-    private var viewModel: TableViewModelConfigurable!
+final class CopyFlow: Flow {
+
     private let dataStore: DataStore = {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
@@ -15,95 +13,123 @@ final class CopyFlow: TableViewModelingDelegate, EditItemViewControllerDelegate 
         return DataStore(encoder: encoder, decoder: decoder, location: location)
     }()
 
-    private var indexPath = IndexPath(row: 0, section: 0)
+    private let pasteboard: PasteboardProtocol = UIPasteboard.general
 
     func start(withParentViewController parentViewController: UIViewController) {
-        if CommandLine.arguments.contains("reset") {
-            items = []
-            dataStore.encode(items)
-        } else {
-            let decoded = dataStore.decode([Item].self) ?? []
-            items = decoded.sorted(by: copyCountDescending)
+        let decodedItems = dataStore.decode([Item].self) ?? []
+        let tableViewController: TableViewController
+
+        var items: [Item] = decodedItems.sorted(by: copyCountDescending) {
+            didSet {
+                dataStore.encode(items) // TODO: - Encode only on background/termination?
+                tableViewController.viewModel = TableViewModel(items: items)
+            }
         }
 
+
         let viewModel = TableViewModel(items: items)
-        self.viewModel = viewModel
-        self.viewModel.delegate = self
+        let tableView = TableView(frame: CGRect.zero, style: .plain)
+        tableViewController = TableViewController(viewModel: viewModel, tableView: tableView)
 
-        let viewController = TableViewController(viewModel: viewModel)
-        let addAction = #selector(didTapAddBarButtonItem)
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: addAction)
-        viewController.navigationItem.leftBarButtonItem = addButton
-        viewController.navigationItem.leftBarButtonItem?.accessibilityLabel = "Add Item"
-        viewController.navigationItem.rightBarButtonItem = viewController.editButtonItem
-        viewController.editButtonItem.isEnabled = !items.isEmpty
-        viewController.navigationItem.title = "All Items"
+        if CommandLine.arguments.contains("reset") {
+            items = []
+        }
 
-        rootViewController = UINavigationController(rootViewController: viewController)
-        parentViewController.addChildViewController(rootViewController)
-        parentViewController.view.addSubview(rootViewController.view)
-        rootViewController.didMove(toParentViewController: parentViewController)
-    }
+        let rootViewController = UINavigationController(rootViewController: tableViewController)
+        add(rootViewController, to: parentViewController)
 
-    // MARK: - TableViewModelingDelegate
+        func presentAddItemViewController() {
+            let viewController = AddItemViewController()
+            let navigationController = UINavigationController(rootViewController: viewController)
+            rootViewController.present(navigationController, animated: true, completion: nil)
 
-    func didTapAddItem() {
-        presentAddItemViewController()
-    }
+            viewController.onDidTapCancelWhileEditing { item, viewController in
+                viewController.dismiss(animated: true, completion: nil)
+            }
 
-    func didLongPress(on item: Item, at indexPath: IndexPath) {
-        self.indexPath = indexPath
+            viewController.onDidTapSaveWhileEditing { item, viewController in
+                viewController.dismiss(animated: true, completion: nil)
 
-        let viewController = EditItemViewController(itemToEdit: item)
-        viewController.delegate = self
+                guard !item.body.isEmpty else {
+                    return
+                }
 
-        let navigationController = UINavigationController(rootViewController: viewController)
-        rootViewController.present(navigationController, animated: true, completion: nil)
-    }
+                items.append(item)
+            }
+        }
 
-    func didCopy(item: Item) {
-        let alert = UIAlertController(title: nil, message: "Item Copied to Pasteboard.", preferredStyle: .alert)
-        alert.accessibilityLabel = "Copy successful"
+        tableViewController.onDidTapAddBarButtonItem { _ in
+            presentAddItemViewController()
+        }
 
-        rootViewController.present(alert, animated: false) {
+        tableViewController.onDidSelectRow { [weak self] indexPath, tableView in
+            tableView.deselectRow(at: indexPath, animated: true)
+
+            guard !items.isEmpty else {
+                presentAddItemViewController()
+                return
+            }
+
+            let row = indexPath.row
+            let item = items[row]
+
+            // Increment copy count
+            let newItem = Item(body: item.body, copyCount: item.copyCount + 1)
+            items.remove(at: row)
+            items.insert(newItem, at: row)
+
+            // Copy body to pasteboard
+            self?.pasteboard.string = newItem.body
+
+            // Alert user to successful copy
+            let alert = UIAlertController(title: nil, message: "Item Copied to Pasteboard.", preferredStyle: .alert)
+            alert.accessibilityLabel = "Copy successful"
+
+            rootViewController.present(alert, animated: false, completion: nil)
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                if let _ = self.rootViewController.presentedViewController as? UIAlertController {
-                    self.rootViewController.dismiss(animated: true)
+                guard let alert = rootViewController.presentedViewController as? UIAlertController else {
+                    return
+                }
+
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
+
+        tableViewController.onDidLongPress { indexPath, tableView in
+            guard !items.isEmpty else {
+                presentAddItemViewController()
+                return
+            }
+
+            let editViewController = EditItemViewController(itemToEdit: items[indexPath.row])
+            let navigationController = UINavigationController(rootViewController: editViewController)
+            rootViewController.present(navigationController, animated: true, completion: nil)
+
+            editViewController.onDidTapCancelWhileEditing { _, viewController in
+                viewController.dismiss(animated: true, completion: nil)
+            }
+
+            editViewController.onDidTapSaveWhileEditing { item, viewController in
+                viewController.dismiss(animated: true, completion: nil)
+
+                guard !item.body.isEmpty else {
+                    return
+                }
+
+                if items.isEmpty {
+                    items.append(item)
+                } else {
+                    items[indexPath.row] = item
                 }
             }
         }
-    }
 
-    func didSet(_ items: [Item]) {
-        dataStore.encode(items)
-    }
-    // MARK: - EditItemViewControllerDelegate
-
-    func didCancelEditing(_ item: Item, in viewController: EditItemViewController) {
-        rootViewController.dismiss(animated: true)
-    }
-
-    func didFinishEditing(_ item: Item, in viewController: EditItemViewController) {
-        rootViewController.dismiss(animated: true) {
-            if let _ = viewController as? AddItemViewController {
-                self.viewModel.configureWithAdded(item: item)
-            } else {
-                self.viewModel.configureWithEdited(item: item, at: self.indexPath)
+        tableViewController.onDidCommitEditing { edit, indexPath, tableView in
+            guard edit == .delete, !items.isEmpty else {
+                return
             }
+
+            items.remove(at: indexPath.row)
         }
-    }
-
-    // MARK: - Private Functions
-
-    @objc private func didTapAddBarButtonItem(sender: UIBarButtonItem) {
-        presentAddItemViewController()
-    }
-
-    private func presentAddItemViewController() {
-        let viewController = AddItemViewController()
-        viewController.delegate = self
-
-        let navigationController = UINavigationController(rootViewController: viewController)
-        rootViewController.present(navigationController, animated: true, completion: nil)
     }
 }
