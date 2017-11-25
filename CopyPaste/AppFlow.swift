@@ -23,13 +23,21 @@ final class AppFlow {
         return CopyFlow(context: context)
     }()
 
+    private var rootViewController: UIViewController {
+        return window!.rootViewController!
+    }
+
     init(context: AppContext, window: UIWindow?) {
         self.context = context
         self.window = window
     }
 
     func didFinishLaunching() -> Bool {
+        setupWindowIfNeeded()
+
         switch context.state {
+        case .welcome:
+            return didStartWelcomeFlow()
         case .session:
             return didStartCopyFlow()
         }
@@ -39,14 +47,27 @@ final class AppFlow {
         subFlows.forEach { $0.applicationWillTerminate() }
     }
 
+    private func didStartWelcomeFlow() -> Bool {
+        let welcomeViewController = WelcomeViewController()
+        rootViewController.present(welcomeViewController, animated: true, completion: nil)
+        welcomeViewController.onDidTapGetStarted { [weak self] in
+            self?.didStartCopyFlow()
+
+            welcomeViewController.dismiss(animated: true) {
+                self?.context.didViewWelcomeScreen()
+            }
+        }
+        return true
+    }
+
+    @discardableResult
     private func didStartCopyFlow() -> Bool {
-        setupWindowIfNeeded()
-        copyFlow?.start(with: window!.rootViewController!)
+        copyFlow?.start(with: rootViewController)
         return true
     }
 
     private func setupWindowIfNeeded() {
-        guard window?.rootViewController == nil else {
+        guard window?.rootViewController == nil, context.isForegroundLaunch else {
             return
         }
 
@@ -55,5 +76,3 @@ final class AppFlow {
         window?.makeKeyAndVisible()
     }
 }
-
-final class AppViewController: UIViewController {}
