@@ -4,17 +4,14 @@
 
 import UIKit
 
-protocol EditItemViewControllerDelegate: class {
-    func didCancelEditing(_ item: Item, in viewController: EditItemViewController)
-    func didFinishEditing(_ item: Item, in viewController: EditItemViewController)
-}
-
 class EditItemViewController: UIViewController {
 
-    weak var delegate: EditItemViewControllerDelegate?
 
     private let textView = UITextView()
     private let item: Item
+
+    private var didTapCancelWhileEditing: ((Item, EditItemViewController) -> Void)?
+    private var didTapSaveWhileEditing: ((_ item: Item, _ viewController: EditItemViewController) -> Void)?
 
     init(itemToEdit: Item = Item()) {
         item = itemToEdit
@@ -37,11 +34,11 @@ class EditItemViewController: UIViewController {
     }
 
     private func configureNavigationItem() {
-        let cancelAction = #selector(didTapCancelBarButtonItem)
+        let cancelAction = #selector(didTap(cancelBarButtonItem:))
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: cancelAction)
         navigationItem.leftBarButtonItem = cancelButton
 
-        let saveAction = #selector(didTapSaveBarButtonItem)
+        let saveAction = #selector(didTap(saveBarButtonItem:))
         let saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: saveAction)
         navigationItem.rightBarButtonItem = saveButton
 
@@ -56,16 +53,20 @@ class EditItemViewController: UIViewController {
         textView.becomeFirstResponder()
     }
 
-    @objc private func didTapCancelBarButtonItem(sender: UIBarButtonItem) {
-        delegate?.didCancelEditing(item, in: self)
+    func onDidTapCancelWhileEditing(perform action: @escaping ((Item, EditItemViewController) -> Void)) {
+        didTapCancelWhileEditing = action
     }
 
-    @objc private func didTapSaveBarButtonItem(sender: UIBarButtonItem) {
-        if textView.text.isEmpty {
-            delegate?.didCancelEditing(item, in: self)
-        } else {
-            let item = Item(body: textView.text, copyCount: self.item.copyCount)
-            delegate?.didFinishEditing(item, in: self)
-        }
+    func onDidTapSaveWhileEditing(perform action: @escaping ((Item, EditItemViewController) -> Void)) {
+        didTapSaveWhileEditing = action
+    }
+
+    @objc private func didTap(cancelBarButtonItem: UIBarButtonItem) {
+        didTapCancelWhileEditing?(item, self)
+    }
+
+    @objc private func didTap(saveBarButtonItem: UIBarButtonItem) {
+        let item = Item(body: textView.text, copyCount: self.item.copyCount)
+        didTapSaveWhileEditing?(item, self)
     }
 }
