@@ -13,7 +13,7 @@ final class CopyFlow: Flow {
         self.context = context
     }
 
-    func start(with parentViewController: UIViewController) {
+    func start(with parent: UIViewController) {
         let tableViewController: TableViewController
 
         var items: [Item] = context.items.sorted(by: copyCountDescending) {
@@ -23,15 +23,15 @@ final class CopyFlow: Flow {
             }
         }
 
-        let viewModel = TableViewModel(items: items)
-        let tableView = TableView()
-        tableViewController = TableViewController(viewModel: viewModel, tableView: tableView)
+        tableViewController = TableViewController(viewModel: TableViewModel(items: items), tableView: TableView())
         let rootViewController = UINavigationController(rootViewController: tableViewController)
-        add(rootViewController, to: parentViewController)
+        rootViewController.navigationBar.prefersLargeTitles = true
+        parent.add(rootViewController)
 
-        func presentAddItemViewController() {
-            let viewController = AddItemViewController()
+        func presentEditItemViewController(for action: EditItemViewController.Action) {
+            let viewController = EditItemViewController(action: action)
             let navigationController = UINavigationController(rootViewController: viewController)
+            navigationController.navigationBar.prefersLargeTitles = true
             rootViewController.present(navigationController, animated: true, completion: nil)
 
             viewController.onDidTapCancelWhileEditing { item, viewController in
@@ -41,23 +41,24 @@ final class CopyFlow: Flow {
             viewController.onDidTapSaveWhileEditing { item, viewController in
                 viewController.dismiss(animated: true, completion: nil)
 
-                guard !item.body.isEmpty else {
+                guard case .editing(_, let indexPath) = action, !item.body.isEmpty, !items.isEmpty else {
+                    items.append(item)
                     return
                 }
 
-                items.append(item)
+                items[indexPath.row] = item
             }
         }
 
         tableViewController.onDidTapAddBarButtonItem { _ in
-            presentAddItemViewController()
+            presentEditItemViewController(for: .adding)
         }
 
         tableViewController.onDidSelectRow { [weak self] indexPath, tableView in
             tableView.deselectRow(at: indexPath, animated: true)
 
             guard !items.isEmpty else {
-                presentAddItemViewController()
+                presentEditItemViewController(for: .adding)
                 return
             }
 
@@ -86,31 +87,13 @@ final class CopyFlow: Flow {
 
         tableViewController.onDidLongPress { indexPath, tableView in
             guard !items.isEmpty else {
-                presentAddItemViewController()
+                presentEditItemViewController(for: .adding)
                 return
             }
 
-            let editViewController = EditItemViewController(itemToEdit: items[indexPath.row])
-            let navigationController = UINavigationController(rootViewController: editViewController)
-            rootViewController.present(navigationController, animated: true, completion: nil)
-
-            editViewController.onDidTapCancelWhileEditing { _, viewController in
-                viewController.dismiss(animated: true, completion: nil)
-            }
-
-            editViewController.onDidTapSaveWhileEditing { item, viewController in
-                viewController.dismiss(animated: true, completion: nil)
-
-                guard !item.body.isEmpty else {
-                    return
-                }
-
-                if items.isEmpty {
-                    items.append(item)
-                } else {
-                    items[indexPath.row] = item
-                }
-            }
+            let item = items[indexPath.row]
+            let editing: EditItemViewController.Action = .editing(item, at: indexPath)
+            presentEditItemViewController(for: editing)
         }
 
         tableViewController.onDidCommitEditing { edit, indexPath, tableView in
@@ -124,5 +107,11 @@ final class CopyFlow: Flow {
 
     func applicationWillTerminate() {
         context.saveItems()
+    }
+}
+
+extension IndexPath {
+    static var zero: IndexPath {
+        return IndexPath(row: 0, section: 0)
     }
 }

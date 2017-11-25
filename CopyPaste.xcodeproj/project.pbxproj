@@ -11,6 +11,11 @@
 		0D0300641FC8BB7000FBF8FB /* AppContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300631FC8BB7000FBF8FB /* AppContext.swift */; };
 		0D0300661FC8F15C00FBF8FB /* Flow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300651FC8F15C00FBF8FB /* Flow.swift */; };
 		0DAF67C01FC90DA100390890 /* CopyContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67BF1FC90DA100390890 /* CopyContext.swift */; };
+		0DAF67C21FC93D2A00390890 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DAF67C11FC93D2A00390890 /* Settings.bundle */; };
+		0DAF67C41FC9508000390890 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67C31FC9508000390890 /* Defaults.swift */; };
+		0DAF67C71FC950D200390890 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67C61FC950D200390890 /* WelcomeViewController.swift */; };
+		0DAF67C91FC950EE00390890 /* AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67C81FC950EE00390890 /* AppViewController.swift */; };
+		0DAF67CB1FC9512C00390890 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67CA1FC9512C00390890 /* UIViewControllerExtensions.swift */; };
 		0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA0AF51FC6783800839814 /* DataStore.swift */; };
 		600AB6C21EC7FD590051B426 /* AppLaunchUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C11EC7FD590051B426 /* AppLaunchUITestCase.swift */; };
 		600AB6C41EC7FF390051B426 /* XCTestCaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C31EC7FF390051B426 /* XCTestCaseExtensions.swift */; };
@@ -25,7 +30,6 @@
 		60762C371ECFD48300503ADB /* DeleteUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60762C361ECFD48300503ADB /* DeleteUITestCase.swift */; };
 		60762C391ECFF63C00503ADB /* EditUIITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60762C381ECFF63C00503ADB /* EditUIITestCase.swift */; };
 		607B179B1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607B179A1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift */; };
-		60A6E6E01ED7E8100033FB7F /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A6E6DF1ED7E8100033FB7F /* AddItemViewController.swift */; };
 		60AB4EE91E9582A70002AAE8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AB4EE81E9582A70002AAE8 /* AppDelegate.swift */; };
 		60AB4EEB1E9582A70002AAE8 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */; };
 		60AB4EF01E9582A70002AAE8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60AB4EEF1E9582A70002AAE8 /* Assets.xcassets */; };
@@ -56,6 +60,11 @@
 		0D0300631FC8BB7000FBF8FB /* AppContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContext.swift; sourceTree = "<group>"; };
 		0D0300651FC8F15C00FBF8FB /* Flow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flow.swift; sourceTree = "<group>"; };
 		0DAF67BF1FC90DA100390890 /* CopyContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyContext.swift; sourceTree = "<group>"; };
+		0DAF67C11FC93D2A00390890 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		0DAF67C31FC9508000390890 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		0DAF67C61FC950D200390890 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		0DAF67C81FC950EE00390890 /* AppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewController.swift; sourceTree = "<group>"; };
+		0DAF67CA1FC9512C00390890 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		0DDA0AF51FC6783800839814 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		600AB6C11EC7FD590051B426 /* AppLaunchUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchUITestCase.swift; sourceTree = "<group>"; };
 		600AB6C31EC7FF390051B426 /* XCTestCaseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtensions.swift; sourceTree = "<group>"; };
@@ -74,7 +83,6 @@
 		607B17981ED23F3F00CCAFD1 /* CopyPasteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPasteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607B179A1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewModelTestCase.swift; sourceTree = "<group>"; };
 		607B179C1ED23F3F00CCAFD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		60A6E6DF1ED7E8100033FB7F /* AddItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		60AB4EE51E9582A70002AAE8 /* CopyPaste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopyPaste.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60AB4EE81E9582A70002AAE8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +118,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0DAF67C51FC9509E00390890 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0DAF67C11FC93D2A00390890 /* Settings.bundle */,
+				60AB4EEF1E9582A70002AAE8 /* Assets.xcassets */,
+				60AB4EF11E9582A70002AAE8 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		604B485B1EC7EC4A00DBA243 /* CopyPasteUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -156,13 +174,14 @@
 		60AB4EE71E9582A70002AAE8 /* CopyPaste */ = {
 			isa = PBXGroup;
 			children = (
-				60AB4EF41E9582A70002AAE8 /* Info.plist */,
-				60A6E6DF1ED7E8100033FB7F /* AddItemViewController.swift */,
 				0D0300631FC8BB7000FBF8FB /* AppContext.swift */,
 				60AB4EE81E9582A70002AAE8 /* AppDelegate.swift */,
 				0D0300611FC8BB2D00FBF8FB /* AppFlow.swift */,
+				0DAF67C81FC950EE00390890 /* AppViewController.swift */,
+				0DAF67BF1FC90DA100390890 /* CopyContext.swift */,
 				601D8BC61ED2067500AC1407 /* CopyFlow.swift */,
 				0DDA0AF51FC6783800839814 /* DataStore.swift */,
+				0DAF67C31FC9508000390890 /* Defaults.swift */,
 				60E73F2B1EBE8E4100F559A1 /* EditViewController.swift */,
 				0D0300651FC8F15C00FBF8FB /* Flow.swift */,
 				60E73F2F1EBEA9D700F559A1 /* Item.swift */,
@@ -172,9 +191,10 @@
 				60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */,
 				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
 				6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */,
-				60AB4EEF1E9582A70002AAE8 /* Assets.xcassets */,
-				60AB4EF11E9582A70002AAE8 /* LaunchScreen.storyboard */,
-				0DAF67BF1FC90DA100390890 /* CopyContext.swift */,
+				0DAF67CA1FC9512C00390890 /* UIViewControllerExtensions.swift */,
+				0DAF67C61FC950D200390890 /* WelcomeViewController.swift */,
+				60AB4EF41E9582A70002AAE8 /* Info.plist */,
+				0DAF67C51FC9509E00390890 /* Supporting Files */,
 			);
 			path = CopyPaste;
 			sourceTree = "<group>";
@@ -308,6 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60AB4EF31E9582A70002AAE8 /* LaunchScreen.storyboard in Resources */,
+				0DAF67C21FC93D2A00390890 /* Settings.bundle in Resources */,
 				60AB4EF01E9582A70002AAE8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,16 +384,19 @@
 				0D0300641FC8BB7000FBF8FB /* AppContext.swift in Sources */,
 				601D8BC51ED177E100AC1407 /* TableViewModel.swift in Sources */,
 				6049C9621ED68B7B00DD688D /* PasteboardProtocol.swift in Sources */,
+				0DAF67C91FC950EE00390890 /* AppViewController.swift in Sources */,
 				0D0300661FC8F15C00FBF8FB /* Flow.swift in Sources */,
 				60360A591ED1695B00ED0739 /* TableView.swift in Sources */,
 				60E73F301EBEA9D700F559A1 /* Item.swift in Sources */,
+				0DAF67C71FC950D200390890 /* WelcomeViewController.swift in Sources */,
 				601D8BC71ED2067500AC1407 /* CopyFlow.swift in Sources */,
+				0DAF67CB1FC9512C00390890 /* UIViewControllerExtensions.swift in Sources */,
 				60AB4EEB1E9582A70002AAE8 /* TableViewController.swift in Sources */,
+				0DAF67C41FC9508000390890 /* Defaults.swift in Sources */,
 				60AB4EE91E9582A70002AAE8 /* AppDelegate.swift in Sources */,
 				0DAF67C01FC90DA100390890 /* CopyContext.swift in Sources */,
 				6049C9641ED68BA600DD688D /* UIPasteboardExtensions.swift in Sources */,
 				60E73F2C1EBE8E4100F559A1 /* EditViewController.swift in Sources */,
-				60A6E6E01ED7E8100033FB7F /* AddItemViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,7 +535,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -562,7 +586,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

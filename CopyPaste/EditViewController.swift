@@ -6,16 +6,37 @@ import UIKit
 
 class EditItemViewController: UIViewController {
 
+    enum Action {
+        case adding
+        case editing(Item, at: IndexPath)
+        var title: String {
+            switch self {
+            case .adding:
+                return "Add Item"
+            case .editing:
+                return "Edit Item"
+            }
+        }
+        var item: Item {
+            switch self {
+            case .adding:
+                return Item()
+            case .editing(let item, _):
+                return item
+            }
+        }
+    }
 
     private let textView = UITextView()
     private let item: Item
 
-    private var didTapCancelWhileEditing: ((Item, EditItemViewController) -> Void)?
+    private var didTapCancelWhileEditing: ((_ item: Item, _ viewController: EditItemViewController) -> Void)?
     private var didTapSaveWhileEditing: ((_ item: Item, _ viewController: EditItemViewController) -> Void)?
 
-    init(itemToEdit: Item = Item()) {
-        item = itemToEdit
+    init(action: Action) {
+        self.item = action.item
         super.init(nibName: nil, bundle: nil)
+        self.title = action.title
     }
 
     override func loadView() {
@@ -41,8 +62,6 @@ class EditItemViewController: UIViewController {
         let saveAction = #selector(didTap(saveBarButtonItem:))
         let saveButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: saveAction)
         navigationItem.rightBarButtonItem = saveButton
-
-        navigationItem.title = "Edit Item"
     }
 
     private func configureTextView() {

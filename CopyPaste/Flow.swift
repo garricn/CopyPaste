@@ -9,14 +9,6 @@
 import UIKit
 
 protocol Flow {
-    func start(with parentViewController: UIViewController)
+    func start(with parent: UIViewController)
     func applicationWillTerminate()
-}
-
-extension Flow {
-    func add(_ child: UIViewController, to parent: UIViewController) {
-        parent.addChildViewController(child)
-        parent.view.addSubview(child.view)
-        child.didMove(toParentViewController: parent)
-    }
 }
