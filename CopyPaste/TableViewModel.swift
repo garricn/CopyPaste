@@ -34,11 +34,6 @@ protocol TableViewModeling: class {
     func canEditRow(at indexPath: IndexPath) -> Bool
 }
 
-protocol TableViewModelConfigurable: class {
-    weak var delegate: TableViewModelingDelegate? { get set }
-    func configureWithAdded(item: Item)
-    func configureWithEdited(item: Item, at indexPath: IndexPath)
-}
 
 final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
 
@@ -165,29 +160,5 @@ final class TableViewModel: TableViewModeling, TableViewModelConfigurable {
 
     func canEditRow(at indexPath: IndexPath) -> Bool {
         return !(items.isEmpty && indexPath.row == 0)
-    }
-
-    // MARK: - TableViewModelConfigurable
-
-    func configureWithAdded(item: Item) {
-        items.append(item)
-
-        let indexPath = IndexPath(row: self.items.count - 1, section: 0)
-
-        if items.count == 1 {
-            reloadRows?([indexPath], .automatic)
-        } else {
-            insertRows?([indexPath], .automatic)
-        }
-    }
-
-    func configureWithEdited(item: Item, at indexPath: IndexPath) {
-        if items.isEmpty {
-            items.append(item)
-        } else {
-            items[indexPath.row] = item
-        }
-
-        reloadRows?([indexPath], .automatic)
     }
 }
