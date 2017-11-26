@@ -16,7 +16,7 @@ final class TableViewModel {
         return !items.isEmpty
     }
 
-    var cellIdentifier: String { return TableViewCell.identifier }
+    private let cellIdentifier: String = UITableViewCell.identifier
 
     var numberOfSections: Int { return 1 }
 
@@ -24,14 +24,14 @@ final class TableViewModel {
         return items.isEmpty ? 1 : items.count
     }
 
-    func configured(cell: UITableViewCell, forRowAt indexPath: IndexPath) -> TableViewCell {
-        guard let cell = cell as? TableViewCell else {
-            fatalError("Expects a TableViewCell")
-        }
-
+    func cell(forRowAt indexPath: IndexPath, in tableView: UITableView) -> UITableViewCell {
+        let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
+        let cell = dequeuedCell ?? UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
         let item = items.isEmpty ? Item(body: "Add Item", copyCount: nil) : items[indexPath.row]
-        cell.bodyText = item.body
-        cell.countText = item.copyCount?.description
+        cell.textLabel?.text = item.body
+        cell.textLabel?.numberOfLines = 0
+        cell.detailTextLabel?.text = item.copyCount?.description
+        cell.accessoryType = items.isEmpty ? .none : .detailDisclosureButton
         return cell
     }
 
