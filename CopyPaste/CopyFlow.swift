@@ -4,7 +4,7 @@
 
 import UIKit
 
-final class CopyFlow: Flow {
+final class CopyFlow {
 
     private let pasteboard: PasteboardProtocol = UIPasteboard.general
     private let context: CopyContext
@@ -14,32 +14,33 @@ final class CopyFlow: Flow {
     }
 
     func start(with parent: UIViewController) {
-        let tableViewController: TableViewController
+        let inputView: TableViewController
 
-        var items: [Item] = context.items.sorted(by: copyCountDescending) {
+        var items: [Item] = context.items {
             didSet {
                 context.set(items: items)
                 context.saveItems()
-                tableViewController.viewModel = TableViewModel(items: items)
+                inputView.viewModel = TableViewModel(items: items)
             }
         }
 
-        tableViewController = TableViewController(viewModel: TableViewModel(items: items), tableView: TableView())
-        let rootViewController = UINavigationController(rootViewController: tableViewController)
-        rootViewController.navigationBar.prefersLargeTitles = true
-        parent.add(rootViewController)
+        inputView = TableViewController(viewModel: TableViewModel(items: items), tableView: TableView())
+        let presenter = UINavigationController(rootViewController: inputView)
+        presenter.navigationBar.prefersLargeTitles = true
+        parent.add(presenter)
 
-        func presentEditItemViewController(for action: EditItemViewController.Action) {
-            let viewController = EditItemViewController(action: action)
-            let navigationController = UINavigationController(rootViewController: viewController)
-            navigationController.navigationBar.prefersLargeTitles = true
-            rootViewController.present(navigationController, animated: true, completion: nil)
-            viewController.onDidTapCancelWhileEditing { item, viewController in
-                viewController.dismiss(animated: true, completion: nil)
+        func presentEditItemViewController(for item: Item? = nil, at indexPath: IndexPath? = nil) {
+            let action = Action(item: item, indexPath: indexPath)
+            let inputView = EditItemViewController(action: action)
+            let containerView = UINavigationController(rootViewController: inputView)
+            containerView.navigationBar.prefersLargeTitles = true
+            presenter.present(containerView, animated: true, completion: nil)
+            inputView.onDidTapCancelWhileEditing { item, view in
+                view.dismiss(animated: true, completion: nil)
             }
-            viewController.onDidTapSaveWhileEditing { item, viewController in
-                viewController.dismiss(animated: true, completion: nil)
-                guard case .editing(_, let indexPath) = action, !item.body.isEmpty, !items.isEmpty else {
+            inputView.onDidTapSaveWhileEditing { item, view in
+                view.dismiss(animated: true, completion: nil)
+                guard case let .editing(_, indexPath) = action else {
                     items.append(item)
                     return
                 }
@@ -47,22 +48,22 @@ final class CopyFlow: Flow {
             }
         }
 
-        tableViewController.onDidTapAddBarButtonItem { _ in
-            presentEditItemViewController(for: .adding)
+        inputView.onDidTapAddBarButtonItem { _ in
+            presentEditItemViewController()
         }
 
-        tableViewController.onDidSelectRow { [weak self] indexPath, tableView in
+        inputView.onDidSelectRow { [weak self] indexPath, tableView in
             tableView.deselectRow(at: indexPath, animated: true)
 
             guard !items.isEmpty else {
-                presentEditItemViewController(for: .adding)
+                presentEditItemViewController()
                 return
             }
 
             // Increment copy count
             let row = indexPath.row
             let item = items[row]
-            let newItem = Item(body: item.body, copyCount: item.copyCount + 1)
+            let newItem = Item(body: item.body, copyCount: (item.copyCount ?? 0) + 1)
             items.remove(at: row)
             items.insert(newItem, at: row)
 
@@ -70,27 +71,16 @@ final class CopyFlow: Flow {
             self?.pasteboard.string = newItem.body
         }
 
-        tableViewController.onDidLongPress { indexPath, tableView in
-            guard !items.isEmpty else {
-                presentEditItemViewController(for: .adding)
-                return
-            }
-
-            let item = items[indexPath.row]
-            let editing: EditItemViewController.Action = .editing(item, at: indexPath)
-            presentEditItemViewController(for: editing)
+        inputView.onDidLongPress { indexPath, _ in
+            presentEditItemViewController(for: nil, at: indexPath)
         }
 
-        tableViewController.onDidCommitEditing { edit, indexPath, tableView in
-            guard edit == .delete, !items.isEmpty else {
+        inputView.onDidCommitEditing { edit, indexPath, _ in
+            guard edit == .delete else {
                 return
             }
 
             items.remove(at: indexPath.row)
         }
-    }
-
-    func applicationWillTerminate() {
-        context.saveItems()
     }
 }

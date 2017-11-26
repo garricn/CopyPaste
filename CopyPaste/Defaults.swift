@@ -20,7 +20,7 @@ final class Defaults {
         }
     }
 
-    private var shouldResetUserDefaults: Bool {
+    var shouldResetUserDefaults: Bool {
         get {
             return standard.bool(forKey: .shouldResetUserDefaults)
         }
