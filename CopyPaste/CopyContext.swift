@@ -9,20 +9,23 @@
 import Foundation
 
 final class CopyContext {
-    private let dataStore: DataStore
+
     private(set) var items: [Item]
-    init(dataStore: DataStore, shouldResetItems: Bool) {
+
+    private let dataStore: DataStore
+
+    init(dataStore: DataStore, shouldResetItems: Bool = false) {
         self.dataStore = dataStore
+
         if shouldResetItems {
             self.items = []
         } else {
             self.items = dataStore.decode([Item].self) ?? []
         }
     }
-    func set(items: [Item]) {
+
+    func save(_ items: [Item]) {
         self.items = items
-    }
-    func saveItems() {
         dataStore.encode(items)
     }
 }
