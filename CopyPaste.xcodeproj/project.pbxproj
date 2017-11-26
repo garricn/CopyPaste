@@ -23,7 +23,6 @@
 		60360A591ED1695B00ED0739 /* TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60360A581ED1695B00ED0739 /* TableView.swift */; };
 		6049C9621ED68B7B00DD688D /* PasteboardProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049C9611ED68B7B00DD688D /* PasteboardProtocol.swift */; };
 		6049C9641ED68BA600DD688D /* UIPasteboardExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */; };
-		604B48551EC78FBF00DBA243 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604B48541EC78FBF00DBA243 /* TableViewCell.swift */; };
 		604B48651EC7ED4200DBA243 /* AddUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604B48641EC7ED4200DBA243 /* AddUITestCase.swift */; };
 		60762C371ECFD48300503ADB /* DeleteUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60762C361ECFD48300503ADB /* DeleteUITestCase.swift */; };
 		60762C391ECFF63C00503ADB /* EditUIITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60762C381ECFF63C00503ADB /* EditUIITestCase.swift */; };
@@ -70,7 +69,6 @@
 		60360A581ED1695B00ED0739 /* TableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableView.swift; sourceTree = "<group>"; };
 		6049C9611ED68B7B00DD688D /* PasteboardProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasteboardProtocol.swift; sourceTree = "<group>"; };
 		6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIPasteboardExtensions.swift; sourceTree = "<group>"; };
-		604B48541EC78FBF00DBA243 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		604B485A1EC7EC4A00DBA243 /* CopyPasteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPasteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		604B485E1EC7EC4A00DBA243 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		604B48641EC7ED4200DBA243 /* AddUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddUITestCase.swift; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 				60E73F2F1EBEA9D700F559A1 /* Item.swift */,
 				6049C9611ED68B7B00DD688D /* PasteboardProtocol.swift */,
 				60360A581ED1695B00ED0739 /* TableView.swift */,
-				604B48541EC78FBF00DBA243 /* TableViewCell.swift */,
 				60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */,
 				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
 				6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */,
@@ -373,7 +370,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D0300621FC8BB2D00FBF8FB /* AppFlow.swift in Sources */,
-				604B48551EC78FBF00DBA243 /* TableViewCell.swift in Sources */,
 				0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */,
 				601D8BC51ED177E100AC1407 /* TableViewModel.swift in Sources */,
 				6049C9621ED68B7B00DD688D /* PasteboardProtocol.swift in Sources */,
