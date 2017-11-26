@@ -8,7 +8,7 @@ final class TableViewModel {
 
     private let items: [Item]
 
-    init(items: [Item] = []) {
+    init(items: [Item]) {
         self.items = items
     }
 
@@ -29,36 +29,17 @@ final class TableViewModel {
             fatalError("Expects a TableViewCell")
         }
 
-        let bodyText: String
-        let countText: String?
-        if items.isEmpty {
-            bodyText = "Add Item"
-            countText = nil
-        } else {
-            let item = items[indexPath.row]
-            bodyText = item.body
-            countText = String(item.copyCount)
-            cell.accessibilityHint = "Copies content of Item."
-        }
-
-        cell.bodyText = bodyText
-        cell.countText = countText
+        let item = items.isEmpty ? Item(body: "Add Item", copyCount: nil) : items[indexPath.row]
+        cell.bodyText = item.body
+        cell.countText = item.copyCount?.description
         return cell
     }
 
     func editingStyleForRow(at indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        let style: UITableViewCellEditingStyle
-
-        if items.isEmpty && indexPath.row == 0 {
-            style = .none
-        } else {
-            style = .delete
-        }
-
-        return style
+        return items.isEmpty ? .none : .delete
     }
 
     func canEditRow(at indexPath: IndexPath) -> Bool {
-        return !(items.isEmpty && indexPath.row == 0)
+        return !items.isEmpty
     }
 }

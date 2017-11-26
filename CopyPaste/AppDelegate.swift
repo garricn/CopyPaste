@@ -9,16 +9,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private var appFlow: AppFlow!
+    private lazy var appFlow: AppFlow = .init(window: self.window)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: LaunchOptions?) -> Bool {
-        let context = AppContext(application: application, launchOptions: launchOptions)
-        appFlow = AppFlow(context: context, window: window)
-        return appFlow.didFinishLaunching()
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        appFlow.applicationWillTerminate()
+        return appFlow.didFinishLaunching(application, launchOptions)
     }
 }
 

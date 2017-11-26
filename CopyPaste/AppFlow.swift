@@ -10,69 +10,83 @@ import UIKit
 
 final class AppFlow {
 
-    private let context: AppContext
+    private enum Kind {
+        case foreground
+    }
+
+    private enum Reason {
+        case normal
+        var kind: Kind { return .foreground }
+        init(launchOptions: LaunchOptions?) {
+            if launchOptions == nil {
+                self = .normal
+            } else {
+                fatalError()
+            }
+        }
+    }
+
+    private enum State {
+        case welcome
+        case session
+    }
+
+    private struct Launch {
+        let kind: Kind
+        let reason: Reason
+        let state: State
+
+        init(launchOptions: LaunchOptions?, defaults: Defaults) {
+            self.reason = Reason(launchOptions: launchOptions)
+            self.kind = reason.kind
+            self.state = defaults.shouldShowWelcomeScreen ? .welcome : .session
+        }
+    }
 
     private var window: UIWindow?
 
-    private lazy var subFlows: [Flow] = [copyFlow].flatMap { $0 }
-
-    private lazy var copyFlow: Flow? = {
-        let location = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-        let dataStore = DataStore(encoder: JSONEncoder(), decoder: JSONDecoder(), location: location)
-        let context = CopyContext(dataStore: dataStore, shouldResetItems: CommandLine.arguments.contains("reset"))
-        return CopyFlow(context: context)
-    }()
-
-    private var rootViewController: UIViewController {
-        return window!.rootViewController!
-    }
-
-    init(context: AppContext, window: UIWindow?) {
-        self.context = context
+    init(window: UIWindow?) {
         self.window = window
     }
 
-    func didFinishLaunching() -> Bool {
-        setupWindowIfNeeded()
+    func didFinishLaunching(_ application: UIApplication, _ launchOptions: LaunchOptions?) -> Bool {
+        let defaults: Defaults = .init()
+        let launch: Launch = .init(launchOptions: launchOptions, defaults: defaults)
 
-        switch context.state {
-        case .welcome:
-            return didStartWelcomeFlow()
-        case .session:
-            return didStartCopyFlow()
-        }
-    }
-
-    func applicationWillTerminate() {
-        subFlows.forEach { $0.applicationWillTerminate() }
-    }
-
-    private func didStartWelcomeFlow() -> Bool {
-        let welcomeViewController = WelcomeViewController()
-        rootViewController.present(welcomeViewController, animated: true, completion: nil)
-        welcomeViewController.onDidTapGetStarted { [weak self] in
-            self?.didStartCopyFlow()
-
-            welcomeViewController.dismiss(animated: true) {
-                self?.context.didViewWelcomeScreen()
-            }
-        }
-        return true
-    }
-
-    @discardableResult
-    private func didStartCopyFlow() -> Bool {
-        copyFlow?.start(with: rootViewController)
-        return true
-    }
-
-    private func setupWindowIfNeeded() {
-        guard window?.rootViewController == nil, context.isForegroundLaunch else {
-            return
-        }
-
-        window = UIWindow()
+        window = launch.kind == .foreground ? UIWindow() : nil
         window?.rootViewController = AppViewController()
         window?.makeKeyAndVisible()
+
+        let presenter: UIViewController? = window?.rootViewController
+
+        func startCopyFlow() {
+            let location = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+            let dataStore = DataStore(encoder: JSONEncoder(), decoder: JSONDecoder(), location: location)
+            let shouldResetItems = defaults.shouldResetUserDefaults
+            let context = CopyContext(dataStore: dataStore, shouldResetItems: shouldResetItems)
+            let flow = CopyFlow(context: context)
+            flow.start(with: presenter!)
+        }
+
+        func startWelcomeFlow() {
+            let view = WelcomeViewController()
+            presenter?.present(view, animated: true, completion: nil)
+            view.onDidTapGetStarted {
+                startCopyFlow()
+                
+                view.dismiss(animated: true) {
+                    defaults.shouldShowWelcomeScreen = false
+                }
+            }
+        }
+
+        switch launch.state {
+        case .session:
+            startCopyFlow()
+        case .welcome:
+            startWelcomeFlow()
+        }
+
+        return true
     }
 }

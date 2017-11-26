@@ -4,28 +4,31 @@
 
 import UIKit
 
-class EditItemViewController: UIViewController {
-
-    enum Action {
-        case adding
-        case editing(Item, at: IndexPath)
-        var title: String {
-            switch self {
-            case .adding:
-                return "Add Item"
-            case .editing:
-                return "Edit Item"
-            }
-        }
-        var item: Item {
-            switch self {
-            case .adding:
-                return Item()
-            case .editing(let item, _):
-                return item
-            }
+enum Action {
+    case adding
+    case editing(Item, IndexPath)
+    init(item: Item? = nil, indexPath: IndexPath? = nil) {
+        self = item == nil ? .adding : .editing(item!, indexPath!)
+    }
+    var title: String {
+        switch self {
+        case .adding:
+            return "Add Item"
+        case .editing:
+            return "Edit Item"
         }
     }
+    var item: Item {
+        switch self {
+        case .adding:
+            return Item()
+        case .editing(let item, _):
+            return item
+        }
+    }
+}
+
+class EditItemViewController: UIViewController {
 
     private let textView = UITextView()
     private let item: Item
