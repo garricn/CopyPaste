@@ -18,8 +18,7 @@ final class CopyFlow {
 
         var items: [Item] = context.items {
             didSet {
-                context.set(items: items)
-                context.saveItems()
+                context.save(items)
                 inputView.viewModel = TableViewModel(items: items)
             }
         }
@@ -76,11 +75,10 @@ final class CopyFlow {
         }
 
         inputView.onDidCommitEditing { edit, indexPath, _ in
-            guard edit == .delete else {
-                return
+            if case .delete = edit {
+                items.remove(at: indexPath.row)
             }
-
-            items.remove(at: indexPath.row)
         }
     }
+
 }
