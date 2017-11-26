@@ -16,7 +16,9 @@ final class DataStore {
     private let decoder: JSONDecoding
     private let location: URL
     
-    init(encoder: JSONEncoding, decoder: JSONDecoding, location: URL) {
+    init(encoder: JSONEncoding = JSONEncoder(),
+         decoder: JSONDecoding = JSONDecoder(),
+         location: URL = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!) {
         self.encoder = encoder
         self.decoder = decoder
         self.location = location
