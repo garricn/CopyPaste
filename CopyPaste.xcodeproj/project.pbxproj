@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D0300621FC8BB2D00FBF8FB /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300611FC8BB2D00FBF8FB /* AppFlow.swift */; };
+		0D66D7751FCB76CD0023F7A4 /* UITableViewCellExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66D7741FCB76CD0023F7A4 /* UITableViewCellExtensions.swift */; };
 		0DAF67C01FC90DA100390890 /* CopyContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67BF1FC90DA100390890 /* CopyContext.swift */; };
 		0DAF67C21FC93D2A00390890 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DAF67C11FC93D2A00390890 /* Settings.bundle */; };
 		0DAF67C41FC9508000390890 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67C31FC9508000390890 /* Defaults.swift */; };
@@ -53,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		0D0300611FC8BB2D00FBF8FB /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
+		0D66D7741FCB76CD0023F7A4 /* UITableViewCellExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtensions.swift; sourceTree = "<group>"; };
 		0DAF67BF1FC90DA100390890 /* CopyContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyContext.swift; sourceTree = "<group>"; };
 		0DAF67C11FC93D2A00390890 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		0DAF67C31FC9508000390890 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				6049C9611ED68B7B00DD688D /* PasteboardProtocol.swift */,
 				60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */,
 				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
+				0D66D7741FCB76CD0023F7A4 /* UITableViewCellExtensions.swift */,
 				6049C9631ED68BA600DD688D /* UIPasteboardExtensions.swift */,
 				0DAF67CA1FC9512C00390890 /* UIViewControllerExtensions.swift */,
 				0DAF67C61FC950D200390890 /* WelcomeViewController.swift */,
@@ -377,6 +380,7 @@
 				0DAF67CB1FC9512C00390890 /* UIViewControllerExtensions.swift in Sources */,
 				60AB4EEB1E9582A70002AAE8 /* TableViewController.swift in Sources */,
 				0DAF67C41FC9508000390890 /* Defaults.swift in Sources */,
+				0D66D7751FCB76CD0023F7A4 /* UITableViewCellExtensions.swift in Sources */,
 				60AB4EE91E9582A70002AAE8 /* AppDelegate.swift in Sources */,
 				0DAF67C01FC90DA100390890 /* CopyContext.swift in Sources */,
 				6049C9641ED68BA600DD688D /* UIPasteboardExtensions.swift in Sources */,
