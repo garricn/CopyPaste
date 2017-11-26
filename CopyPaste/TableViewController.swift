@@ -12,7 +12,7 @@ final class TableViewController: UIViewController {
         }
     }
 
-    private let tableView: TableView
+    private let tableView: UITableView = .init()
 
     private var didTap: ((UIBarButtonItem) -> Void)?
     private var didSelectRow: ((IndexPath, UITableView) -> Void)?
@@ -21,9 +21,8 @@ final class TableViewController: UIViewController {
 
     // MARK: - Life Cycle
 
-    init(viewModel: TableViewModel, tableView: TableView) {
+    init(viewModel: TableViewModel) {
         self.viewModel = viewModel
-        self.tableView = tableView
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -80,6 +79,8 @@ final class TableViewController: UIViewController {
         let gestureRecognizer = UILongPressGestureRecognizer()
         gestureRecognizer.addTarget(self, action: #selector(didLongPress))
         tableView.addGestureRecognizer(gestureRecognizer)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 44
         tableView.dataSource = self
         tableView.delegate = self
     }

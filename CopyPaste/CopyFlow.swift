@@ -24,7 +24,7 @@ final class CopyFlow {
             }
         }
 
-        inputView = TableViewController(viewModel: TableViewModel(items: items), tableView: TableView())
+        inputView = TableViewController(viewModel: TableViewModel(items: items))
         let presenter = UINavigationController(rootViewController: inputView)
         presenter.navigationBar.prefersLargeTitles = true
         parent.add(presenter)
