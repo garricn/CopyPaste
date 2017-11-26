@@ -16,8 +16,8 @@ final class TableViewController: UIViewController {
 
     private var didTap: ((UIBarButtonItem) -> Void)?
     private var didSelectRow: ((IndexPath, UITableView) -> Void)?
-    private var didLongPressRow: ((IndexPath, UITableView) -> Void)?
     private var didCommitEditing: ((UITableViewCellEditingStyle, IndexPath, UITableView) -> Void)?
+    private var didTapAccessoryButtonForRow: ((IndexPath, UITableView) -> Void)?
 
     // MARK: - Life Cycle
 
@@ -38,7 +38,6 @@ final class TableViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureNavigationItems()
         configureTableView()
         didSetViewModel()
@@ -56,13 +55,13 @@ final class TableViewController: UIViewController {
     func onDidSelectRow(perform action: @escaping ((IndexPath, UITableView) -> Void)) {
         didSelectRow = action
     }
-    
-    func onDidLongPress(perform action: @escaping ((IndexPath, UITableView) -> Void)) {
-        didLongPressRow = action
-    }
-    
+
     func onDidCommitEditing(perform action: @escaping ((UITableViewCellEditingStyle, IndexPath, UITableView) -> Void)) {
         didCommitEditing = action
+    }
+
+    func onDidTapAccessoryButtonForRow(perform action: @escaping ((IndexPath, UITableView) -> Void)) {
+        didTapAccessoryButtonForRow = action
     }
 
     private func configureNavigationItems() {
@@ -76,9 +75,6 @@ final class TableViewController: UIViewController {
     }
 
     private func configureTableView() {
-        let gestureRecognizer = UILongPressGestureRecognizer()
-        gestureRecognizer.addTarget(self, action: #selector(didLongPress))
-        tableView.addGestureRecognizer(gestureRecognizer)
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44
         tableView.dataSource = self
@@ -93,18 +89,6 @@ final class TableViewController: UIViewController {
 
     @objc private func didTap(addBarButtonItem: UIBarButtonItem) {
         self.didTap?(addBarButtonItem)
-    }
-
-    @objc private func didLongPress(sender: UILongPressGestureRecognizer) {
-        let point = sender.location(in: sender.view)
-        let tableView = sender.view as? UITableView
-        let indexPath = tableView?.indexPathForRow(at: point)
-
-        guard let table = tableView, let index = indexPath, sender.state == .began else {
-            return
-        }
-
-        didLongPressRow?(index, table)
     }
 }
 
@@ -121,9 +105,7 @@ extension TableViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier = viewModel.cellIdentifier
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        return viewModel.configured(cell: cell, forRowAt: indexPath)
+        return viewModel.cell(forRowAt: indexPath, in: tableView)
     }
 }
 
@@ -145,5 +127,9 @@ extension TableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return viewModel.canEditRow(at: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        didTapAccessoryButtonForRow?(indexPath, tableView)
     }
 }

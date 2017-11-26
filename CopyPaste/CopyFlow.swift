@@ -71,8 +71,8 @@ final class CopyFlow {
             self?.pasteboard.string = newItem.body
         }
 
-        inputView.onDidLongPress { indexPath, _ in
-            presentEditItemViewController(for: nil, at: indexPath)
+        inputView.onDidTapAccessoryButtonForRow { indexPath, _ in
+            presentEditItemViewController(for: items.isEmpty ? nil : items[indexPath.row], at: indexPath)
         }
 
         inputView.onDidCommitEditing { edit, indexPath, _ in
