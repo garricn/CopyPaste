@@ -49,7 +49,7 @@ final class AppFlow {
         self.window = window
     }
 
-    func didFinishLaunching(_ application: UIApplication, _ launchOptions: LaunchOptions?) -> Bool {
+    func didFinishLaunching(_: UIApplication, _ launchOptions: LaunchOptions?) -> Bool {
         let defaults: Defaults = .init()
         let launch: Launch = .init(launchOptions: launchOptions, defaults: defaults)
 
@@ -68,12 +68,12 @@ final class AppFlow {
             flow.start(with: presenter!)
         }
 
-        func startWelcomeFlow() {
+        func startWelcomeFlow(completion: (() -> Void)?) {
             let view = WelcomeViewController()
             presenter?.present(view, animated: true, completion: nil)
             view.onDidTapGetStarted {
-                startCopyFlow()
-                
+                completion?()
+
                 view.dismiss(animated: true) {
                     defaults.shouldShowWelcomeScreen = false
                 }
@@ -84,7 +84,7 @@ final class AppFlow {
         case .session:
             startCopyFlow()
         case .welcome:
-            startWelcomeFlow()
+            startWelcomeFlow(completion: startCopyFlow)
         }
 
         return true
