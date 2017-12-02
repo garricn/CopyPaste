@@ -14,7 +14,7 @@ final class CopyContext {
 
     private let dataStore: DataStore
 
-    init(dataStore: DataStore, shouldResetItems: Bool = false) {
+    init(dataStore: DataStore = DataStore(), shouldResetItems: Bool = CommandLine.arguments.contains("reset")) {
         self.dataStore = dataStore
 
         if shouldResetItems {
