@@ -9,7 +9,7 @@ final class CopyFlow {
     private let pasteboard: PasteboardProtocol = UIPasteboard.general
     private let context: CopyContext
 
-    init(context: CopyContext) {
+    init(context: CopyContext = CopyContext()) {
         self.context = context
     }
 
@@ -80,5 +80,4 @@ final class CopyFlow {
             }
         }
     }
-
 }

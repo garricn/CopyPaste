@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D0300621FC8BB2D00FBF8FB /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300611FC8BB2D00FBF8FB /* AppFlow.swift */; };
+		0D0300621FC8BB2D00FBF8FB /* ForegroundFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */; };
 		0D66D7751FCB76CD0023F7A4 /* UITableViewCellExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66D7741FCB76CD0023F7A4 /* UITableViewCellExtensions.swift */; };
 		0DAF67C01FC90DA100390890 /* CopyContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67BF1FC90DA100390890 /* CopyContext.swift */; };
 		0DAF67C21FC93D2A00390890 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DAF67C11FC93D2A00390890 /* Settings.bundle */; };
@@ -16,6 +16,7 @@
 		0DAF67C91FC950EE00390890 /* AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67C81FC950EE00390890 /* AppViewController.swift */; };
 		0DAF67CB1FC9512C00390890 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67CA1FC9512C00390890 /* UIViewControllerExtensions.swift */; };
 		0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA0AF51FC6783800839814 /* DataStore.swift */; };
+		0DE864351FD3676000CE7188 /* Launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864341FD3676000CE7188 /* Launch.swift */; };
 		600AB6C21EC7FD590051B426 /* AppLaunchUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C11EC7FD590051B426 /* AppLaunchUITestCase.swift */; };
 		600AB6C41EC7FF390051B426 /* XCTestCaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C31EC7FF390051B426 /* XCTestCaseExtensions.swift */; };
 		600AB6C61EC8028F0051B426 /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C51EC8028F0051B426 /* UITestCase.swift */; };
@@ -53,7 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0D0300611FC8BB2D00FBF8FB /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
+		0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundFlow.swift; sourceTree = "<group>"; };
 		0D66D7741FCB76CD0023F7A4 /* UITableViewCellExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtensions.swift; sourceTree = "<group>"; };
 		0DAF67BF1FC90DA100390890 /* CopyContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyContext.swift; sourceTree = "<group>"; };
 		0DAF67C11FC93D2A00390890 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -62,6 +63,7 @@
 		0DAF67C81FC950EE00390890 /* AppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewController.swift; sourceTree = "<group>"; };
 		0DAF67CA1FC9512C00390890 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		0DDA0AF51FC6783800839814 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		0DE864341FD3676000CE7188 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
 		600AB6C11EC7FD590051B426 /* AppLaunchUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchUITestCase.swift; sourceTree = "<group>"; };
 		600AB6C31EC7FF390051B426 /* XCTestCaseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtensions.swift; sourceTree = "<group>"; };
 		600AB6C51EC8028F0051B426 /* UITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestCase.swift; sourceTree = "<group>"; };
@@ -169,7 +171,8 @@
 			isa = PBXGroup;
 			children = (
 				60AB4EE81E9582A70002AAE8 /* AppDelegate.swift */,
-				0D0300611FC8BB2D00FBF8FB /* AppFlow.swift */,
+				0DE864341FD3676000CE7188 /* Launch.swift */,
+				0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */,
 				0DAF67C81FC950EE00390890 /* AppViewController.swift */,
 				0DAF67BF1FC90DA100390890 /* CopyContext.swift */,
 				601D8BC61ED2067500AC1407 /* CopyFlow.swift */,
@@ -369,7 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D0300621FC8BB2D00FBF8FB /* AppFlow.swift in Sources */,
+				0D0300621FC8BB2D00FBF8FB /* ForegroundFlow.swift in Sources */,
 				0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */,
 				601D8BC51ED177E100AC1407 /* TableViewModel.swift in Sources */,
 				6049C9621ED68B7B00DD688D /* PasteboardProtocol.swift in Sources */,
@@ -379,6 +382,7 @@
 				601D8BC71ED2067500AC1407 /* CopyFlow.swift in Sources */,
 				0DAF67CB1FC9512C00390890 /* UIViewControllerExtensions.swift in Sources */,
 				60AB4EEB1E9582A70002AAE8 /* TableViewController.swift in Sources */,
+				0DE864351FD3676000CE7188 /* Launch.swift in Sources */,
 				0DAF67C41FC9508000390890 /* Defaults.swift in Sources */,
 				0D66D7751FCB76CD0023F7A4 /* UITableViewCellExtensions.swift in Sources */,
 				60AB4EE91E9582A70002AAE8 /* AppDelegate.swift in Sources */,

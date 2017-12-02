@@ -9,11 +9,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private lazy var appFlow: AppFlow = .init(window: self.window)
+    private lazy var foregroundFlow: ForegroundFlow = .init()
+    private lazy var backgroundFlow: BackgroundFlow = .init()
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: LaunchOptions?) -> Bool {
-        return appFlow.didFinishLaunching(application, launchOptions)
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: Options?) -> Bool {
+        let launch = Launch(options: launchOptions)
+        switch launch.kind {
+        case .foreground:
+            window = UIWindow()
+            window?.rootViewController = foregroundFlow.rootViewController
+            window?.makeKeyAndVisible()
+            return foregroundFlow.didFinish(launch)
+        case .background:
+            return backgroundFlow.didFinish(launch)
+        }
     }
 }
 
-typealias LaunchOptions = [UIApplicationLaunchOptionsKey: Any]
+typealias Options = [UIApplicationLaunchOptionsKey: Any]
