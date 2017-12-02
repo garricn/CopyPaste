@@ -14,32 +14,37 @@ final class ForegroundFlow {
 
     private lazy var copyFlow: CopyFlow = .init()
 
-    func didFinish(_ launch: Launch) -> Bool {
-        let defaults = Defaults()
-        let presenter = rootViewController
+    private let defaults: Defaults = .init()
 
-        func startWelcomeFlow(completion: (() -> Void)?) {
+    func didFinish(_ launch: Launch) -> Bool {
+        func didStartWelcomeFlow(completion: (() -> Void)?) -> Bool {
             let view = WelcomeViewController()
-            presenter.present(view, animated: true, completion: nil)
+            rootViewController.present(view, animated: true, completion: nil)
             view.onDidTapGetStarted {
                 completion?()
 
                 view.dismiss(animated: true) {
-                    defaults.shouldShowWelcomeScreen = false
+                    self.defaults.shouldShowWelcomeScreen = false
                 }
             }
+            return true
         }
 
         switch launch.state {
         case .session:
-            copyFlow.start(with: rootViewController)
+            return copyFlow.didStart(with: rootViewController, reason: launch.reason)
         case .welcome:
-            startWelcomeFlow {
-                self.copyFlow.start(with: self.rootViewController)
+            return didStartWelcomeFlow {
+                self.copyFlow.didStart(with: self.rootViewController, reason: launch.reason)
             }
         }
+    }
 
-        return true
+    func performAction(for shortcutItem: ShortcutItem) {
+        switch shortcutItem {
+        case .newItem:
+            copyFlow.performAction(for: shortcutItem)
+        }
     }
 }
 

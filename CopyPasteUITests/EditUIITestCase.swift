@@ -11,10 +11,10 @@ class EditUITestCase: UITestCase {
         app.textViews["Body"].typeText("This is just a test.")
         navigationBars["Add Item"].buttons["Save"].tap()
 
-        app.cells["This is just a test."].press(forDuration: 1.0)
+        app.tables.buttons["More Info, This is just a test., 0"].tap()
         navigationBars["Edit Item"].buttons["Cancel"].tap()
 
-        assertApp(isDisplaying: app.cells["This is just a test."])
+        assertApp(isDisplaying: app.tables.staticTexts["This is just a test."])
     }
 
     func test_Edit_Canceled_With_Changes() {
@@ -22,11 +22,11 @@ class EditUITestCase: UITestCase {
         app.textViews["Body"].typeText("This is just a test.")
         navigationBars["Add Item"].buttons["Save"].tap()
 
-        app.cells["This is just a test."].press(forDuration: 1.0)
+        app.tables.buttons["More Info, This is just a test., 0"].tap()
         app.keys["delete"].press(forDuration: 1.0)
         navigationBars["Edit Item"].buttons["Cancel"].tap()
 
-        assertApp(isDisplaying: app.cells["This is just a test."])
+        assertApp(isDisplaying: app.tables.staticTexts["This is just a test."])
     }
 
     func test_Edit_Saved_With_No_Changes() {
@@ -34,10 +34,10 @@ class EditUITestCase: UITestCase {
         app.textViews["Body"].typeText("This is just a test.")
         navigationBars["Add Item"].buttons["Save"].tap()
 
-        app.cells["This is just a test."].press(forDuration: 1.0)
+        app.tables.buttons["More Info, This is just a test., 0"].tap()
         navigationBars["Edit Item"].buttons["Save"].tap()
 
-        assertApp(isDisplaying: app.cells["This is just a test."])
+        assertApp(isDisplaying: app.tables.staticTexts["This is just a test."])
     }
 
     func test_Edit_Saved_With_Changes() {
@@ -45,10 +45,10 @@ class EditUITestCase: UITestCase {
         app.textViews["Body"].typeText("This is just a test.")
         navigationBars["Add Item"].buttons["Save"].tap()
 
-        app.cells["This is just a test."].press(forDuration: 1.0)
+        app.tables.buttons["More Info, This is just a test., 0"].tap()
         app.textViews["Body"].typeText(" Ok?")
         navigationBars["Edit Item"].buttons["Save"].tap()
 
-        assertApp(isDisplaying: app.cells["This is just a test. Ok?"])
+        assertApp(isDisplaying: app.tables.staticTexts["This is just a test. Ok?"])
     }
 }

@@ -17,7 +17,7 @@ final class DeleteUITestCase: UITestCase {
         bodyTextView.typeText(bodyText)
         saveBarButton.tap()
 
-        app.cells[bodyText].swipeLeft()
+        app.cells.staticTexts[bodyText].swipeLeft()
         app.tables.buttons["Delete"].tap()
 
         assertApp(isDisplaying: addItemCell)
@@ -31,9 +31,8 @@ final class DeleteUITestCase: UITestCase {
         editBarButton.tap()
         
         let tables = app.tables
-        tables.buttons["Delete \(bodyText)"].tap()
+        tables.cells.buttons["Delete \(bodyText), 0"].tap()
         tables.buttons["Delete"].tap()
-
         assertApp(isDisplaying: addItemCell)
     }
 
@@ -46,10 +45,10 @@ final class DeleteUITestCase: UITestCase {
         bodyTextView.typeText("Item 1")
         saveBarButton.tap()
 
-        app.cells["Item 0"].swipeLeft()
+        app.cells.staticTexts["Item 0"].swipeLeft()
         app.tables.buttons["Delete"].tap()
 
-        app.cells["Item 1"].swipeLeft()
+        app.cells.staticTexts["Item 1"].swipeLeft()
         app.tables.buttons["Delete"].tap()
 
         assertApp(isDisplaying: addItemCell)

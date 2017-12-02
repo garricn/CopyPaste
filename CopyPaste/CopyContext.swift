@@ -19,6 +19,7 @@ final class CopyContext {
 
         if shouldResetItems {
             self.items = []
+            save(items)
         } else {
             self.items = dataStore.decode([Item].self) ?? []
         }

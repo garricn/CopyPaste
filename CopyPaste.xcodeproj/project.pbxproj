@@ -17,6 +17,7 @@
 		0DAF67CB1FC9512C00390890 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67CA1FC9512C00390890 /* UIViewControllerExtensions.swift */; };
 		0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA0AF51FC6783800839814 /* DataStore.swift */; };
 		0DE864351FD3676000CE7188 /* Launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864341FD3676000CE7188 /* Launch.swift */; };
+		0DE864371FD3764C00CE7188 /* ShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864361FD3764C00CE7188 /* ShortcutItem.swift */; };
 		600AB6C21EC7FD590051B426 /* AppLaunchUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C11EC7FD590051B426 /* AppLaunchUITestCase.swift */; };
 		600AB6C41EC7FF390051B426 /* XCTestCaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C31EC7FF390051B426 /* XCTestCaseExtensions.swift */; };
 		600AB6C61EC8028F0051B426 /* UITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600AB6C51EC8028F0051B426 /* UITestCase.swift */; };
@@ -64,6 +65,7 @@
 		0DAF67CA1FC9512C00390890 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		0DDA0AF51FC6783800839814 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		0DE864341FD3676000CE7188 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
+		0DE864361FD3764C00CE7188 /* ShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
 		600AB6C11EC7FD590051B426 /* AppLaunchUITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchUITestCase.swift; sourceTree = "<group>"; };
 		600AB6C31EC7FF390051B426 /* XCTestCaseExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestCaseExtensions.swift; sourceTree = "<group>"; };
 		600AB6C51EC8028F0051B426 /* UITestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestCase.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				60AB4EE81E9582A70002AAE8 /* AppDelegate.swift */,
+				0DE864361FD3764C00CE7188 /* ShortcutItem.swift */,
 				0DE864341FD3676000CE7188 /* Launch.swift */,
 				0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */,
 				0DAF67C81FC950EE00390890 /* AppViewController.swift */,
@@ -382,6 +385,7 @@
 				601D8BC71ED2067500AC1407 /* CopyFlow.swift in Sources */,
 				0DAF67CB1FC9512C00390890 /* UIViewControllerExtensions.swift in Sources */,
 				60AB4EEB1E9582A70002AAE8 /* TableViewController.swift in Sources */,
+				0DE864371FD3764C00CE7188 /* ShortcutItem.swift in Sources */,
 				0DE864351FD3676000CE7188 /* Launch.swift in Sources */,
 				0DAF67C41FC9508000390890 /* Defaults.swift in Sources */,
 				0D66D7751FCB76CD0023F7A4 /* UITableViewCellExtensions.swift in Sources */,

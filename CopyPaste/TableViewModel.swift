@@ -8,7 +8,7 @@ final class TableViewModel {
 
     private let items: [Item]
 
-    init(items: [Item]) {
+    init(items: [Item] = []) {
         self.items = items
     }
 

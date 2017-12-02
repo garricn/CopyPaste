@@ -16,7 +16,7 @@ class UITestCase: XCTestCase {
 
     var editBarButton: XCUIElement { return allItemsNavigationBar.buttons["Edit"] }
 
-    var addItemCell: XCUIElement { return app.tables.cells["Add Item"] }
+    var addItemCell: XCUIElement { return app.tables.cells.staticTexts["Add Item"] }
 
     override func setUp() {
         super.setUp()
