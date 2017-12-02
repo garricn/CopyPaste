@@ -20,7 +20,6 @@ final class TableViewModelTestCase: XCTestCase {
 
     private func performInitialAssertions() {
         XCTAssertTrue(subject.numberOfSections == 1)
-        XCTAssertTrue(subject.cellIdentifier == TableViewCell.identifier)
     }
 
     // MARK: - TEST: isEditButtonEnabled: Bool
@@ -61,8 +60,8 @@ final class TableViewModelTestCase: XCTestCase {
         subject = TableViewModel(items: [])
 
         let indexPath = IndexPath(row: 0, section: 0)
-        let cell = subject.configured(cell: TableViewCell(), forRowAt: indexPath)
-        XCTAssertTrue(cell.bodyText == "Add Item")
+        let cell = subject.cell(forRowAt: indexPath, in: UITableView())
+        XCTAssertTrue(cell.textLabel?.text == "Add Item")
     }
 
     func test_Configured_Cell_Given_One_Item() {
@@ -70,8 +69,8 @@ final class TableViewModelTestCase: XCTestCase {
         subject = TableViewModel(items: [item])
 
         let indexPath = IndexPath(row: 0, section: 0)
-        let cell = subject.configured(cell: TableViewCell(), forRowAt: indexPath)
-        XCTAssertTrue(cell.bodyText == "Item 0")
+        let cell = subject.cell(forRowAt: indexPath, in: UITableView())
+        XCTAssertTrue(cell.textLabel?.text == "Item 0")
     }
 
     func test_Configured_Cell_Given_Two_Items() {
@@ -80,12 +79,12 @@ final class TableViewModelTestCase: XCTestCase {
         subject = TableViewModel(items: [item0, item1])
 
         let indexPath0 = IndexPath(row: 0, section: 0)
-        let cell0 = subject.configured(cell: TableViewCell(), forRowAt: indexPath0)
-        XCTAssertTrue(cell0.bodyText == "Item 0")
+        let cell0 = subject.cell(forRowAt: indexPath0, in: UITableView())
+        XCTAssertTrue(cell0.textLabel?.text == "Item 0")
 
         let indexPath1 = IndexPath(row: 1, section: 0)
-        let cell1 = subject.configured(cell: TableViewCell(), forRowAt: indexPath1)
-        XCTAssertTrue(cell1.bodyText == "Item 1")
+        let cell1 = subject.cell(forRowAt: indexPath1, in: UITableView())
+        XCTAssertTrue(cell1.textLabel?.text == "Item 1")
     }
 
     // MARK: - TEST: editingStyleForRow(at indexPath: IndexPath) -> UITableViewCellEditingStyle

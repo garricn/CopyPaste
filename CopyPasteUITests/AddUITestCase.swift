@@ -6,7 +6,7 @@ import XCTest
 
 final class AddUITestCase: UITestCase {
 
-    private var item0: XCUIElement { return app.tables.cells["This is just a test."] }
+    private var item0: XCUIElement { return app.tables.cells.staticTexts["This is just a test."] }
 
     // MARK: - Helper Functions
 

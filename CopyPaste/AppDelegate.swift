@@ -24,6 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return backgroundFlow.didFinish(launch)
         }
     }
+
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        foregroundFlow.performAction(for: ShortcutItem(item: shortcutItem, completion: completionHandler))
+    }
 }
 
 typealias Options = [UIApplicationLaunchOptionsKey: Any]

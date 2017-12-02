@@ -8,7 +8,7 @@ final class AppLaunchUITestCase: UITestCase {
 
     func test_Normal_App_Launch() {
         assertAppIsDisplayingAllItems()
-        let element = XCUIApplication().tables.cells["Add Item"]
+        let element = app.tables.cells.staticTexts["Add Item"]
         assertApp(isDisplaying: element)
     }
 }

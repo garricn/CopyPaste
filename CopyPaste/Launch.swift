@@ -6,7 +6,7 @@
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Launch {
 
@@ -20,13 +20,22 @@ struct Launch {
 
     enum Reason {
         case normal
-        var kind: Kind { return .foreground }
+        case shortcut(ShortcutItem)
+
+        var kind: Kind {
+            return .foreground
+        }
+
         init(launchOptions: Options?) {
-            if launchOptions == nil {
+            guard let options = launchOptions else {
                 self = .normal
-            } else {
-                fatalError()
+                return
             }
+
+            guard let item = options[.shortcutItem] as? UIApplicationShortcutItem else {
+                fatalError("Application does not support options: \(options)")
+            }
+            self = .shortcut(ShortcutItem(item: item))
         }
     }
 
