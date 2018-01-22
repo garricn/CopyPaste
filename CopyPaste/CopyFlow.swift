@@ -36,12 +36,16 @@ final class CopyFlow {
     func didStart(with parent: UIViewController, reason: Launch.Reason = .normal) -> Bool {
         parent.add(rootViewController)
 
-        inputView.onDidTapAddBarButtonItem { _ in
-            self.presentEditItemViewController()
+        inputView.onDidTapAddBarButtonItem { [weak self] _ in
+            self?.presentEditItemViewController()
         }
 
-        inputView.onDidSelectRow { indexPath, tableView in
+        inputView.onDidSelectRow { [weak self] indexPath, tableView in
             tableView.deselectRow(at: indexPath, animated: true)
+
+            guard let `self` = self else {
+                return
+            }
 
             guard !self.items.isEmpty else {
                 self.presentEditItemViewController()
@@ -59,13 +63,13 @@ final class CopyFlow {
             self.pasteboard.string = newItem.body
         }
 
-        inputView.onDidTapAccessoryButtonForRow { indexPath, _ in
-            self.presentEditItemViewController(for: self.items.isEmpty ? nil : self.items[indexPath.row], at: indexPath)
+        inputView.onDidTapAccessoryButtonForRow { [weak self] indexPath, _ in
+            self?.presentEditItemViewController(for: self?.items.element(at: indexPath.row), at: indexPath)
         }
 
-        inputView.onDidCommitEditing { edit, indexPath, _ in
+        inputView.onDidCommitEditing { [weak self] edit, indexPath, _ in
             if case .delete = edit {
-                self.items.remove(at: indexPath.row)
+                self?.items.remove(at: indexPath.row)
             }
         }
 
@@ -95,18 +99,30 @@ final class CopyFlow {
         containerView.navigationBar.prefersLargeTitles = true
         rootViewController.present(containerView, animated: true, completion: nil)
 
-        inputView.onDidTapCancelWhileEditing { item, view in
-            view.dismiss(animated: true, completion: nil)
+        inputView.onDidTapCancelWhileEditing { [weak self] item, view in
+            self?.rootViewController.dismiss(animated: true, completion: nil)
         }
 
-        inputView.onDidTapSaveWhileEditing { item, view in
-            view.dismiss(animated: true, completion: nil)
-            guard case let .editing(_, indexPath) = action else {
-                self.items.append(item)
-                return
+        inputView.onDidTapSaveWhileEditing { [weak self] item, view in
+            self?.rootViewController.dismiss(animated: true, completion: nil)
+
+            switch action {
+            case let .editing(_, indexPath):
+                self?.items[indexPath.row] = item
+            case .adding:
+                self?.items.append(item)
             }
-            self.items[indexPath.row] = item
         }
         completion?(true)
+    }
+}
+
+extension Array {
+    func element(at index: Int) -> Element? {
+        if isEmpty || index > count {
+            return nil
+        } else {
+            return self[index]
+        }
     }
 }

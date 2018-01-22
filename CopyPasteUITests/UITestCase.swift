@@ -6,31 +6,20 @@ import XCTest
 
 class UITestCase: XCTestCase {
 
-    var app: XCUIApplication { return XCUIApplication() }
-
-    var navigationBars: XCUIElementQuery { return app.navigationBars }
-
-    var allItemsNavigationBar: XCUIElement { return app.navigationBars["All Items"] }
-
-    var addItemBarButton: XCUIElement { return allItemsNavigationBar.buttons["Add Item"] }
-
-    var editBarButton: XCUIElement { return allItemsNavigationBar.buttons["Edit"] }
-
-    var addItemCell: XCUIElement { return app.tables.cells.staticTexts["Add Item"] }
-
     override func setUp() {
         super.setUp()
-
         continueAfterFailure = false
-
-        let app = XCUIApplication()
-        app.launchArguments.append("reset")
-        app.launch()
+        XCUIApplication().launchArguments.append("isUITesting")
     }
 
     func assertAppIsDisplayingAllItems() {
         let app = XCUIApplication()
         let element = app.navigationBars["All Items"]
+        assertApp(isDisplaying: element)
+    }
+
+    func assertAppIsDisplayingAddItemCell() {
+        let element = XCUIApplication().cells.staticTexts["Add Item"]
         assertApp(isDisplaying: element)
     }
 }

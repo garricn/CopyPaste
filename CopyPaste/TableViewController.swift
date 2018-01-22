@@ -21,7 +21,7 @@ final class TableViewController: UIViewController {
 
     // MARK: - Life Cycle
 
-    init(viewModel: TableViewModel) {
+    init(viewModel: TableViewModel = TableViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,6 +41,23 @@ final class TableViewController: UIViewController {
         configureNavigationItems()
         configureTableView()
         didSetViewModel()
+    }
+
+    private lazy var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.dimsBackgroundDuringPresentation = false
+        controller.hidesNavigationBarDuringPresentation = false
+        controller.obscuresBackgroundDuringPresentation = false
+        controller.searchBar.delegate = self
+        return controller
+    }()
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if navigationItem.searchController == nil {
+            navigationItem.searchController = searchController
+        }
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -71,7 +88,6 @@ final class TableViewController: UIViewController {
         navigationItem.rightBarButtonItem = editButtonItem
         navigationItem.leftBarButtonItem?.accessibilityLabel = "Add Item"
         navigationItem.title = "All Items"
-        
     }
 
     private func configureTableView() {
@@ -131,5 +147,10 @@ extension TableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         didTapAccessoryButtonForRow?(indexPath, tableView)
+    }
+}
+
+extension TableViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     }
 }

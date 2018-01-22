@@ -32,17 +32,16 @@ final class Defaults {
 
     private let standard: UserDefaults = .standard
 
-    init() {
-        resetUserDefaultsIfNeeded()
-    }
+    init(shouldResetUserDefaults: Bool = CommandLine.arguments.contains("resetDefaults"),
+         shouldShowWelcomeScreen: Bool = CommandLine.arguments.contains("shouldShowWelcomeScreen")) {
 
-    private func resetUserDefaultsIfNeeded() {
-        guard standard.bool(forKey: .shouldResetUserDefaults) else {
+        guard shouldResetUserDefaults || standard.bool(forKey: .shouldResetUserDefaults) else {
+            self.shouldShowWelcomeScreen = shouldShowWelcomeScreen
             return
         }
 
-        shouldResetUserDefaults = false
-        shouldShowWelcomeScreen = true
+        self.shouldResetUserDefaults = false
+        self.shouldShowWelcomeScreen = true
     }
 }
 

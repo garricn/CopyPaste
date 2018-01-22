@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0D0300621FC8BB2D00FBF8FB /* ForegroundFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */; };
+		0D1289851FE70D1200BC8E51 /* ShortcutItemTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1289841FE70D1200BC8E51 /* ShortcutItemTestCase.swift */; };
+		0D1289871FE7103E00BC8E51 /* LaunchTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1289861FE7103E00BC8E51 /* LaunchTestCase.swift */; };
 		0D66D7751FCB76CD0023F7A4 /* UITableViewCellExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66D7741FCB76CD0023F7A4 /* UITableViewCellExtensions.swift */; };
 		0DAF67C01FC90DA100390890 /* CopyContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67BF1FC90DA100390890 /* CopyContext.swift */; };
 		0DAF67C21FC93D2A00390890 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DAF67C11FC93D2A00390890 /* Settings.bundle */; };
@@ -56,6 +58,8 @@
 
 /* Begin PBXFileReference section */
 		0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundFlow.swift; sourceTree = "<group>"; };
+		0D1289841FE70D1200BC8E51 /* ShortcutItemTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItemTestCase.swift; sourceTree = "<group>"; };
+		0D1289861FE7103E00BC8E51 /* LaunchTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchTestCase.swift; sourceTree = "<group>"; };
 		0D66D7741FCB76CD0023F7A4 /* UITableViewCellExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtensions.swift; sourceTree = "<group>"; };
 		0DAF67BF1FC90DA100390890 /* CopyContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyContext.swift; sourceTree = "<group>"; };
 		0DAF67C11FC93D2A00390890 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -145,6 +149,8 @@
 			children = (
 				607B179A1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift */,
 				607B179C1ED23F3F00CCAFD1 /* Info.plist */,
+				0D1289841FE70D1200BC8E51 /* ShortcutItemTestCase.swift */,
+				0D1289861FE7103E00BC8E51 /* LaunchTestCase.swift */,
 			);
 			path = CopyPasteTests;
 			sourceTree = "<group>";
@@ -367,6 +373,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D1289871FE7103E00BC8E51 /* LaunchTestCase.swift in Sources */,
+				0D1289851FE70D1200BC8E51 /* ShortcutItemTestCase.swift in Sources */,
 				607B179B1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
