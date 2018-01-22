@@ -13,7 +13,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private lazy var backgroundFlow: BackgroundFlow = .init()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: Options?) -> Bool {
-        let launch = Launch(options: launchOptions)
+
+        var arguments = CommandLine.arguments
+        _ = arguments.removeFirst()
+        let isUITesting = arguments.contains("isUITesting")
+        let launch = isUITesting ? Launch(arguments: arguments) : Launch(options: launchOptions)
+
         switch launch.kind {
         case .foreground:
             window = UIWindow()
@@ -26,7 +31,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        foregroundFlow.performAction(for: ShortcutItem(item: shortcutItem, completion: completionHandler))
+        guard let item = ShortcutItem(item: shortcutItem, completion: completionHandler) else {
+            return
+        }
+
+        foregroundFlow.performAction(for: item)
     }
 }
 
