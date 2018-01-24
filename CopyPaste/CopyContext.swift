@@ -1,8 +1,4 @@
 //
-//  CopyContext.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 11/24/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
@@ -14,7 +10,8 @@ final class CopyContext {
 
     private let dataStore: DataStore
 
-    init(dataStore: DataStore = DataStore(), shouldResetItems: Bool = CommandLine.arguments.contains("resetData")) {
+    init(dataStore: DataStore = DataStore(),
+         shouldResetItems: Bool = CommandLine.arguments.contains(Globals.LaunchArguments.resetData)) {
         self.dataStore = dataStore
 
         if shouldResetItems {

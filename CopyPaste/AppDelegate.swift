@@ -9,15 +9,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private lazy var foregroundFlow: ForegroundFlow = .init()
-    private lazy var backgroundFlow: BackgroundFlow = .init()
+    lazy var environmentFlow: EnvironmentFlow = .init()
+    lazy var foregroundFlow: ForegroundFlow = .init()
+    lazy var backgroundFlow: BackgroundFlow = .init()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: Options?) -> Bool {
 
-        var arguments = CommandLine.arguments
-        _ = arguments.removeFirst()
-        let isUITesting = arguments.contains("isUITesting")
-        let launch = isUITesting ? Launch(arguments: arguments) : Launch(options: launchOptions)
+        let launch = environmentFlow.didFinishLaunch(CommandLine.self, launchOptions)
 
         switch launch.kind {
         case .foreground:
@@ -31,12 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        guard let item = ShortcutItem(item: shortcutItem, completion: completionHandler) else {
-            return
-        }
-
+        let item = ShortcutItem(item: shortcutItem, completion: completionHandler)!
         foregroundFlow.performAction(for: item)
     }
 }
 
-typealias Options = [UIApplicationLaunchOptionsKey: Any]
+public typealias Options = [UIApplicationLaunchOptionsKey: Any]

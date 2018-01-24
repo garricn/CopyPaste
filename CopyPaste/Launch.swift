@@ -1,95 +1,135 @@
 //
-//  Launch.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 12/2/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
 import UIKit
 
-struct Launch {
-
-    enum Kind {
-        case foreground
-        case background
-    }
-
-    enum Reason {
-        case normal
-        case shortcut(ShortcutItem)
-
-        var kind: Kind {
-            return .foreground
-        }
-
-        var isNormal: Bool {
-            if case .normal = self {
-                return true
-            } else {
-                return false
-            }
-        }
-
-        var isShortcut: Bool {
-            if case .shortcut = self {
-                return true
-            } else {
-                return false
-            }
-        }
-
-        init(launchOptions: Options?) {
-            guard let options = launchOptions else {
-                self = .normal
-                return
-            }
-
-            guard let shortcut = options[.shortcutItem] as? UIApplicationShortcutItem,
-                let item = ShortcutItem(item: shortcut) else {
-                    fatalError()
-            }
-
-            self = .shortcut(item)
-        }
-
-        init(arguments: [String]) {
-            guard !arguments.isEmpty else {
-                self = .normal
-                return
-            }
-
-            let itemType = "com.swiftcoders.copypaste.newitem"
-            let shortcutItem = UIApplicationShortcutItem(type: itemType, localizedTitle: "")
-
-            guard arguments.contains(itemType), let item = ShortcutItem(item: shortcutItem) else {
-                fatalError()
-            }
-
-            self = .shortcut(item)
-        }
-    }
-
-    enum State {
-        case welcome
-        case session
-    }
-
+public struct Launch {
     let reason: Reason
     let state: State
 
-    var kind: Kind { return reason.kind }
+    var kind: Kind {
+        return reason.kind
+    }
+}
 
-    init(options: Options?, defaults: Defaults = Defaults()) {
+// MARK: - Custom Initializers
+
+public extension Launch {
+
+    public init(options: Options?, defaults: Defaults = Defaults()) {
         self.init(reason: Reason(launchOptions: options), defaults: defaults)
     }
 
-    init(arguments: [String], defaults: Defaults = Defaults()) {
+    public init(arguments: [Launch.Argument], defaults: Defaults = Defaults()) {
+        let statement = "Unexpected number of LaunchArguments."
+        let question = "Did you forget to add a new case to the static var `all`?"
+        let message = "\(statement) \(question)"
+
+        guard arguments.count <= Launch.Argument.all.count else {
+            fatalError(message)
+        }
+
         self.init(reason: Reason(arguments: arguments), defaults: defaults)
     }
 
     private init(reason: Reason, defaults: Defaults) {
         self.reason = reason
         self.state = defaults.shouldShowWelcomeScreen ? .welcome : .session
+    }
+}
+
+
+// MARK: - Nested Types
+
+public extension Launch {
+
+    public enum Argument: String {
+        case isUITesting = "isUITesting"
+        case resetUserDefaults = "resetUserDefaults"
+        case resetData = "resetData"
+        case newItemShortcutItem = "newItemShortcutItem"
+
+        static var all: [Argument] {
+            return [
+                .isUITesting,
+                .resetUserDefaults,
+                .resetData,
+                .newItemShortcutItem
+            ]
+        }
+    }
+}
+public extension Launch {
+    public enum Kind {
+        case foreground
+        case background
+    }
+}
+
+public extension Launch {
+    public enum Reason {
+        case normal
+        case shortcut(ShortcutItem)
+    }
+}
+
+public extension Launch.Reason {
+    public init(launchOptions: Options?) {
+        guard let options = launchOptions else {
+            self = .normal
+            return
+        }
+
+        self = .shortcut(ShortcutItem(options: options)!)
+    }
+
+    public init(arguments: [Launch.Argument]) {
+        guard !arguments.isEmpty,
+            let index = arguments.index(of: .newItemShortcutItem),
+            let item = ShortcutItem(argument: arguments[index]) else {
+                self = .normal
+                return
+        }
+
+        self = .shortcut(item)
+    }
+}
+
+public extension Launch.Reason {
+
+    public var kind: Launch.Kind {
+        switch self {
+        case .normal:
+            return .foreground
+        case let .shortcut(item):
+            switch item {
+            case .newItem:
+                return .foreground
+            }
+        }
+    }
+
+    public var isNormal: Bool {
+        if case .normal = self {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    public var isShortcut: Bool {
+        if case .shortcut = self {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
+public extension Launch {
+    public enum State {
+        case welcome
+        case session
     }
 }
