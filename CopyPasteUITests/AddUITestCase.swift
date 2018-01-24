@@ -4,34 +4,23 @@
 
 import XCTest
 
-final class AddUITestCase: UITestCase {
+final class AddUITestCase: SessionBaseUITestCase {
 
     private var item0: XCUIElement {
-        return XCUIApplication().tables.cells.staticTexts["This is just a test."]
+        return app.tables.cells.staticTexts["This is just a test."]
     }
 
     override func setUp() {
         super.setUp()
-        let app = XCUIApplication()
-        app.launchArguments.append("resetData")
         app.launch()
     }
 
     override func tearDown() {
+        UITestHelper.debugPerform(resetAction: .data, application: app)
         super.tearDown()
-        let app = XCUIApplication()
-
-        if let index = app.launchArguments.index(of: "resetData") {
-            app.launchArguments.remove(at: index)
-        }
-
-        if let index = app.launchArguments.index(of: "resetDefaults") {
-            app.launchArguments.remove(at: index)
-        }
     }
 
     func test_AddItemBarButton_Canceled() {
-        let app = XCUIApplication()
         let navigationBars = app.navigationBars
         navigationBars["All Items"].buttons["Add Item"].tap()
         navigationBars["Add Item"].buttons["Cancel"].tap()
@@ -40,7 +29,7 @@ final class AddUITestCase: UITestCase {
     }
 
     func test_AddItemBarButton_Canceled_Item() {
-        let app = XCUIApplication()
+        
         let navigationBars = app.navigationBars
         navigationBars["All Items"].buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
@@ -50,7 +39,7 @@ final class AddUITestCase: UITestCase {
     }
 
     func test_AddItemBarButton_Saved_Item() {
-        let app = XCUIApplication()
+        
         let navigationBars = app.navigationBars
         navigationBars["All Items"].buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
@@ -63,7 +52,7 @@ final class AddUITestCase: UITestCase {
     }
 
     func test_AddItemCell_Canceled() {
-        let app = XCUIApplication()
+        
         app.cells.staticTexts["Add Item"].tap()
         app.navigationBars["Add Item"].buttons["Cancel"].tap()
         assertAppIsDisplayingAllItems()
@@ -71,7 +60,7 @@ final class AddUITestCase: UITestCase {
     }
 
     func test_AddItemCell_Canceled_Item() {
-        let app = XCUIApplication()
+        
         app.cells.staticTexts["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars["Add Item"].buttons["Cancel"].tap()
@@ -80,7 +69,7 @@ final class AddUITestCase: UITestCase {
     }
 
     func test_AddItemCell_Saved_Item() {
-        let app = XCUIApplication()
+        
         app.cells.staticTexts["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars.buttons["Save"].tap()

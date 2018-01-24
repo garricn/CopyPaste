@@ -1,8 +1,4 @@
 //
-//  ShortcutItemTestCase.swift
-//  CopyPasteTests
-//
-//  Created by Garric G. Nahapetian on 12/17/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
@@ -12,18 +8,33 @@ import XCTest
 
 class ShortcutItemTestCase: XCTestCase {
 
-    func test_Unsupported_ShortcutItem() {
-        let item = UIApplicationShortcutItem(type: "unsupported", localizedTitle: "")
-        let subject = ShortcutItem(item: item)
-        XCTAssertNil(subject)
+    func test_AllCases() {
+        for item in ShortcutItem.all {
+            switch item {
+            case .newItem:
+                break
+            }
+        }
     }
 
-    func test_NewItem_ShortcutItem() {
-        let item = UIApplicationShortcutItem(type: "com.swiftcoders.copypaste.newitem", localizedTitle: "")
-        let subject = ShortcutItem(item: item)!
-        guard case .newItem = subject else {
-            XCTFail()
-            return
+    func test_Unsupported_ShortcutItem() {
+        XCTAssertNil(ShortcutItem(item: UIApplicationShortcutItem(type: "unsupported", localizedTitle: "")))
+    }
+
+    func test_ShortcutItem_Is_NewItem_Given_NewItem() {
+        let type = Globals.ShortcutItemTypes.newItem
+        let item = UIApplicationShortcutItem(type: type, localizedTitle: "")
+        let shorcut = ShortcutItem(item: item)!
+        XCTAssertTrue(shorcut.isNewItem)
+    }
+}
+
+extension ShortcutItem {
+    var isNewItem: Bool {
+        if case .newItem = self {
+            return true
+        } else {
+            return false
         }
     }
 }

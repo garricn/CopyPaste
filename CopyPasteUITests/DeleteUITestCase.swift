@@ -4,17 +4,28 @@
 
 import XCTest
 
-final class DeleteUITestCase: UITestCase {
+class SessionBaseUITestCase: UITestCase {
 
     override func setUp() {
         super.setUp()
-        let app = XCUIApplication()
-        app.launchArguments.append("resetData")
+        app.launchEnvironment[Globals.EnvironmentVariables.showWelcome] = "false"
+    }
+}
+
+final class DeleteUITestCase: SessionBaseUITestCase {
+
+    override func setUp() {
+        super.setUp()
         app.launch()
     }
 
+    override func tearDown() {
+        UITestHelper.debugPerform(resetAction: .data, application: XCUIApplication())
+        super.tearDown()
+    }
+
     func test_Swipe_To_Delete() {
-        let app = XCUIApplication()
+        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars["Add Item"].buttons["Save"].tap()
@@ -24,7 +35,7 @@ final class DeleteUITestCase: UITestCase {
     }
 
     func test_Edit_Button_Delete() {
-        let app = XCUIApplication()
+        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars["Add Item"].buttons["Save"].tap()
@@ -38,7 +49,7 @@ final class DeleteUITestCase: UITestCase {
     }
 
     func test_Delete_Multple_Items() {
-        let app = XCUIApplication()
+        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("Item 0")
         app.navigationBars["Add Item"].buttons["Save"].tap()

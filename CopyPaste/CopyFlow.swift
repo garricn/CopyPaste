@@ -4,7 +4,9 @@
 
 import UIKit
 
-final class CopyFlow {
+// TODO: - Rename to SessionFlow
+
+public final class CopyFlow: Flow {
 
     private(set) lazy var rootViewController: UINavigationController = {
         let viewController = TableViewController(viewModel: TableViewModel(items: items))
@@ -14,7 +16,7 @@ final class CopyFlow {
     }()
 
     private let pasteboard: PasteboardProtocol = UIPasteboard.general
-    private let context: CopyContext
+    private let context: CopyContext<Item>
 
     private var items: [Item] = [] {
         didSet {
@@ -27,7 +29,7 @@ final class CopyFlow {
         return rootViewController.topViewController as! TableViewController
     }
 
-    init(context: CopyContext = CopyContext()) {
+    init(context: CopyContext<Item> = .init()) {
         self.context = context
         items = context.items
     }
@@ -35,6 +37,14 @@ final class CopyFlow {
     @discardableResult
     func didStart(with parent: UIViewController, reason: Launch.Reason = .normal) -> Bool {
         parent.add(rootViewController)
+
+        #if DEBUG
+        inputView.onDebugDidTap { [weak self] in
+            if let `self` = self {
+                self.rootViewController.present(self.makeDebugAlertController(), animated: true, completion: nil)
+            }
+        }
+        #endif
 
         inputView.onDidTapAddBarButtonItem { [weak self] _ in
             self?.presentEditItemViewController()
@@ -114,6 +124,33 @@ final class CopyFlow {
             }
         }
         completion?(true)
+    }
+
+    private func makeDebugAlertController() -> UIAlertController {
+        let alert = UIAlertController(title: "DEBUG", message: nil, preferredStyle: .actionSheet)
+
+        let dataTitle = "Reset User Data"
+        let dataHandler: (UIAlertAction) -> Void  = { _ in CopyContext<Item>().reset() }
+        let dataAction = UIAlertAction(title: dataTitle, style: .destructive, handler: dataHandler)
+        dataAction.accessibilityLabel = "debug.resetdata"
+        alert.addAction(dataAction)
+
+        let defaultsTitle = "Reset User Defaults"
+        let defaultsHandler: (UIAlertAction) -> Void  = { _ in DefaultsContext().reset() }
+        let defaultsAction = UIAlertAction(title: defaultsTitle, style: .destructive, handler: defaultsHandler)
+        defaultsAction.accessibilityLabel = "debug.resetuserdefaults"
+        alert.addAction(defaultsAction)
+
+        let bothTitle = "Reset Both"
+        let bothHandler: (UIAlertAction) -> Void  = { _ in CopyContext<Item>().reset(); DefaultsContext().reset() }
+        let bothAction = UIAlertAction(title: bothTitle, style: .destructive, handler: bothHandler)
+        bothAction.accessibilityLabel = "debug.resetboth"
+        alert.addAction(bothAction)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+
+        return alert
     }
 }
 

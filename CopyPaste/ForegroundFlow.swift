@@ -1,53 +1,57 @@
 //
-//  AppFlow.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 11/24/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
 import UIKit
 
-final class ForegroundFlow {
+public protocol ForegroundDependencyProvider {
+    var makeRootViewController: () -> AppViewController { get }
+    var makeDefaultsContext: () -> DefaultsContext { get }
+    var makeCopyFlow: () -> CopyFlow { get }
+}
 
-    let rootViewController: AppViewController = .init()
+public final class ForegroundFlow: Flow {
 
-    private lazy var copyFlow: CopyFlow = .init()
+    private(set) lazy var rootViewController: AppViewController = self.provider.makeRootViewController()
+    private(set) lazy var foregroundContext: DefaultsContext = self.provider.makeDefaultsContext()
+    private(set) lazy var copyFlow: CopyFlow = self.provider.makeCopyFlow()
+    private(set) var children: [FlowType.FlowKey: Flow] = [:]
 
-    private let defaults: Defaults = .init()
+    let provider: ForegroundDependencyProvider
 
-    func didFinish(_ launch: Launch) -> Bool {
+    init(provider: ForegroundDependencyProvider) {
+        self.provider = provider
+    }
+
+    func didStart(for reason: Launch.Reason) -> Bool {
         func didStartWelcomeFlow(completion: (() -> Void)?) -> Bool {
             let view = WelcomeViewController()
             rootViewController.present(view, animated: true, completion: nil)
             view.onDidTapGetStarted {
                 completion?()
 
-                view.dismiss(animated: true) {
-                    self.defaults.shouldShowWelcomeScreen = false
+                view.dismiss(animated: true) { [weak self] in
+                    let defaults = Defaults(showWelcome: false)
+                    self?.foregroundContext.save(defaults)
                 }
             }
             return true
         }
-
-        switch launch.state {
-        case .session:
-            return copyFlow.didStart(with: rootViewController, reason: launch.reason)
-        case .welcome:
+        switch foregroundContext.defaults.showWelcome {
+        case false:
+            children = FlowType.children(for: [.copy(copyFlow)])
+            return copyFlow.didStart(with: rootViewController, reason: reason)
+        case true:
             return didStartWelcomeFlow {
-                self.copyFlow.didStart(with: self.rootViewController, reason: launch.reason)
+                self.copyFlow.didStart(with: self.rootViewController, reason: reason)
             }
         }
     }
 
-    func performAction(for shortcutItem: ShortcutItem) {
+    public func performAction(for shortcutItem: ShortcutItem) {
         switch shortcutItem {
         case .newItem:
             copyFlow.performAction(for: shortcutItem)
         }
     }
-}
-
-final class BackgroundFlow {
-    func didFinish(_ launch: Launch) -> Bool { return false }
 }

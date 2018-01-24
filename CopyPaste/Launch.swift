@@ -1,68 +1,68 @@
 //
-//  Launch.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 12/2/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
 import UIKit
 
-struct Launch {
+public struct Launch {
+    let options: [UIApplicationLaunchOptionsKey: Any]?
+    let reason: Reason
 
-    enum Kind {
-        case foreground
-        case background
+    var kind: Kind {
+        return reason.kind
     }
 
-    enum Reason {
+    public init(options: [UIApplicationLaunchOptionsKey: Any]?) {
+        var launchOptions: [UIApplicationLaunchOptionsKey: Any]? = options
+
+        #if DEBUG
+            if let type = ProcessInfo.processInfo.environment[Globals.EnvironmentVariables.shortcutItemKey] {
+                let item = UIApplicationShortcutItem.init(type: type, localizedTitle: "")
+                let key = UIApplicationLaunchOptionsKey(Globals.EnvironmentVariables.shortcutItemKey)
+                launchOptions = [key: item]
+            }
+        #endif
+
+        self.options = launchOptions
+        self.reason = Reason(options: launchOptions)
+    }
+
+    public enum Reason {
         case normal
         case shortcut(ShortcutItem)
 
-        var kind: Kind {
-            return .foreground
-        }
-
-        var isNormal: Bool {
-            if case .normal = self {
-                return true
-            } else {
-                return false
+        public var kind: Launch.Kind {
+            switch self {
+            case .normal:
+                return .foreground
+            case let .shortcut(item):
+                switch item {
+                case .newItem:
+                    return .foreground
+                }
             }
         }
 
-        var isShortcut: Bool {
-            if case .shortcut = self {
-                return true
-            } else {
-                return false
-            }
-        }
-
-        init(launchOptions: Options?) {
-            guard let options = launchOptions else {
+        fileprivate init(options: [UIApplicationLaunchOptionsKey: Any]?) {
+            guard let options = options else {
                 self = .normal
                 return
             }
 
-            guard let shortcut = options[.shortcutItem] as? UIApplicationShortcutItem,
-                let item = ShortcutItem(item: shortcut) else {
-                    fatalError()
-            }
-
-            self = .shortcut(item)
-        }
-
-        init(arguments: [String]) {
-            guard !arguments.isEmpty else {
+            guard !options.isEmpty else {
                 self = .normal
                 return
             }
 
-            let itemType = "com.swiftcoders.copypaste.newitem"
-            let shortcutItem = UIApplicationShortcutItem(type: itemType, localizedTitle: "")
+            guard options.count == 1 else {
+                fatalError()
+            }
 
-            guard arguments.contains(itemType), let item = ShortcutItem(item: shortcutItem) else {
+            guard let applicationShortcutItem = options[.shortcutItem] as? UIApplicationShortcutItem else {
+                fatalError()
+            }
+
+            guard let item = ShortcutItem(item: applicationShortcutItem) else {
                 fatalError()
             }
 
@@ -70,26 +70,8 @@ struct Launch {
         }
     }
 
-    enum State {
-        case welcome
-        case session
-    }
-
-    let reason: Reason
-    let state: State
-
-    var kind: Kind { return reason.kind }
-
-    init(options: Options?, defaults: Defaults = Defaults()) {
-        self.init(reason: Reason(launchOptions: options), defaults: defaults)
-    }
-
-    init(arguments: [String], defaults: Defaults = Defaults()) {
-        self.init(reason: Reason(arguments: arguments), defaults: defaults)
-    }
-
-    private init(reason: Reason, defaults: Defaults) {
-        self.reason = reason
-        self.state = defaults.shouldShowWelcomeScreen ? .welcome : .session
+    public enum Kind {
+        case foreground
+        case background
     }
 }
