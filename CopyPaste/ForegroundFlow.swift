@@ -1,8 +1,4 @@
 //
-//  AppFlow.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 11/24/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
@@ -46,8 +42,4 @@ final class ForegroundFlow {
             copyFlow.performAction(for: shortcutItem)
         }
     }
-}
-
-final class BackgroundFlow {
-    func didFinish(_ launch: Launch) -> Bool { return false }
 }

@@ -25,7 +25,7 @@ final class AppLaunchUITestCase: UITestCase {
     func test_NewItem_ShortcutItem_Launch() {
         let app = XCUIApplication()
         app.launchArguments.append("isUITesting")
-        app.launchArguments.append("com.swiftcoders.copypaste.newitem")
+        app.launchArguments.append("newItemShortcutItem")
         app.launch()
 
         let element = app.navigationBars["Add Item"]

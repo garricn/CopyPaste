@@ -1,8 +1,4 @@
 //
-//  LaunchTestCase.swift
-//  CopyPasteTests
-//
-//  Created by Garric G. Nahapetian on 12/17/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
@@ -21,7 +17,7 @@ final class LaunchTestCase: XCTestCase {
     }
 
     func test_LaunchReason_isShortcutItem_Given_ShortcutItem() {
-        let type = "com.swiftcoders.copypaste.newitem"
+        let type = Globals.ShortcutItemTypes.newItem
         let shortcutItem = UIApplicationShortcutItem(type: type, localizedTitle: "")
         let options: Options = [.shortcutItem: shortcutItem]
         let reason = Launch.Reason(launchOptions: options)

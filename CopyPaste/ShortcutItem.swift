@@ -1,3 +1,4 @@
+
 //
 //  ShortcutItem.swift
 //  CopyPaste
@@ -10,9 +11,29 @@ import UIKit
 
 public enum ShortcutItem {
     case newItem(completion: ((Bool) -> Void)?)
-    init?(item: UIApplicationShortcutItem, completion: ((Bool) -> Void)? = nil) {
+}
+
+public extension ShortcutItem {
+
+    public init?(options: Options) {
+        guard let item = options[.shortcutItem] as? UIApplicationShortcutItem else {
+            return nil
+        }
+        self.init(item: item)
+    }
+
+    public init?(argument: Launch.Argument) {
+        switch argument {
+        case .newItemShortcutItem:
+            self = .newItem(completion: nil)
+        default:
+            return nil
+        }
+    }
+
+    public init?(item: UIApplicationShortcutItem, completion: ((Bool) -> Void)? = nil) {
         switch item.type {
-        case "com.swiftcoders.copypaste.newitem":
+        case Globals.ShortcutItemTypes.newItem:
             self = .newItem(completion: completion)
         default:
             return nil

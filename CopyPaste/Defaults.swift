@@ -1,16 +1,12 @@
 //
-//  Defaults.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 11/24/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
 import Foundation
 
-final class Defaults {
+public final class Defaults {
 
-    var shouldShowWelcomeScreen: Bool {
+    public var shouldShowWelcomeScreen: Bool {
         get {
             return standard.bool(forKey: .shouldShowWelcomeScreen)
         }
@@ -20,7 +16,7 @@ final class Defaults {
         }
     }
 
-    var shouldResetUserDefaults: Bool {
+    public var shouldResetUserDefaults: Bool {
         get {
             return standard.bool(forKey: .shouldResetUserDefaults)
         }
@@ -32,11 +28,11 @@ final class Defaults {
 
     private let standard: UserDefaults = .standard
 
-    init(shouldResetUserDefaults: Bool = CommandLine.arguments.contains("resetDefaults"),
-         shouldShowWelcomeScreen: Bool = CommandLine.arguments.contains("shouldShowWelcomeScreen")) {
+    public init(resetUserDefaults: Bool = CommandLine.arguments.contains(Globals.LaunchArguments.resetUserDefaults),
+                showWelcomeScreen: Bool = false) {
 
-        guard shouldResetUserDefaults || standard.bool(forKey: .shouldResetUserDefaults) else {
-            self.shouldShowWelcomeScreen = shouldShowWelcomeScreen
+        guard resetUserDefaults || standard.bool(forKey: .shouldResetUserDefaults) else {
+            self.shouldShowWelcomeScreen = showWelcomeScreen
             return
         }
 
@@ -46,6 +42,6 @@ final class Defaults {
 }
 
 private extension String {
-    static let shouldResetUserDefaults = "shouldResetUserDefaults"
-    static let shouldShowWelcomeScreen = "shouldShowWelcomeScreen"
+    static let shouldResetUserDefaults = Globals.LaunchArguments.resetUserDefaults
+    static let shouldShowWelcomeScreen = "showWelcomeScreen"
 }
