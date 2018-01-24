@@ -14,6 +14,7 @@ final class TableViewController: UIViewController {
 
     private let tableView: UITableView = .init()
 
+    private var debugDidTap: (() -> Void)?
     private var didTap: ((UIBarButtonItem) -> Void)?
     private var didSelectRow: ((IndexPath, UITableView) -> Void)?
     private var didCommitEditing: ((UITableViewCellEditingStyle, IndexPath, UITableView) -> Void)?
@@ -65,6 +66,10 @@ final class TableViewController: UIViewController {
         tableView.setEditing(editing, animated: animated)
     }
 
+    func onDebugDidTap(perform action: @escaping (() -> Void)) {
+        debugDidTap = action
+    }
+
     func onDidTapAddBarButtonItem(perform action: @escaping ((UIBarButtonItem) -> Void)) {
         didTap = action
     }
@@ -82,12 +87,28 @@ final class TableViewController: UIViewController {
     }
 
     private func configureNavigationItems() {
+        navigationItem.title = "All Items"
+        navigationItem.rightBarButtonItem = editButtonItem
+
+        var items: [UIBarButtonItem] = []
         let addAction = #selector(didTap(addBarButtonItem:))
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: addAction)
-        navigationItem.leftBarButtonItem = addButton
-        navigationItem.rightBarButtonItem = editButtonItem
-        navigationItem.leftBarButtonItem?.accessibilityLabel = "Add Item"
-        navigationItem.title = "All Items"
+        addButton.accessibilityLabel = "Add Item"
+        items.append(addButton)
+
+        #if DEBUG
+            let debugAction = #selector(didTap(debugBarButtonItem:))
+            let debugButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: debugAction)
+            debugButton.accessibilityLabel = "debug"
+            items.append(debugButton)
+        #endif
+
+        navigationItem.leftBarButtonItems = items
+    }
+
+    @objc
+    private func didTap(debugBarButtonItem: UIBarButtonItem) {
+        debugDidTap?()
     }
 
     private func configureTableView() {

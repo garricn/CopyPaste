@@ -48,7 +48,5 @@
 			<string>com.swiftcoders.copypaste.newitem</string>
 		</dict>
 	</array>
-	<key>shouldShowWelcomeScreen</key>
-	<true/>
 </dict>
 </plist>

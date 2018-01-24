@@ -1,8 +1,4 @@
 //
-//  DataStore.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 11/22/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
@@ -40,6 +36,16 @@ final class DataStore {
         } catch {
             return nil
         }
+    }
+
+    func decode<D: Decodable>(type: D.Type, from data: Data) -> D? {
+        do {
+            let decodable = try decoder.decode(type, from: data)
+            return decodable
+        } catch {
+            return nil
+        }
+
     }
 }
 

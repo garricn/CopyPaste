@@ -1,32 +1,53 @@
 //
-//  CopyContext.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 11/24/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
 import Foundation
 
-final class CopyContext {
+// TODO: - Rename to Session context or DataContext<Item>
 
-    private(set) var items: [Item]
+public final class CopyContext<D: Codable> {
+
+    private(set) var items: [D]
 
     private let dataStore: DataStore
 
-    init(dataStore: DataStore = DataStore(), shouldResetItems: Bool = CommandLine.arguments.contains("resetData")) {
+    init(dataStore: DataStore = DataStore()) {
         self.dataStore = dataStore
 
-        if shouldResetItems {
-            self.items = []
+        items = dataStore.decode([D].self) ?? []
+
+        defer {
             save(items)
-        } else {
-            self.items = dataStore.decode([Item].self) ?? []
         }
+
+        #if DEBUG // Start: Get Decoded Data from .utf8 encoding String
+
+            // get string for key
+            guard let foo = ProcessInfo.processInfo.environment[Globals.EnvironmentVariables.resetData] else {
+                return
+            }
+
+            // convert string to data
+            guard let data = foo.data(using: .utf8) else {
+                return
+            }
+
+            // convert to data to items
+            guard let items = dataStore.decode(type: [D].self, from: data) else {
+                return
+            }
+
+            self.items = items
+        #endif // End
     }
 
-    func save(_ items: [Item]) {
+    func save(_ items: [D]) {
         self.items = items
         dataStore.encode(items)
+    }
+
+    func reset() {
+        save([])
     }
 }

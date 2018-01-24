@@ -2,33 +2,45 @@
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
+@testable import CopyPaste
+
 import XCTest
 
 final class AppLaunchUITestCase: UITestCase {
 
-    func test_First_App_Launch() {
-        let app = XCUIApplication()
-        app.launchArguments.append("resetData")
-        app.launchArguments.append("resetDefaults")
+    func test_Fresh_Install_Launch() {
+        
+        app.launchEnvironment = [Globals.EnvironmentVariables.resetDefaults: "true"]
         app.launch()
         app.buttons["Get Started"].tap()
-        assertAppIsDisplayingAllItems()
-        assertAppIsDisplayingAddItemCell()
-    }
 
-    func test_Normal_App_Launch() {
-        XCUIApplication().launch()
         assertAppIsDisplayingAllItems()
         assertAppIsDisplayingAddItemCell()
+        app.terminate()
+        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.resetDefaults)
+        app.launch()
+        assertAppIsDisplayingAllItems()
+        assertAppIsDisplayingAddItemCell()
+
+        UITestHelper.debugPerform(resetAction: .userDefaults, application: app)
     }
 
     func test_NewItem_ShortcutItem_Launch() {
-        let app = XCUIApplication()
-        app.launchArguments.append("isUITesting")
-        app.launchArguments.append("com.swiftcoders.copypaste.newitem")
+        
+        app.launchEnvironment = [UIApplicationLaunchOptionsKey.shortcutItem.rawValue: Globals.ShortcutItemTypes.newItem,
+                                 Globals.EnvironmentVariables.showWelcome: "false"]
         app.launch()
-
         let element = app.navigationBars["Add Item"]
         assertApp(isDisplaying: element)
+
+        app.launchEnvironment.removeValue(forKey: UIApplicationLaunchOptionsKey.shortcutItem.rawValue)
+    }
+}
+
+final class HappyPathUITestCase: UITestCase {
+
+    func test_HappyPath() {
+        app.launchEnvironment[Globals.EnvironmentVariables.resetDefaults] = "true"
+        app.launchEnvironment[Globals.EnvironmentVariables.resetData] = "true"
     }
 }
