@@ -8,13 +8,7 @@
 
 import UIKit
 
-public protocol Flow {
-//    var identifier: String { get }
-//    var parent: Flow { get }
-//    var children: [FlowType] { get }
-}
-
-extension UIApplication: Flow {}
+public protocol Flow {}
 
 public enum FlowType {
     case app(AppFlow)
@@ -69,22 +63,14 @@ public final class AppContext: ForegroundDependencyProvider {
 
 public final class AppFlow: Flow {
 
-    public let identifier: String
-    public let parent: Flow
+    let context: AppContext = AppContext()
 
     public private(set) var children: [FlowType.FlowKey: Flow] = [:]
     public private(set) var window: UIWindow?
 
-    let context: AppContext
 
-    public init(window: UIWindow?,
-                context: AppContext = AppContext(),
-                parent: Flow = UIApplication.shared,
-                identifer: String = String(describing: AppFlow.self)) {
-        self.context = context
+    public init(window: UIWindow? = nil) {
         self.window = window
-        self.parent = parent
-        self.identifier = identifer
     }
 
     private(set) lazy var foregroundFlow: ForegroundFlow = context.makeForegroundFlow(context)
@@ -112,20 +98,8 @@ public final class AppFlow: Flow {
 
         switch launch.kind {
         case .foreground:
-            _ = didStartChildFlows(for: launch)
-            return foregroundFlow.didStart(for: launch.reason)
-        case .background:
-            fatalError()
-        }
-    }
-
-    public func didStartChildFlows(for launch: Launch) -> [FlowType.FlowKey: Flow] {
-        assert(launch.kind == self.launch.kind)
-
-        switch launch.kind {
-        case .foreground:
             children = FlowType.children(for: [.foreground(foregroundFlow)])
-            return children
+            return foregroundFlow.didStart(for: launch.reason)
         case .background:
             fatalError()
         }

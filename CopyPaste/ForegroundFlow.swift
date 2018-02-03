@@ -17,34 +17,20 @@ public final class ForegroundFlow: Flow {
     private(set) lazy var copyFlow: CopyFlow = self.provider.makeCopyFlow()
     private(set) var children: [FlowType.FlowKey: Flow] = [:]
 
-    let provider: ForegroundDependencyProvider
+    public let provider: ForegroundDependencyProvider
 
-    init(provider: ForegroundDependencyProvider) {
+    public init(provider: ForegroundDependencyProvider) {
         self.provider = provider
     }
 
-    func didStart(for reason: Launch.Reason) -> Bool {
-        func didStartWelcomeFlow(completion: (() -> Void)?) -> Bool {
-            let view = WelcomeViewController()
-            rootViewController.present(view, animated: true, completion: nil)
-            view.onDidTapGetStarted {
-                completion?()
-
-                view.dismiss(animated: true) { [weak self] in
-                    let defaults = Defaults(showWelcome: false)
-                    self?.foregroundContext.save(defaults)
-                }
-            }
-            return true
-        }
+    public func didStart(for reason: Launch.Reason) -> Bool {
         switch foregroundContext.defaults.showWelcome {
         case false:
-            children = FlowType.children(for: [.copy(copyFlow)])
-            return copyFlow.didStart(with: rootViewController, reason: reason)
+            return didStartCopyFlow(reason: reason)
         case true:
-            return didStartWelcomeFlow {
-                self.copyFlow.didStart(with: self.rootViewController, reason: reason)
-            }
+            return didStartWelcomeFlow(didFinish: { [weak self] in
+                self?.didStartCopyFlow(reason: reason)
+            })
         }
     }
 
@@ -53,5 +39,29 @@ public final class ForegroundFlow: Flow {
         case .newItem:
             copyFlow.performAction(for: shortcutItem)
         }
+    }
+    
+    @discardableResult
+    private func didStartCopyFlow(reason: Launch.Reason) -> Bool {
+        children = FlowType.children(for: [.copy(copyFlow)])
+        return copyFlow.didStart(with: rootViewController, reason: reason)
+    }
+    
+    private func didStartWelcomeFlow(didFinish: (() -> Void)?) -> Bool {
+        let view = WelcomeViewController()
+
+        children = FlowType.children(for: [FlowType.welcome(view)])
+        
+        rootViewController.present(view, animated: true, completion: nil)
+        view.onDidTapGetStarted {
+            didFinish?()
+            
+            view.dismiss(animated: true) { [weak self] in
+                let defaults = Defaults(showWelcome: false)
+                self?.foregroundContext.save(defaults)
+                self?.children.removeValue(forKey: .welcome)
+            }
+        }
+        return true
     }
 }
