@@ -20,7 +20,6 @@
 		0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA0AF51FC6783800839814 /* DataStore.swift */; };
 		0DE864351FD3676000CE7188 /* Launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864341FD3676000CE7188 /* Launch.swift */; };
 		0DE864371FD3764C00CE7188 /* ShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864361FD3764C00CE7188 /* ShortcutItem.swift */; };
-		4E1CBA47201F024100894A21 /* IntegrationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1CBA46201F024100894A21 /* IntegrationTestCase.swift */; };
 		4E3CC893201EBC9C0097E1D1 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB3D85A20187A1200DD0A7C /* Globals.swift */; };
 		4E3CC894201EBC9D0097E1D1 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB3D85A20187A1200DD0A7C /* Globals.swift */; };
 		4E5C8A57201D653200BA5C84 /* AppFlowTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5C8A56201D653200BA5C84 /* AppFlowTestCase.swift */; };
@@ -78,7 +77,6 @@
 		0DDA0AF51FC6783800839814 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		0DE864341FD3676000CE7188 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
 		0DE864361FD3764C00CE7188 /* ShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
-		4E1CBA46201F024100894A21 /* IntegrationTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTestCase.swift; sourceTree = "<group>"; };
 		4E5C8A56201D653200BA5C84 /* AppFlowTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowTestCase.swift; sourceTree = "<group>"; };
 		4E73E123201B12F6003FA9D1 /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		4E73E127201B1A61003FA9D1 /* DefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsTests.swift; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 			isa = PBXGroup;
 			children = (
 				607B179A1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift */,
-				4E1CBA46201F024100894A21 /* IntegrationTestCase.swift */,
 				607B179C1ED23F3F00CCAFD1 /* Info.plist */,
 				0D1289841FE70D1200BC8E51 /* ShortcutItemTestCase.swift */,
 				0D1289861FE7103E00BC8E51 /* LaunchTestCase.swift */,
@@ -381,7 +378,6 @@
 				4E3CC894201EBC9D0097E1D1 /* Globals.swift in Sources */,
 				4E73E128201B1A61003FA9D1 /* DefaultsTests.swift in Sources */,
 				0D1289851FE70D1200BC8E51 /* ShortcutItemTestCase.swift in Sources */,
-				4E1CBA47201F024100894A21 /* IntegrationTestCase.swift in Sources */,
 				607B179B1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
