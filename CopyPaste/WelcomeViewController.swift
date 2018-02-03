@@ -4,14 +4,14 @@
 
 import UIKit
 
-final class WelcomeViewController: UIViewController {
+public final class WelcomeViewController: UIViewController, Flow {
 
     private var didTapGetStarted: (() -> Void)?
 
     private let label: UILabel = .init()
     private let button: UIButton = .init()
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
 
@@ -30,7 +30,7 @@ final class WelcomeViewController: UIViewController {
         button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
 
-    func onDidTapGetStarted(perform action: @escaping (() -> Void)) {
+    public func onDidTapGetStarted(perform action: @escaping (() -> Void)) {
         didTapGetStarted = action
     }
 

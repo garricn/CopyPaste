@@ -20,6 +20,7 @@ public enum FlowType {
     case app(AppFlow)
     case foreground(ForegroundFlow)
     case background(BackgroundFlow)
+    case welcome(WelcomeViewController)
     case copy(CopyFlow)
 
     static func children(for flowTypes: [FlowType]) -> [FlowKey: Flow] {
@@ -33,6 +34,8 @@ public enum FlowType {
                 children[.foreground] = flow
             case let .background(flow):
                 children[.background] = flow
+            case let .welcome(flow):
+                children[.welcome] = flow
             case let .copy(flow):
                 children[.copy] = flow
             }
@@ -45,6 +48,7 @@ public enum FlowType {
         case app
         case foreground
         case background
+        case welcome
         case copy
         private init() { fatalError() }
     }
