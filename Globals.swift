@@ -21,4 +21,11 @@ public enum Globals {
         static let resetDefaults = "resetDefaults"
         static let shortcutItemKey = "UIApplicationLaunchOptionsShortcutItemKey"
     }
+    
+    public enum UITestingResetAction {
+        static let data = "uiTesting.reset.data"
+        static let defaults = "uiTesting.reset.defaults"
+        static let dataAndDefaults = "uiTesting.reset.dataAndDefaults"
+        static let cancel = "uiTesting.reset.cancel"
+    }
 }
