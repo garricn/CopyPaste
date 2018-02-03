@@ -32,11 +32,23 @@ public final class UITestHelper {
         application.navigationBars["All Items"].buttons["debug"].tap()
         application.sheets["DEBUG"].buttons[resetAction.rawValue].tap()
     }
-
-    public enum ResetAction: String {
-        case data = "debug.resetdata"
-        case userDefaults = "debug.resetuserdefaults"
-        case dataAndUserDefaults = "debug.resetboth"
-        case cancel = "Cancel"
+    public enum ResetAction {
+        case data
+        case userDefaults
+        case dataAndUserDefaults
+        case cancel
+        
+        var rawValue: String {
+            switch self {
+            case .data:
+                return Globals.UITestingResetAction.data
+            case .userDefaults:
+                return Globals.UITestingResetAction.defaults
+            case .dataAndUserDefaults:
+                return Globals.UITestingResetAction.dataAndDefaults
+            case .cancel:
+                return Globals.UITestingResetAction.cancel
+            }
+        }
     }
 }
