@@ -30,7 +30,7 @@ class UITestCase: XCTestCase {
 public final class UITestHelper {
     public static func debugPerform(resetAction: ResetAction, application: XCUIApplication) {
         application.navigationBars["All Items"].buttons["debug"].tap()
-        application.sheets["DEBUG"].buttons[resetAction.rawValue].tap()
+        application.sheets["RESET"].buttons[resetAction.rawValue].tap()
     }
     public enum ResetAction {
         case data
