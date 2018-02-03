@@ -127,30 +127,33 @@ public final class CopyFlow: Flow {
     }
 
     private func makeDebugAlertController() -> UIAlertController {
-        let alert = UIAlertController(title: "DEBUG", message: nil, preferredStyle: .actionSheet)
-
-        let dataTitle = "Reset User Data"
-        let dataHandler: (UIAlertAction) -> Void  = { _ in CopyContext<Item>().reset() }
-        let dataAction = UIAlertAction(title: dataTitle, style: .destructive, handler: dataHandler)
-        dataAction.accessibilityLabel = "debug.resetdata"
-        alert.addAction(dataAction)
-
-        let defaultsTitle = "Reset User Defaults"
-        let defaultsHandler: (UIAlertAction) -> Void  = { _ in DefaultsContext().reset() }
-        let defaultsAction = UIAlertAction(title: defaultsTitle, style: .destructive, handler: defaultsHandler)
-        defaultsAction.accessibilityLabel = "debug.resetuserdefaults"
-        alert.addAction(defaultsAction)
-
-        let bothTitle = "Reset Both"
-        let bothHandler: (UIAlertAction) -> Void  = { _ in CopyContext<Item>().reset(); DefaultsContext().reset() }
-        let bothAction = UIAlertAction(title: bothTitle, style: .destructive, handler: bothHandler)
-        bothAction.accessibilityLabel = "debug.resetboth"
-        alert.addAction(bothAction)
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-
-        return alert
+        #if DEBUG
+            let alert = UIAlertController(title: "RESET", message: nil, preferredStyle: .actionSheet)
+            
+            let dataTitle = "Data"
+            let dataHandler: (UIAlertAction) -> Void  = { _ in CopyContext<Item>().reset() }
+            let dataAction = UIAlertAction(title: dataTitle, style: .destructive, handler: dataHandler)
+            dataAction.accessibilityLabel = Globals.UITestingResetAction.data
+            alert.addAction(dataAction)
+            
+            let defaultsTitle = "Defaults"
+            let defaultsHandler: (UIAlertAction) -> Void  = { _ in DefaultsContext().reset() }
+            let defaultsAction = UIAlertAction(title: defaultsTitle, style: .destructive, handler: defaultsHandler)
+            defaultsAction.accessibilityLabel = Globals.UITestingResetAction.defaults
+            alert.addAction(defaultsAction)
+            
+            let bothTitle = "Both"
+            let bothHandler: (UIAlertAction) -> Void  = { _ in CopyContext<Item>().reset(); DefaultsContext().reset() }
+            let bothAction = UIAlertAction(title: bothTitle, style: .destructive, handler: bothHandler)
+            bothAction.accessibilityLabel = Globals.UITestingResetAction.dataAndDefaults
+            alert.addAction(bothAction)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            cancelAction.accessibilityLabel = Globals.UITestingResetAction.cancel
+            alert.addAction(cancelAction)
+            
+            return alert
+        #endif
     }
 }
 
