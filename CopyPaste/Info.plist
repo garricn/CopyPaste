@@ -45,7 +45,7 @@
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>New Item</string>
 			<key>UIApplicationShortcutItemType</key>
-			<string>com.swiftcoders.copypaste.newitem</string>
+			<string>com.swiftcoders.copypaste.newItem</string>
 		</dict>
 	</array>
 </dict>
