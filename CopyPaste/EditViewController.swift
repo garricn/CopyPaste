@@ -4,31 +4,7 @@
 
 import UIKit
 
-enum Action {
-    case adding
-    case editing(Item, IndexPath)
-    init(item: Item? = nil, indexPath: IndexPath? = nil) {
-        self = item == nil ? .adding : .editing(item!, indexPath!)
-    }
-    var title: String {
-        switch self {
-        case .adding:
-            return "Add Item"
-        case .editing:
-            return "Edit Item"
-        }
-    }
-    var item: Item {
-        switch self {
-        case .adding:
-            return Item()
-        case .editing(let item, _):
-            return item
-        }
-    }
-}
-
-class EditItemViewController: UIViewController {
+public final class EditItemViewController: UIViewController {
 
     private let textView = UITextView()
     private let item: Item
@@ -36,24 +12,24 @@ class EditItemViewController: UIViewController {
     private var didTapCancelWhileEditing: ((_ item: Item, _ viewController: EditItemViewController) -> Void)?
     private var didTapSaveWhileEditing: ((_ item: Item, _ viewController: EditItemViewController) -> Void)?
 
-    init(action: Action) {
+    public init(action: Action) {
         self.item = action.item
         super.init(nibName: nil, bundle: nil)
         self.title = action.title
     }
 
-    override func loadView() {
+    public override func loadView() {
         view = textView
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         configureNavigationItem()
         configureTextView()
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -75,11 +51,11 @@ class EditItemViewController: UIViewController {
         textView.becomeFirstResponder()
     }
 
-    func onDidTapCancelWhileEditing(perform action: @escaping ((Item, EditItemViewController) -> Void)) {
+    public func onDidTapCancelWhileEditing(perform action: @escaping ((Item, EditItemViewController) -> Void)) {
         didTapCancelWhileEditing = action
     }
 
-    func onDidTapSaveWhileEditing(perform action: @escaping ((Item, EditItemViewController) -> Void)) {
+    public func onDidTapSaveWhileEditing(perform action: @escaping ((Item, EditItemViewController) -> Void)) {
         didTapSaveWhileEditing = action
     }
 
@@ -90,5 +66,30 @@ class EditItemViewController: UIViewController {
     @objc private func didTap(saveBarButtonItem: UIBarButtonItem) {
         let item = Item(body: textView.text, copyCount: self.item.copyCount)
         didTapSaveWhileEditing?(item, self)
+    }
+}
+
+public extension EditItemViewController {
+    public enum Action {
+        case adding
+        case editing(Item, IndexPath)
+
+        public var title: String {
+            switch self {
+            case .adding:
+                return "Add Item"
+            case .editing:
+                return "Edit Item"
+            }
+        }
+
+        public var item: Item {
+            switch self {
+            case .adding:
+                return Item()
+            case .editing(let item, _):
+                return item
+            }
+        }
     }
 }

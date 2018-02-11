@@ -4,9 +4,37 @@
 
 import UIKit
 
-public struct Launch {
-    let options: [UIApplicationLaunchOptionsKey: Any]?
-    let reason: Reason
+public extension AppFlow {
+    public struct Launch {
+        let reason: Reason
+    }
+}
+
+public extension AppFlow.Launch {
+
+    public enum Reason {
+        case normal
+        case shortcut(ShortcutItem)
+
+        public var kind: Kind {
+            switch self {
+            case .normal:
+                return .foreground
+            case let .shortcut(item):
+                switch item {
+                case .newItem:
+                    return .foreground
+                }
+            }
+        }
+    }
+
+    public enum Kind {
+        case foreground
+    }
+}
+
+public extension AppFlow.Launch {
 
     var kind: Kind {
         return reason.kind
@@ -23,55 +51,16 @@ public struct Launch {
             }
         #endif
 
-        self.options = launchOptions
-        self.reason = Reason(options: launchOptions)
-    }
-
-    public enum Reason {
-        case normal
-        case shortcut(ShortcutItem)
-
-        public var kind: Launch.Kind {
-            switch self {
-            case .normal:
-                return .foreground
-            case let .shortcut(item):
-                switch item {
-                case .newItem:
-                    return .foreground
-                }
-            }
+        guard let options = launchOptions, !options.isEmpty else {
+            reason = .normal
+            return
         }
 
-        fileprivate init(options: [UIApplicationLaunchOptionsKey: Any]?) {
-            guard let options = options else {
-                self = .normal
-                return
-            }
-
-            guard !options.isEmpty else {
-                self = .normal
-                return
-            }
-
-            guard options.count == 1 else {
+        guard options.count == 1, let appItem = options[.shortcutItem] as? UIApplicationShortcutItem,
+            let item = ShortcutItem(item: appItem) else {
                 fatalError()
-            }
-
-            guard let applicationShortcutItem = options[.shortcutItem] as? UIApplicationShortcutItem else {
-                fatalError()
-            }
-
-            guard let item = ShortcutItem(item: applicationShortcutItem) else {
-                fatalError()
-            }
-
-            self = .shortcut(item)
         }
-    }
 
-    public enum Kind {
-        case foreground
-        case background
+        reason = .shortcut(item)
     }
 }

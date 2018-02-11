@@ -6,7 +6,7 @@ import UIKit
 
 // TODO: - Rename to SessionFlow
 
-public final class CopyFlow: Flow {
+public final class CopyFlow {
 
     private(set) lazy var rootViewController: UINavigationController = {
         let viewController = TableViewController(viewModel: TableViewModel(items: items))
@@ -15,7 +15,7 @@ public final class CopyFlow: Flow {
         return navigationController
     }()
 
-    private let pasteboard: PasteboardProtocol = UIPasteboard.general
+    private let pasteboard: UIPasteboard = .general
     private let context: CopyContext<Item>
 
     private var items: [Item] = [] {
@@ -34,15 +34,15 @@ public final class CopyFlow: Flow {
         items = context.items
     }
 
-    @discardableResult
-    func didStart(with parent: UIViewController, reason: Launch.Reason = .normal) -> Bool {
+    func start(with parent: UIViewController, reason: AppFlow.Launch.Reason = .normal) {
         parent.add(rootViewController)
 
         #if DEBUG
         inputView.onDebugDidTap { [weak self] in
-            if let `self` = self {
-                self.rootViewController.present(self.makeDebugAlertController(), animated: true, completion: nil)
+            guard let `self` = self else {
+                return
             }
+            self.rootViewController.present(self.makeDebugAlertController(), animated: true)
         }
         #endif
 
@@ -65,7 +65,7 @@ public final class CopyFlow: Flow {
             // Increment copy count
             let row = indexPath.row
             let item = self.items[row]
-            let newItem = Item(body: item.body, copyCount: (item.copyCount ?? 0) + 1)
+            let newItem = Item(body: item.body, copyCount: item.copyCount + 1)
             self.items.remove(at: row)
             self.items.insert(newItem, at: row)
 
@@ -74,7 +74,12 @@ public final class CopyFlow: Flow {
         }
 
         inputView.onDidTapAccessoryButtonForRow { [weak self] indexPath, _ in
-            self?.presentEditItemViewController(for: self?.items.element(at: indexPath.row), at: indexPath)
+            guard let `self` = self, let item = self.items.element(at: indexPath.row) else {
+                return
+            }
+
+            let action = EditItemViewController.Action.editing(item, indexPath)
+            self.presentEditItemViewController(action: action)
         }
 
         inputView.onDidCommitEditing { [weak self] edit, indexPath, _ in
@@ -85,25 +90,21 @@ public final class CopyFlow: Flow {
 
         switch reason {
         case .normal:
-            return true
+            break
         case let .shortcut(item):
             performAction(for: item)
-            return false
         }
     }
 
     func performAction(for shortcutItem: ShortcutItem) {
         switch shortcutItem {
         case let .newItem(completion):
-            presentEditItemViewController(for: nil, at: nil, completion: completion)
+            presentEditItemViewController(completion: completion)
         }
     }
 
-    private func presentEditItemViewController(for item: Item? = nil,
-                                               at indexPath: IndexPath? = nil,
+    private func presentEditItemViewController(action: EditItemViewController.Action = .adding,
                                                completion: ((Bool) -> Void)? = nil) {
-
-        let action = Action(item: item, indexPath: indexPath)
         let inputView = EditItemViewController(action: action)
         let containerView = UINavigationController(rootViewController: inputView)
         containerView.navigationBar.prefersLargeTitles = true

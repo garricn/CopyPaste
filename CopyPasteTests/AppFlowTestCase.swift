@@ -12,25 +12,16 @@ import XCTest
 
 class AppFlowTestCase: XCTestCase {
 
-    func test_WillFinish_Returns_True() {
-        let window = UIWindow()
-        let appFlow = AppFlow(window: window)
-        let launch = Launch(options: nil)
-        XCTAssertEqual(appFlow.willFinish(launch), true)
-    }
-
     func test_DidFinish_Returns_True() {
         let window = UIWindow()
         let appFlow = AppFlow(window: window)
-        let launch = Launch(options: nil)
-        _ = appFlow.willFinish(launch)
+        let launch = AppFlow.Launch(options: nil)
         XCTAssertEqual(appFlow.didFinish(launch), true)
     }
 
     func test_Window_Given_Fresh_Install_Launch() {
         let appFlow = AppFlow(window: UIWindow())
-        let launch = Launch(options: nil)
-        _ = appFlow.willFinish(launch)
+        let launch = AppFlow.Launch(options: nil)
         _ = appFlow.didFinish(launch)
         XCTAssertNotNil(appFlow.window)
         XCTAssertNotNil(appFlow.window?.rootViewController)
@@ -40,8 +31,7 @@ class AppFlowTestCase: XCTestCase {
         let appFlow = AppFlow(window: UIWindow())
         let item = UIApplicationShortcutItem(type: Globals.ShortcutItemTypes.newItem, localizedTitle: "")
         let options = [UIApplicationLaunchOptionsKey.shortcutItem: item]
-        let launch = Launch(options: options)
-        _ = appFlow.willFinish(launch)
+        let launch = AppFlow.Launch(options: options)
         _ = appFlow.didFinish(launch)
         XCTAssertNotNil(appFlow.window)
         XCTAssertNotNil(appFlow.window?.rootViewController)
@@ -49,8 +39,7 @@ class AppFlowTestCase: XCTestCase {
 
     func test_Perform_Action_For_ShortcutItem() {
         let appFlow = AppFlow(window: UIWindow())
-        let launch = Launch(options: nil)
-        _ = appFlow.willFinish(launch)
+        let launch = AppFlow.Launch(options: nil)
         _ = appFlow.didFinish(launch)
 
         let item = UIApplicationShortcutItem(type: Globals.ShortcutItemTypes.newItem, localizedTitle: "")

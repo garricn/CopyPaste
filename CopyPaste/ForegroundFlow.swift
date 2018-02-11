@@ -4,33 +4,26 @@
 
 import UIKit
 
-public protocol ForegroundDependencyProvider {
-    var makeRootViewController: () -> AppViewController { get }
-    var makeDefaultsContext: () -> DefaultsContext { get }
-    var makeCopyFlow: () -> CopyFlow { get }
-}
+public final class ForegroundFlow {
 
-public final class ForegroundFlow: Flow {
+    private(set) lazy var rootView: RootViewController = .init()
+    private(set) lazy var context: DefaultsContext = .init()
+    private(set) lazy var copyFlow: CopyFlow = .init()
 
-    private(set) lazy var rootViewController: AppViewController = self.provider.makeRootViewController()
-    private(set) lazy var foregroundContext: DefaultsContext = self.provider.makeDefaultsContext()
-    private(set) lazy var copyFlow: CopyFlow = self.provider.makeCopyFlow()
-    private(set) var children: [FlowType.FlowKey: Flow] = [:]
+    public func start(for reason: AppFlow.Launch.Reason) {
 
-    public let provider: ForegroundDependencyProvider
-
-    public init(provider: ForegroundDependencyProvider) {
-        self.provider = provider
-    }
-
-    public func didStart(for reason: Launch.Reason) -> Bool {
-        switch foregroundContext.defaults.showWelcome {
+        switch context.defaults.showWelcome {
         case false:
-            return didStartCopyFlow(reason: reason)
+            copyFlow.start(with: rootView, reason: reason)
         case true:
-            return didStartWelcomeFlow(didFinish: { [weak self] in
-                self?.didStartCopyFlow(reason: reason)
-            })
+            let view = WelcomeViewController()
+            view.onDidTapGetStarted {
+                view.dismiss(animated: true) { [unowned self] in
+                    self.copyFlow.start(with: self.rootView, reason: reason)
+                    self.context.save(Defaults(showWelcome: false))
+                }
+            }
+            rootView.present(view, animated: true, completion: nil)
         }
     }
 
@@ -40,28 +33,23 @@ public final class ForegroundFlow: Flow {
             copyFlow.performAction(for: shortcutItem)
         }
     }
-    
-    @discardableResult
-    private func didStartCopyFlow(reason: Launch.Reason) -> Bool {
-        children = FlowType.children(for: [.copy(copyFlow)])
-        return copyFlow.didStart(with: rootViewController, reason: reason)
-    }
-    
-    private func didStartWelcomeFlow(didFinish: (() -> Void)?) -> Bool {
-        let view = WelcomeViewController()
+}
 
-        children = FlowType.children(for: [FlowType.welcome(view)])
-        
-        rootViewController.present(view, animated: true, completion: nil)
-        view.onDidTapGetStarted {
-            didFinish?()
-            
-            view.dismiss(animated: true) { [weak self] in
-                let defaults = Defaults(showWelcome: false)
-                self?.foregroundContext.save(defaults)
-                self?.children.removeValue(forKey: .welcome)
-            }
+public extension ForegroundFlow {
+
+    public final class RootViewController: UIViewController {
+
+        fileprivate init() {
+            super.init(nibName: nil, bundle: nil)
         }
-        return true
+
+        required public init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        public override func viewDidLoad() {
+            super.viewDidLoad()
+            view.backgroundColor = .white
+        }
     }
 }
