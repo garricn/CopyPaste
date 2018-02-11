@@ -37,9 +37,7 @@ public final class DefaultsContext {
     }
 
     func reset() {
-        let defaults = Defaults()
-        self.defaults = defaults
-        dataStore.encode(defaults)
+        save(Defaults())
     }
 }
 

@@ -4,7 +4,7 @@
 
 import UIKit
 
-public final class WelcomeViewController: UIViewController, Flow {
+public final class WelcomeViewController: UIViewController{
 
     private var didTapGetStarted: (() -> Void)?
 

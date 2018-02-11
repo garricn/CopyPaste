@@ -27,10 +27,10 @@ final class TableViewModel {
     func cell(forRowAt indexPath: IndexPath, in tableView: UITableView) -> UITableViewCell {
         let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
         let cell = dequeuedCell ?? UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
-        let item = items.isEmpty ? Item(body: "Add Item", copyCount: nil) : items[indexPath.row]
+        let item = items.isEmpty ? Item(body: "Add Item") : items[indexPath.row]
         cell.textLabel?.text = item.body
         cell.textLabel?.numberOfLines = 0
-        cell.detailTextLabel?.text = item.copyCount?.description
+        cell.detailTextLabel?.text = item.copyCount.description
         cell.accessoryType = items.isEmpty ? .none : .detailDisclosureButton
         return cell
     }
