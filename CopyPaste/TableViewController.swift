@@ -98,7 +98,7 @@ final class TableViewController: UIViewController {
 
         #if DEBUG
             let debugAction = #selector(didTap(debugBarButtonItem:))
-            let debugButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: debugAction)
+            let debugButton = UIBarButtonItem(title: "⚙︎", style: .plain, target: self, action: debugAction)
             debugButton.accessibilityLabel = "debug"
             items.append(debugButton)
         #endif
@@ -106,10 +106,12 @@ final class TableViewController: UIViewController {
         navigationItem.leftBarButtonItems = items
     }
 
+    #if DEBUG
     @objc
     private func didTap(debugBarButtonItem: UIBarButtonItem) {
         debugDidTap?()
     }
+    #endif
 
     private func configureTableView() {
         tableView.rowHeight = UITableViewAutomaticDimension
