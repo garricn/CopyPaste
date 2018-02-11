@@ -11,18 +11,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private lazy var appFlow: AppFlow = AppFlow(window: self.window)
 
-    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: App, willFinishLaunchingWithOptions launchOptions: LaunchOptions? = nil) -> Bool {
         let launch = Launch(options: launchOptions)
         return appFlow.willFinish(launch)
     }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: App, didFinishLaunchingWithOptions launchOptions: LaunchOptions?) -> Bool {
         let launch = Launch(options: launchOptions)
         return appFlow.didFinish(launch)
     }
 
 
-    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+    func application(_ application: App, performActionFor shortcutItem: Shortcut, completionHandler: @escaping (Bool) -> Void) {
         appFlow.performAction(for: shortcutItem, completion: completionHandler)
     }
 }
+
+typealias LaunchOptions = [UIApplicationLaunchOptionsKey: Any]
+typealias Shortcut = UIApplicationShortcutItem
+typealias App = UIApplication
