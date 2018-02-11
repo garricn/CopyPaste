@@ -126,8 +126,8 @@ public final class CopyFlow: Flow {
         completion?(true)
     }
 
+    #if DEBUG
     private func makeDebugAlertController() -> UIAlertController {
-        #if DEBUG
             let alert = UIAlertController(title: "RESET", message: nil, preferredStyle: .actionSheet)
             
             let dataTitle = "Data"
@@ -153,8 +153,8 @@ public final class CopyFlow: Flow {
             alert.addAction(cancelAction)
             
             return alert
-        #endif
     }
+    #endif
 }
 
 extension Array {
