@@ -49,7 +49,7 @@ public extension AppFlow.Launch.Reason {
 
 public extension AppFlow.Launch.Kind {
     var isForeground: Bool {
-        if case .foreground = self {
+        if case .window = self {
             return true
         } else {
             return false

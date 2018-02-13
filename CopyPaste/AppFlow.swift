@@ -25,7 +25,7 @@ public extension AppFlow {
 
     public func didFinish(_ launch: Launch) -> Bool {
         switch launch.kind {
-        case .foreground:
+        case .window:
             let window = UIWindow()
             window.rootViewController = foregroundFlow.rootView
             window.makeKeyAndVisible()

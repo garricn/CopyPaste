@@ -19,18 +19,18 @@ public extension AppFlow.Launch {
         public var kind: Kind {
             switch self {
             case .normal:
-                return .foreground
+                return .window
             case let .shortcut(item):
                 switch item {
                 case .newItem:
-                    return .foreground
+                    return .window
                 }
             }
         }
     }
 
     public enum Kind {
-        case foreground
+        case window
     }
 }
 
