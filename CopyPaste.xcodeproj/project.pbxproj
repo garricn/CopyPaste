@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0D0300621FC8BB2D00FBF8FB /* ForegroundFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */; };
+		0D0300621FC8BB2D00FBF8FB /* WindowFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300611FC8BB2D00FBF8FB /* WindowFlow.swift */; };
 		0D1289851FE70D1200BC8E51 /* ShortcutItemTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1289841FE70D1200BC8E51 /* ShortcutItemTestCase.swift */; };
 		0D1289871FE7103E00BC8E51 /* LaunchTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1289861FE7103E00BC8E51 /* LaunchTestCase.swift */; };
 		0D66D7751FCB76CD0023F7A4 /* UITableViewCellExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66D7741FCB76CD0023F7A4 /* UITableViewCellExtensions.swift */; };
@@ -60,7 +60,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundFlow.swift; sourceTree = "<group>"; };
+		0D0300611FC8BB2D00FBF8FB /* WindowFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowFlow.swift; sourceTree = "<group>"; };
 		0D1289841FE70D1200BC8E51 /* ShortcutItemTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItemTestCase.swift; sourceTree = "<group>"; };
 		0D1289861FE7103E00BC8E51 /* LaunchTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchTestCase.swift; sourceTree = "<group>"; };
 		0D66D7741FCB76CD0023F7A4 /* UITableViewCellExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtensions.swift; sourceTree = "<group>"; };
@@ -72,6 +72,7 @@
 		0DDA0AF51FC6783800839814 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		0DE864341FD3676000CE7188 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
 		0DE864361FD3764C00CE7188 /* ShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
+		4E5021572034208F003CEEA5 /* Notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Notes.txt; sourceTree = "<group>"; };
 		4E5C8A56201D653200BA5C84 /* AppFlowTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowTestCase.swift; sourceTree = "<group>"; };
 		4E73E123201B12F6003FA9D1 /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		4E73E127201B1A61003FA9D1 /* DefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsTests.swift; sourceTree = "<group>"; };
@@ -164,6 +165,7 @@
 		60AB4EDC1E9582A70002AAE8 = {
 			isa = PBXGroup;
 			children = (
+				4E5021572034208F003CEEA5 /* Notes.txt */,
 				4EB3D85A20187A1200DD0A7C /* Globals.swift */,
 				60AB4EE71E9582A70002AAE8 /* CopyPaste */,
 				604B485B1EC7EC4A00DBA243 /* CopyPasteUITests */,
@@ -193,7 +195,7 @@
 				0DDA0AF51FC6783800839814 /* DataStore.swift */,
 				0DAF67C31FC9508000390890 /* DefaultsContext.swift */,
 				60E73F2B1EBE8E4100F559A1 /* EditViewController.swift */,
-				0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */,
+				0D0300611FC8BB2D00FBF8FB /* WindowFlow.swift */,
 				60E73F2F1EBEA9D700F559A1 /* Item.swift */,
 				0DE864341FD3676000CE7188 /* Launch.swift */,
 				0DE864361FD3764C00CE7188 /* ShortcutItem.swift */,
@@ -374,7 +376,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D0300621FC8BB2D00FBF8FB /* ForegroundFlow.swift in Sources */,
+				0D0300621FC8BB2D00FBF8FB /* WindowFlow.swift in Sources */,
 				0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */,
 				4E73E124201B12F6003FA9D1 /* AppFlow.swift in Sources */,
 				601D8BC51ED177E100AC1407 /* TableViewModel.swift in Sources */,

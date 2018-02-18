@@ -1,0 +1,21 @@
+AppDelegate - System says hello
+    window?
+    launchOptions
+    performShortcut
+AppFlow - What app are we?
+    CopyPaste.app
+    FLYR.app
+
+/// CopyPasteAppFlow owns app level tasks specific to CopyPaste
+/// like app launch, app state transitations, and all other AppDelegate method calls
+
+CopyPasteAppFlow
+    launchOptions
+    performShortcut
+
+didFinishLaunch
+    why was app launched?
+        normal
+        shortcut
+
+

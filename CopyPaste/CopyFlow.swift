@@ -7,6 +7,10 @@ import UIKit
 // TODO: - Rename to SessionFlow
 
 public final class CopyFlow {
+    enum StartReason {
+        case normal
+        case shortcut(ShortcutItem)
+    }
 
     private(set) lazy var rootViewController: UINavigationController = {
         let viewController = TableViewController(viewModel: TableViewModel(items: items))
@@ -34,7 +38,7 @@ public final class CopyFlow {
         items = context.items
     }
 
-    func start(with parent: UIViewController, reason: AppFlow.Launch.Reason = .normal) {
+    func start(withParent parent: UIViewController, reason: StartReason) {
         parent.add(rootViewController)
 
         #if DEBUG
