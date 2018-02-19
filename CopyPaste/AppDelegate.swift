@@ -7,23 +7,21 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
-
-    private lazy var flow: Flow = .init()
+    private lazy var appFlow: AppFlow = .init()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        return flow.didFinishLaunching(withOptions: launchOptions)
+        return appFlow.didFinishLaunching(withOptions: launchOptions)
     }
 
     func application(_ application: UIApplication,
                      performActionFor shortcutItem: UIApplicationShortcutItem,
                      completionHandler: @escaping (Bool) -> Void) {
-        flow.performAction(for: shortcutItem, completion: completionHandler)
+        appFlow.performAction(for: shortcutItem, completion: completionHandler)
     }
 }
 
-private class Flow {
+private class AppFlow {
 
     private var context: DefaultsContext = .init()
     private var windowFlow: WindowFlow = .init()
@@ -32,15 +30,7 @@ private class Flow {
         let startReason: CopyFlow.StartReason
 
         defer {
-            let mode: WindowFlow.Mode
-            switch context.defaults.showWelcome {
-            case true:
-                mode = .unathenticated
-            case false:
-                mode = .authenticated(startReason)
-            }
-
-            windowFlow.start(mode: mode)
+            windowFlow.start(mode: .session(startReason))
         }
 
         guard let options = options, !options.isEmpty else {
@@ -72,40 +62,29 @@ private class Flow {
 class WindowFlow {
 
     enum Mode {
-        case authenticated(CopyFlow.StartReason)
-        case unathenticated
+        case session(CopyFlow.StartReason)
     }
 
     private let window = UIWindow()
     private let rootViewController: RootViewController = .init()
 
-    lazy var authenticatedFlow: CopyFlow = .init()
-    lazy var unauthenticatedFlow: WelcomeViewController = .init()
+    lazy var sessionFlow: CopyFlow = .init()
 
     func start(mode: Mode) {
         window.rootViewController = rootViewController
         window.makeKeyAndVisible()
 
         switch mode {
-        case let .authenticated(reason):
-            authenticatedFlow.start(withParent: rootViewController, reason: reason)
-        case .unathenticated:
-            unauthenticatedFlow.onDidTapGetStarted { [weak self] in
-                self?.rootViewController.dismiss(animated: true) { [weak self] in
-                    self?.authenticatedFlow.start(withParent: self!.rootViewController, reason: .normal)
-                }
-            }
+        case let .session(reason):
+            sessionFlow.start(withParent: rootViewController, reason: reason)
         }
     }
 
     func performAction(for shortcutItem: UIApplicationShortcutItem, completion: @escaping (Bool) -> Void) {
-        let item = ShortcutItem.init(item: shortcutItem, completion: completion)
-        authenticatedFlow.performAction(for: item!)
+        let item = ShortcutItem(item: shortcutItem, completion: completion)
+        sessionFlow.performAction(for: item!)
     }
 }
-
-class AuthenticatedFlow {}
-class UnauthenticatedFlow {}
 
 class RootViewController: UIViewController {
     init() {
