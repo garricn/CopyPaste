@@ -4,29 +4,36 @@
 
 import UIKit
 
-public final class EditItemViewController: UIViewController {
+public struct EditViewModel {
+    let title: String?
+    let body: String?
+}
 
-    private let textView = UITextView()
-    private let item: Item
+public final class EditViewController: UIViewController {
 
-    private var didTapCancelWhileEditing: ((_ item: Item, _ viewController: EditItemViewController) -> Void)?
-    private var didTapSaveWhileEditing: ((_ item: Item, _ viewController: EditItemViewController) -> Void)?
+    private let editItemView: EditView = .init()
+    private let viewModel: EditViewModel
 
-    public init(action: Action) {
-        self.item = action.item
+    private var didTapCancelWhileEditing: (() -> Void)?
+    private var didTapSaveWhileEditing: ((_ title: EditViewModel) -> Void)?
+
+    private var titleTextField: UITextField { return editItemView.titleTextField }
+    private var bodyTextView: UITextView { return editItemView.bodyTextView }
+
+    public init(viewModel: EditViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        self.title = action.title
     }
 
     public override func loadView() {
-        view = textView
+        view = editItemView
     }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
 
         configureNavigationItem()
-        configureTextView()
+        configureView()
     }
 
     public required init?(coder aDecoder: NSCoder) {
@@ -43,53 +50,28 @@ public final class EditItemViewController: UIViewController {
         navigationItem.rightBarButtonItem = saveButton
     }
 
-    private func configureTextView() {
-        textView.accessibilityLabel = "Body"
-        textView.font = UIFont.preferredFont(forTextStyle: .body)
-        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        textView.insertText(item.body)
-        textView.becomeFirstResponder()
+    private func configureView() {
+        titleTextField.text = viewModel.title
+        bodyTextView.text = viewModel.body
+        bodyTextView.becomeFirstResponder()
     }
 
-    public func onDidTapCancelWhileEditing(perform action: @escaping ((Item, EditItemViewController) -> Void)) {
+    public func onDidTapCancelWhileEditing(perform action: @escaping () -> Void) {
         didTapCancelWhileEditing = action
     }
 
-    public func onDidTapSaveWhileEditing(perform action: @escaping ((Item, EditItemViewController) -> Void)) {
+    public func onDidTapSaveWhileEditing(perform action: @escaping (EditViewModel) -> Void) {
         didTapSaveWhileEditing = action
     }
 
     @objc private func didTap(cancelBarButtonItem: UIBarButtonItem) {
-        didTapCancelWhileEditing?(item, self)
+        didTapCancelWhileEditing?()
     }
 
     @objc private func didTap(saveBarButtonItem: UIBarButtonItem) {
-        let item = Item(body: textView.text, copyCount: self.item.copyCount)
-        didTapSaveWhileEditing?(item, self)
-    }
-}
-
-public extension EditItemViewController {
-    public enum Action {
-        case adding
-        case editing(Item, IndexPath)
-
-        public var title: String {
-            switch self {
-            case .adding:
-                return "Add Item"
-            case .editing:
-                return "Edit Item"
-            }
-        }
-
-        public var item: Item {
-            switch self {
-            case .adding:
-                return Item()
-            case .editing(let item, _):
-                return item
-            }
-        }
+        let body = bodyTextView.text
+        let title = titleTextField.text
+        let item = EditViewModel(title: title, body: body)
+        didTapSaveWhileEditing?(item)
     }
 }

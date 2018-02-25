@@ -5,10 +5,12 @@
 public struct Item: Codable {
     public let body: String
     public let copyCount: Int
+    public let title: String?
 
-    public init(body: String = "", copyCount: Int = 0) {
+    public init(body: String = "", copyCount: Int = 0, title: String? = nil) {
         self.body = body
         self.copyCount = copyCount
+        self.title = title
     }
 }
 
