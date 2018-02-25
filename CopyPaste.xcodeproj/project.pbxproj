@@ -139,6 +139,8 @@
 		4E4D27FD20427DEC00F95CD7 /* UIKit Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				0D66D7741FCB76CD0023F7A4 /* UITableViewCell.swift */,
+				0DAF67CA1FC9512C00390890 /* UIViewController.swift */,
 			);
 			path = "UIKit Extensions";
 			sourceTree = "<group>";
@@ -209,8 +211,6 @@
 				0DE864361FD3764C00CE7188 /* ShortcutItem.swift */,
 				60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */,
 				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
-				0D66D7741FCB76CD0023F7A4 /* UITableViewCell.swift */,
-				0DAF67CA1FC9512C00390890 /* UIViewController.swift */,
 				4E4D27FD20427DEC00F95CD7 /* UIKit Extensions */,
 				0DAF67C61FC950D200390890 /* WelcomeViewController.swift */,
 				0DAF67C51FC9509E00390890 /* Supporting Files */,
