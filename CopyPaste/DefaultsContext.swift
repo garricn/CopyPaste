@@ -44,16 +44,3 @@ public final class DefaultsContext {
 public struct Defaults: Codable {
     public var showWelcome = true
 }
-
-public extension Bool {
-    init?(string: String) {
-        switch string {
-        case "true":
-            self = true
-        case "false":
-            self = false
-        default:
-            return nil
-        }
-    }
-}
