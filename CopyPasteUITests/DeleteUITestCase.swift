@@ -42,7 +42,7 @@ final class DeleteUITestCase: SessionBaseUITestCase {
         app.navigationBars["All Items"].buttons["Edit"].tap()
 
         let tables = app.tables
-        tables.cells.buttons["Delete This is just a test., 0"].tap()
+        tables.cells.buttons["Delete This is just a test."].tap()
         tables.buttons["Delete"].tap()
 
         assertAppIsDisplayingAddItemCell()
@@ -61,10 +61,10 @@ final class DeleteUITestCase: SessionBaseUITestCase {
         app.navigationBars["All Items"].buttons["Edit"].tap()
 
         let tables = app.tables
-        tables.cells.buttons["Delete Item 0, 0"].tap()
+        tables.cells.buttons["Delete Item 0"].tap()
         tables.buttons["Delete"].tap()
 
-        tables.cells.buttons["Delete Item 1, 0"].tap()
+        tables.cells.buttons["Delete Item 1"].tap()
         tables.buttons["Delete"].tap()
 
         assertAppIsDisplayingAddItemCell()

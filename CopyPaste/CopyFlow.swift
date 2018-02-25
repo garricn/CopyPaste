@@ -29,12 +29,12 @@ public final class CopyFlow {
         return rootViewController.topViewController as! TableViewController
     }
 
-    init(context: CopyContext<Item> = .init()) {
+    public init(context: CopyContext<Item> = .init()) {
         self.context = context
         items = context.items
     }
 
-    func start(with parent: UIViewController, reason: AppFlow.Launch.Reason = .normal) {
+    public func start(with parent: UIViewController, reason: AppFlow.Launch.Reason = .normal) {
         parent.add(rootViewController)
 
         #if DEBUG
@@ -78,8 +78,7 @@ public final class CopyFlow {
                 return
             }
 
-            let action = EditItemViewController.Action.editing(item, indexPath)
-            self.presentEditItemViewController(action: action)
+            self.presentEditItemViewController(action: .editing(item, indexPath))
         }
 
         inputView.onDidCommitEditing { [weak self] edit, indexPath, _ in
@@ -96,35 +95,46 @@ public final class CopyFlow {
         }
     }
 
-    func performAction(for shortcutItem: ShortcutItem) {
+    public func performAction(for shortcutItem: ShortcutItem) {
         switch shortcutItem {
         case let .newItem(completion):
             presentEditItemViewController(completion: completion)
         }
     }
 
-    private func presentEditItemViewController(action: EditItemViewController.Action = .adding,
+    private func presentEditItemViewController(action: Action = .adding,
                                                completion: ((Bool) -> Void)? = nil) {
-        let inputView = EditItemViewController(action: action)
-        let containerView = UINavigationController(rootViewController: inputView)
-        containerView.navigationBar.prefersLargeTitles = true
-        rootViewController.present(containerView, animated: true, completion: nil)
+        let viewModel = EditViewModel(title: action.item.title, body: action.item.body)
+        let inputView = EditViewController(viewModel: viewModel)
+        inputView.title = action.title
 
-        inputView.onDidTapCancelWhileEditing { [weak self] item, view in
+        let navigationController = UINavigationController(rootViewController: inputView)
+        navigationController.navigationBar.prefersLargeTitles = true
+
+        inputView.onDidTapCancelWhileEditing { [weak self] in
             self?.rootViewController.dismiss(animated: true, completion: nil)
         }
 
-        inputView.onDidTapSaveWhileEditing { [weak self] item, view in
-            self?.rootViewController.dismiss(animated: true, completion: nil)
-
-            switch action {
-            case let .editing(_, indexPath):
-                self?.items[indexPath.row] = item
-            case .adding:
-                self?.items.append(item)
+        inputView.onDidTapSaveWhileEditing { [weak self] editedItem in
+            defer {
+                self?.rootViewController.dismiss(animated: true)
             }
+
+            guard let body = editedItem.body, !body.isEmpty else {
+                return
+            }
+
+            guard case let .editing(existingItem, indexPath) = action else {
+                self?.items.append(Item(body: body, copyCount: 0, title: editedItem.title))
+                return
+            }
+
+            self?.items[indexPath.row] = Item(body: body, copyCount: existingItem.copyCount, title: editedItem.title)
         }
-        completion?(true)
+
+        rootViewController.present(navigationController, animated: true) {
+            completion?(true)
+        }
     }
 
     #if DEBUG
@@ -156,14 +166,28 @@ public final class CopyFlow {
             return alert
     }
     #endif
-}
 
-extension Array {
-    func element(at index: Int) -> Element? {
-        if isEmpty || index > count {
-            return nil
-        } else {
-            return self[index]
+    public enum Action {
+        case adding
+        case editing(Item, IndexPath)
+        
+        public var title: String {
+            switch self {
+            case .adding:
+                return "Add Item"
+            case .editing:
+                return "Edit Item"
+            }
+        }
+        
+        public var item: Item {
+            switch self {
+            case .adding:
+                return Item()
+            case .editing(let item, _):
+                return item
+            }
         }
     }
 }
+
