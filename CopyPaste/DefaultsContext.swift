@@ -10,7 +10,7 @@ public final class DefaultsContext {
 
     private let dataStore: DataStore
 
-    init(dataStore: DataStore = DataStore()) {
+    public init(dataStore: DataStore = DataStore()) {
         self.dataStore = dataStore
 
         defaults = dataStore.decode(Defaults.self) ?? Defaults()
@@ -31,12 +31,12 @@ public final class DefaultsContext {
         #endif
     }
 
-    func save( _ defaults: Defaults) {
+    public func save( _ defaults: Defaults) {
         self.defaults = defaults
         dataStore.encode(defaults)
     }
 
-    func reset() {
+    public func reset() {
         save(Defaults())
     }
 }
