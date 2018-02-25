@@ -4,14 +4,13 @@
 
 import Foundation
 
-
-final class DataStore {
+public final class DataStore {
     
     private let encoder: JSONEncoding
     private let decoder: JSONDecoding
     private let location: URL
     
-    init(encoder: JSONEncoding = JSONEncoder(),
+    public init(encoder: JSONEncoding = JSONEncoder(),
          decoder: JSONDecoding = JSONDecoder(),
          location: URL = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!) {
         self.encoder = encoder
@@ -19,7 +18,7 @@ final class DataStore {
         self.location = location
     }
     
-    func encode<E: Encodable>(_ encodable: E) {
+    public func encode<E: Encodable>(_ encodable: E) {
         do {
             try encoder.encode(encodable.self).write(to: location.appendingPathComponent(E.pathComponent))
         } catch {
@@ -27,7 +26,7 @@ final class DataStore {
         }
     }
     
-    func decode<D: Decodable>(_ type: D.Type) -> D? {
+    public func decode<D: Decodable>(_ type: D.Type) -> D? {
         do {
             let data = try Data(contentsOf: location.appendingPathComponent(D.pathComponent))
             let decodable = try decoder.decode(type, from: data)
@@ -37,7 +36,7 @@ final class DataStore {
         }
     }
 
-    func decode<D: Decodable>(type: D.Type, from data: Data) -> D? {
+    public func decode<D: Decodable>(type: D.Type, from data: Data) -> D? {
         do {
             let decodable = try decoder.decode(type, from: data)
             return decodable
@@ -48,11 +47,11 @@ final class DataStore {
     }
 }
 
-protocol JSONEncoding {
+public protocol JSONEncoding {
     func encode<T>(_ value: T) throws -> Data where T : Encodable
 }
 
-protocol JSONDecoding {
+public protocol JSONDecoding {
     func decode<T>(_ type: T.Type, from data: Data) throws -> T where T : Decodable
 }
 
