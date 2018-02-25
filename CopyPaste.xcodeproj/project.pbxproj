@@ -136,6 +136,13 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4E4D27FD20427DEC00F95CD7 /* UIKit Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "UIKit Extensions";
+			sourceTree = "<group>";
+		};
 		604B485B1EC7EC4A00DBA243 /* CopyPasteUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +211,7 @@
 				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
 				0D66D7741FCB76CD0023F7A4 /* UITableViewCell.swift */,
 				0DAF67CA1FC9512C00390890 /* UIViewController.swift */,
+				4E4D27FD20427DEC00F95CD7 /* UIKit Extensions */,
 				0DAF67C61FC950D200390890 /* WelcomeViewController.swift */,
 				0DAF67C51FC9509E00390890 /* Supporting Files */,
 			);
