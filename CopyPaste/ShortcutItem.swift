@@ -1,9 +1,4 @@
-
 //
-//  ShortcutItem.swift
-//  CopyPaste
-//
-//  Created by Garric G. Nahapetian on 12/2/17.
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
