@@ -4,9 +4,9 @@
 
 import UIKit
 
-final class TableViewController: UIViewController {
+public final class TableViewController: UIViewController {
 
-    var viewModel: TableViewModel {
+    public var viewModel: TableViewModel {
         didSet {
             didSetViewModel()
         }
@@ -22,22 +22,22 @@ final class TableViewController: UIViewController {
 
     // MARK: - Life Cycle
 
-    init(viewModel: TableViewModel = TableViewModel()) {
+    public init(viewModel: TableViewModel = TableViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - View Life Cycle
 
-    override func loadView() {
+    public override func loadView() {
         view = tableView
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationItems()
         configureTableView()
@@ -53,7 +53,7 @@ final class TableViewController: UIViewController {
         return controller
     }()
 
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         if navigationItem.searchController == nil {
@@ -61,28 +61,28 @@ final class TableViewController: UIViewController {
         }
     }
 
-    override func setEditing(_ editing: Bool, animated: Bool) {
+    public override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         tableView.setEditing(editing, animated: animated)
     }
 
-    func onDebugDidTap(perform action: @escaping (() -> Void)) {
+    public func onDebugDidTap(perform action: @escaping (() -> Void)) {
         debugDidTap = action
     }
 
-    func onDidTapAddBarButtonItem(perform action: @escaping ((UIBarButtonItem) -> Void)) {
+    public func onDidTapAddBarButtonItem(perform action: @escaping ((UIBarButtonItem) -> Void)) {
         didTap = action
     }
     
-    func onDidSelectRow(perform action: @escaping ((IndexPath, UITableView) -> Void)) {
+    public func onDidSelectRow(perform action: @escaping ((IndexPath, UITableView) -> Void)) {
         didSelectRow = action
     }
 
-    func onDidCommitEditing(perform action: @escaping ((UITableViewCellEditingStyle, IndexPath, UITableView) -> Void)) {
+    public func onDidCommitEditing(perform action: @escaping ((UITableViewCellEditingStyle, IndexPath, UITableView) -> Void)) {
         didCommitEditing = action
     }
 
-    func onDidTapAccessoryButtonForRow(perform action: @escaping ((IndexPath, UITableView) -> Void)) {
+    public func onDidTapAccessoryButtonForRow(perform action: @escaping ((IndexPath, UITableView) -> Void)) {
         didTapAccessoryButtonForRow = action
     }
 
@@ -135,15 +135,15 @@ final class TableViewController: UIViewController {
 
 extension TableViewController: UITableViewDataSource {
 
-    func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.numberOfSections
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfRows(inSection: section)
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return viewModel.cell(forRowAt: indexPath, in: tableView)
     }
 }
@@ -152,28 +152,28 @@ extension TableViewController: UITableViewDataSource {
 
 extension TableViewController: UITableViewDelegate {
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         didSelectRow?(indexPath, tableView)
     }
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         didCommitEditing?(editingStyle, indexPath, tableView)
     }
     
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return viewModel.editingStyleForRow(at: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return viewModel.canEditRow(at: indexPath)
     }
 
-    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         didTapAccessoryButtonForRow?(indexPath, tableView)
     }
 }
 
 extension TableViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     }
 }
