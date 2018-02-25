@@ -213,18 +213,18 @@
 				601D8BC61ED2067500AC1407 /* CopyFlow.swift */,
 				0DDA0AF51FC6783800839814 /* DataStore.swift */,
 				0DAF67C31FC9508000390890 /* DefaultsContext.swift */,
-				60E73F2B1EBE8E4100F559A1 /* EditViewController.swift */,
 				4E4D27FB20423BE800F95CD7 /* EditView.swift */,
+				60E73F2B1EBE8E4100F559A1 /* EditViewController.swift */,
 				0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */,
 				60E73F2F1EBEA9D700F559A1 /* Item.swift */,
 				0DE864341FD3676000CE7188 /* Launch.swift */,
 				0DE864361FD3764C00CE7188 /* ShortcutItem.swift */,
 				60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */,
 				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
-				4E4D280020427EB100F95CD7 /* Swift Extensions */,
-				4E4D27FD20427DEC00F95CD7 /* UIKit Extensions */,
 				0DAF67C61FC950D200390890 /* WelcomeViewController.swift */,
 				0DAF67C51FC9509E00390890 /* Supporting Files */,
+				4E4D280020427EB100F95CD7 /* Swift Extensions */,
+				4E4D27FD20427DEC00F95CD7 /* UIKit Extensions */,
 			);
 			path = CopyPaste;
 			sourceTree = "<group>";
