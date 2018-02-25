@@ -22,6 +22,7 @@
 		4E3CC893201EBC9C0097E1D1 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB3D85A20187A1200DD0A7C /* Globals.swift */; };
 		4E3CC894201EBC9D0097E1D1 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB3D85A20187A1200DD0A7C /* Globals.swift */; };
 		4E4D27FC20423BE800F95CD7 /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4D27FB20423BE800F95CD7 /* EditView.swift */; };
+		4E4D27FF20427EA100F95CD7 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4D27FE20427EA100F95CD7 /* Array.swift */; };
 		4E5C8A57201D653200BA5C84 /* AppFlowTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5C8A56201D653200BA5C84 /* AppFlowTestCase.swift */; };
 		4E73E124201B12F6003FA9D1 /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E73E123201B12F6003FA9D1 /* AppFlow.swift */; };
 		4E73E128201B1A61003FA9D1 /* DefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E73E127201B1A61003FA9D1 /* DefaultsTests.swift */; };
@@ -74,6 +75,7 @@
 		0DE864341FD3676000CE7188 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
 		0DE864361FD3764C00CE7188 /* ShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
 		4E4D27FB20423BE800F95CD7 /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
+		4E4D27FE20427EA100F95CD7 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		4E5C8A56201D653200BA5C84 /* AppFlowTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowTestCase.swift; sourceTree = "<group>"; };
 		4E73E123201B12F6003FA9D1 /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		4E73E127201B1A61003FA9D1 /* DefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsTests.swift; sourceTree = "<group>"; };
@@ -145,6 +147,14 @@
 			path = "UIKit Extensions";
 			sourceTree = "<group>";
 		};
+		4E4D280020427EB100F95CD7 /* Swift Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4E4D27FE20427EA100F95CD7 /* Array.swift */,
+			);
+			path = "Swift Extensions";
+			sourceTree = "<group>";
+		};
 		604B485B1EC7EC4A00DBA243 /* CopyPasteUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,6 +221,7 @@
 				0DE864361FD3764C00CE7188 /* ShortcutItem.swift */,
 				60AB4EEA1E9582A70002AAE8 /* TableViewController.swift */,
 				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
+				4E4D280020427EB100F95CD7 /* Swift Extensions */,
 				4E4D27FD20427DEC00F95CD7 /* UIKit Extensions */,
 				0DAF67C61FC950D200390890 /* WelcomeViewController.swift */,
 				0DAF67C51FC9509E00390890 /* Supporting Files */,
@@ -394,6 +405,7 @@
 				4EB3D85B20187A1200DD0A7C /* Globals.swift in Sources */,
 				601D8BC71ED2067500AC1407 /* CopyFlow.swift in Sources */,
 				0DAF67CB1FC9512C00390890 /* UIViewController.swift in Sources */,
+				4E4D27FF20427EA100F95CD7 /* Array.swift in Sources */,
 				60AB4EEB1E9582A70002AAE8 /* TableViewController.swift in Sources */,
 				0DE864371FD3764C00CE7188 /* ShortcutItem.swift in Sources */,
 				0DE864351FD3676000CE7188 /* Launch.swift in Sources */,
