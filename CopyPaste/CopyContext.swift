@@ -12,7 +12,7 @@ public final class CopyContext<D: Codable> {
 
     private let dataStore: DataStore
 
-    init(dataStore: DataStore = DataStore()) {
+    public init(dataStore: DataStore = DataStore()) {
         self.dataStore = dataStore
 
         items = dataStore.decode([D].self) ?? []
@@ -42,12 +42,12 @@ public final class CopyContext<D: Codable> {
         #endif // End
     }
 
-    func save(_ items: [D]) {
+    public func save(_ items: [D]) {
         self.items = items
         dataStore.encode(items)
     }
 
-    func reset() {
+    public func reset() {
         save([])
     }
 }
