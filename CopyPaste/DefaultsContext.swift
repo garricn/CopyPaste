@@ -40,7 +40,3 @@ public final class DefaultsContext {
         save(Defaults())
     }
 }
-
-public struct Defaults: Codable {
-    public var showWelcome = true
-}
