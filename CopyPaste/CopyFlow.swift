@@ -141,7 +141,6 @@ public final class CopyFlow {
             let dataTitle = "Data"
             let dataHandler: (UIAlertAction) -> Void  = { _ in CopyContext<Item>().reset() }
             let dataAction = UIAlertAction(title: dataTitle, style: .destructive, handler: dataHandler)
-            dataAction.accessibilityLabel = Globals.UITestingResetAction.data
             alert.addAction(dataAction)
             
             let defaultsTitle = "Defaults"
@@ -157,7 +156,6 @@ public final class CopyFlow {
             alert.addAction(bothAction)
             
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            cancelAction.accessibilityLabel = Globals.UITestingResetAction.cancel
             alert.addAction(cancelAction)
             
             return alert
