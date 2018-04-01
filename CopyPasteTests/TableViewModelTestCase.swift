@@ -22,18 +22,6 @@ final class TableViewModelTestCase: XCTestCase {
         XCTAssertTrue(subject.numberOfSections == 1)
     }
 
-    // MARK: - TEST: isEditButtonEnabled: Bool
-
-    func test_Edit_Button_Is_Not_Enabled_Given_Zero_Items() {
-        subject = TableViewModel()
-        XCTAssertTrue(!subject.isEditButtonEnabled)
-    }
-
-    func test_Edit_Button_Is_Enabled_Given_Non_Zero_Items() {
-        subject = TableViewModel(items: [Item()])
-        XCTAssertTrue(subject.isEditButtonEnabled)
-    }
-
     // MARK: - TEST: numberOfRows(inSection section: Int) -> Int
 
     func test_Number_Of_Rows_Given_Zero_Items() {

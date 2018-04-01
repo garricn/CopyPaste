@@ -12,10 +12,6 @@ public final class TableViewModel {
         self.items = items
     }
 
-    public var isEditButtonEnabled: Bool {
-        return !items.isEmpty
-    }
-
     private let cellIdentifier: String = UITableViewCell.identifier
 
     public var numberOfSections: Int { return 1 }
