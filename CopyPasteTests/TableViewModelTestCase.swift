@@ -61,16 +61,32 @@ final class TableViewModelTestCase: XCTestCase {
 
         let indexPath = IndexPath(row: 0, section: 0)
         let cell = subject.cell(forRowAt: indexPath, in: UITableView())
-        XCTAssertTrue(cell.textLabel?.text == "Add Item")
+        XCTAssertEqual(cell.textLabel?.text, "Add Item")
+        XCTAssertEqual(cell.detailTextLabel?.text, "")
     }
-
-    func test_Configured_Cell_Given_One_Item() {
-        let item = Item(body: "Item 0")
+    
+    func testCellGivenItemWithNoTitle() {
+        let item = Item.init(body: "Body")
         subject = TableViewModel(items: [item])
-
+        
         let indexPath = IndexPath(row: 0, section: 0)
         let cell = subject.cell(forRowAt: indexPath, in: UITableView())
-        XCTAssertTrue(cell.textLabel?.text == "Item 0")
+        XCTAssertEqual(cell.textLabel?.text, "Body")
+        XCTAssertEqual(cell.detailTextLabel?.text, "")
+    }
+    
+    func testCellItemWithTitle() {
+        // given
+        let item = Item.init(body: "Body", copyCount: 0, title: "Title")
+        subject = TableViewModel(items: [item])
+        
+        // when
+        let indexPath = IndexPath(row: 0, section: 0)
+        let cell = subject.cell(forRowAt: indexPath, in: UITableView())
+        
+        // then
+        XCTAssertEqual(cell.textLabel?.text, "Title")
+        XCTAssertEqual(cell.detailTextLabel?.text, "Body")
     }
 
     func test_Configured_Cell_Given_Two_Items() {
