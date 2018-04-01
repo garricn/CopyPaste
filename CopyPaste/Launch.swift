@@ -41,23 +41,24 @@ public extension AppFlow.Launch {
     }
 
     public init(options: [UIApplicationLaunchOptionsKey: Any]?) {
-        var launchOptions: [UIApplicationLaunchOptionsKey: Any]? = options
+        var launchOptions: [UIApplicationLaunchOptionsKey: Any] = options ?? [:]
 
         #if DEBUG
-            if let type = ProcessInfo.processInfo.environment[Globals.EnvironmentVariables.shortcutItemKey] {
-                let item = UIApplicationShortcutItem.init(type: type, localizedTitle: "")
-                let key = UIApplicationLaunchOptionsKey(Globals.EnvironmentVariables.shortcutItemKey)
-                launchOptions = [key: item]
-            }
+        if let type = ProcessInfo.processInfo.environment[Globals.EnvironmentVariables.shortcutItemKey] {
+            let item = UIApplicationShortcutItem(type: type, localizedTitle: "")
+            let key = UIApplicationLaunchOptionsKey(Globals.EnvironmentVariables.shortcutItemKey)
+            launchOptions[key] = item
+        }
         #endif
 
-        guard let options = launchOptions, !options.isEmpty else {
+        guard !launchOptions.isEmpty else {
             reason = .normal
             return
         }
 
-        guard options.count == 1, let appItem = options[.shortcutItem] as? UIApplicationShortcutItem,
-            let item = ShortcutItem(item: appItem) else {
+        guard launchOptions.count == 1
+            , let appItem = launchOptions[.shortcutItem] as? UIApplicationShortcutItem
+            , let item = ShortcutItem(item: appItem) else {
                 fatalError()
         }
 
