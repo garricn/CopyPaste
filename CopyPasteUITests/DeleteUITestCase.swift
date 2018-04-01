@@ -25,7 +25,6 @@ final class DeleteUITestCase: SessionBaseUITestCase {
     }
 
     func test_Swipe_To_Delete() {
-        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars["Add Item"].buttons["Save"].tap()
@@ -35,7 +34,6 @@ final class DeleteUITestCase: SessionBaseUITestCase {
     }
 
     func test_Edit_Button_Delete() {
-        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars["Add Item"].buttons["Save"].tap()
@@ -49,7 +47,6 @@ final class DeleteUITestCase: SessionBaseUITestCase {
     }
 
     func test_Delete_Multple_Items() {
-        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("Item 0")
         app.navigationBars["Add Item"].buttons["Save"].tap()
