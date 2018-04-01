@@ -31,6 +31,10 @@ public final class UITestHelper {
     public static func debugPerform(resetAction: ResetAction, application: XCUIApplication) {
         application.navigationBars["All Items"].buttons["debug"].tap()
         application.sheets["RESET"].buttons[resetAction.rawValue].tap()
+    func setItems(to items: [Item]) {
+        let data = try! JSONEncoder().encode(items)
+        let string = String(data: data, encoding: .utf8)
+        app.launchEnvironment[Globals.EnvironmentVariables.items] = string
     }
     public enum ResetAction {
         case data
@@ -50,5 +54,9 @@ public final class UITestHelper {
                 return Globals.UITestingResetAction.cancel
             }
         }
+    func setDefaults(to defaults: Defaults) {
+        let data = try! JSONEncoder().encode(defaults)
+        let string = String(data: data, encoding: .utf8)
+        app.launchEnvironment[Globals.EnvironmentVariables.defaults] = string
     }
 }
