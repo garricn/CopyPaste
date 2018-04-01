@@ -8,18 +8,17 @@ public final class TableViewController: UIViewController {
 
     public var viewModel: TableViewModel {
         didSet {
-            didSetViewModel()
+            tableView.reloadData()
         }
     }
 
-    private let tableView: UITableView
-
-    private var debugDidTap: (() -> Void)?
+    public let tableView: UITableView
+    
     private var didTap: ((UIBarButtonItem) -> Void)?
     private var didSelectRow: ((IndexPath, UITableView) -> Void)?
     private var didCommitEditing: ((UITableViewCellEditingStyle, IndexPath, UITableView) -> Void)?
     private var didTapAccessoryButtonForRow: ((IndexPath, UITableView) -> Void)?
-
+    
     // MARK: - Life Cycle
 
     public init(tableView: UITableView = .init(), viewModel: TableViewModel = .init()) {
@@ -42,7 +41,6 @@ public final class TableViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationItems()
         configureTableView()
-        didSetViewModel()
     }
 
     private lazy var searchController: UISearchController = {
@@ -60,15 +58,6 @@ public final class TableViewController: UIViewController {
         if navigationItem.searchController == nil {
             navigationItem.searchController = searchController
         }
-    }
-
-    public override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        tableView.setEditing(editing, animated: animated)
-    }
-
-    public func onDebugDidTap(perform action: @escaping (() -> Void)) {
-        debugDidTap = action
     }
 
     public func onDidTapAddBarButtonItem(perform action: @escaping ((UIBarButtonItem) -> Void)) {
@@ -89,7 +78,6 @@ public final class TableViewController: UIViewController {
 
     private func configureNavigationItems() {
         navigationItem.title = "All Items"
-        navigationItem.rightBarButtonItem = editButtonItem
 
         var items: [UIBarButtonItem] = []
         let addAction = #selector(didTap(addBarButtonItem:))
@@ -107,13 +95,6 @@ public final class TableViewController: UIViewController {
         navigationItem.leftBarButtonItems = items
     }
 
-    #if DEBUG
-    @objc
-    private func didTap(debugBarButtonItem: UIBarButtonItem) {
-        debugDidTap?()
-    }
-    #endif
-
     private func configureTableView() {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44
@@ -121,15 +102,22 @@ public final class TableViewController: UIViewController {
         tableView.delegate = self
     }
 
-    private func didSetViewModel() {
-        tableView.reloadData()
-        setEditing(false, animated: true)
-        editButtonItem.isEnabled = viewModel.isEditButtonEnabled
-    }
-
     @objc private func didTap(addBarButtonItem: UIBarButtonItem) {
         self.didTap?(addBarButtonItem)
     }
+    
+    #if DEBUG
+    private var debugDidTap: (() -> Void)?
+    
+    public func onDebugDidTap(perform action: @escaping (() -> Void)) {
+        debugDidTap = action
+    }
+    
+    @objc
+    private func didTap(debugBarButtonItem: UIBarButtonItem) {
+        debugDidTap?()
+    }
+    #endif
 }
 
 // MARK: - UITableViewDataSource
