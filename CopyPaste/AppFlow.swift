@@ -51,7 +51,7 @@ public extension AppFlow {
             foregroundFlow.performAction(for: item)
             return true
         } else {
-            return false
+            fatalError("Unsupported!")
         }
     }
 }
