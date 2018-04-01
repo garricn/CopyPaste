@@ -9,8 +9,9 @@ import XCTest
 final class AppLaunchUITestCase: UITestCase {
 
     func test_Fresh_Install_Launch() {
+        setDefaults(to: Defaults())
+        setItems(to: [])
         
-        app.launchEnvironment = [Globals.EnvironmentVariables.resetDefaults: "true"]
         app.launch()
         app.buttons["Get Started"].tap()
 
@@ -22,7 +23,6 @@ final class AppLaunchUITestCase: UITestCase {
         assertAppIsDisplayingAllItems()
         assertAppIsDisplayingAddItemCell()
 
-        UITestHelper.debugPerform(resetAction: .userDefaults, application: app)
     }
 
     func test_NewItem_ShortcutItem_Launch() {

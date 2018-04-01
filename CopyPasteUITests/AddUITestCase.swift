@@ -16,7 +16,7 @@ final class AddUITestCase: SessionBaseUITestCase {
     }
 
     override func tearDown() {
-        UITestHelper.debugPerform(resetAction: .data, application: app)
+        setItems(to: [])
         super.tearDown()
     }
 
