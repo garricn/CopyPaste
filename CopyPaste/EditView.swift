@@ -14,7 +14,6 @@ public final class EditView: UIView {
         textField.textColor = .black
         textField.contentVerticalAlignment = .top
         textField.textAlignment = .left
-        textField.backgroundColor = .orange
         textField.adjustsFontSizeToFitWidth = true
         textField.minimumFontSize = 11.0
         textField.autocapitalizationType = .words
@@ -33,7 +32,6 @@ public final class EditView: UIView {
         textView.accessibilityLabel = "Body"
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textColor = .black
-        textView.backgroundColor = .yellow
         textView.text = "Body"
         textView.font = UIFont.preferredFont(forTextStyle: .body)
         textView.layoutMargins = UIEdgeInsets.zero
