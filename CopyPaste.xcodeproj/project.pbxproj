@@ -10,25 +10,26 @@
 		0D0300621FC8BB2D00FBF8FB /* ForegroundFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */; };
 		0D1289851FE70D1200BC8E51 /* ShortcutItemTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1289841FE70D1200BC8E51 /* ShortcutItemTestCase.swift */; };
 		0D1289871FE7103E00BC8E51 /* LaunchTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D1289861FE7103E00BC8E51 /* LaunchTestCase.swift */; };
-		0D66D7751FCB76CD0023F7A4 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D66D7741FCB76CD0023F7A4 /* UITableViewCell.swift */; };
 		0DAF67C01FC90DA100390890 /* CopyContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67BF1FC90DA100390890 /* CopyContext.swift */; };
 		0DAF67C21FC93D2A00390890 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0DAF67C11FC93D2A00390890 /* Settings.bundle */; };
 		0DAF67C41FC9508000390890 /* DefaultsContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67C31FC9508000390890 /* DefaultsContext.swift */; };
 		0DAF67C71FC950D200390890 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67C61FC950D200390890 /* WelcomeViewController.swift */; };
-		0DAF67CB1FC9512C00390890 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DAF67CA1FC9512C00390890 /* UIViewController.swift */; };
 		0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA0AF51FC6783800839814 /* DataStore.swift */; };
 		0DE864351FD3676000CE7188 /* Launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864341FD3676000CE7188 /* Launch.swift */; };
 		0DE864371FD3764C00CE7188 /* ShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864361FD3764C00CE7188 /* ShortcutItem.swift */; };
 		4E32D1D02070618E00F83735 /* SessionBaseUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E32D1CF2070618E00F83735 /* SessionBaseUITestCase.swift */; };
 		4E3CC893201EBC9C0097E1D1 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB3D85A20187A1200DD0A7C /* Globals.swift */; };
 		4E3CC894201EBC9D0097E1D1 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB3D85A20187A1200DD0A7C /* Globals.swift */; };
-		4E4D27FC20423BE800F95CD7 /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4D27FB20423BE800F95CD7 /* EditView.swift */; };
-		4E4D27FF20427EA100F95CD7 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4D27FE20427EA100F95CD7 /* Array.swift */; };
-		4E4D280220427FDD00F95CD7 /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4D280120427FDD00F95CD7 /* Bool.swift */; };
+		4E4ACB50206EF37D00970D1E /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4ACB4F206EF37400970D1E /* EditView.swift */; };
+		4E4ACB56206EF4A200970D1E /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4ACB55206EF4A200970D1E /* UITableViewCell.swift */; };
+		4E4ACB58206EF4A800970D1E /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4ACB57206EF4A800970D1E /* UIViewController.swift */; };
+		4E4ACB5B206EF4AF00970D1E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4ACB59206EF4AF00970D1E /* Array.swift */; };
+		4E4ACB5C206EF4AF00970D1E /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E4ACB5A206EF4AF00970D1E /* Bool.swift */; };
 		4E5C8A57201D653200BA5C84 /* AppFlowTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5C8A56201D653200BA5C84 /* AppFlowTestCase.swift */; };
 		4E73E124201B12F6003FA9D1 /* AppFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E73E123201B12F6003FA9D1 /* AppFlow.swift */; };
 		4E73E128201B1A61003FA9D1 /* DefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E73E127201B1A61003FA9D1 /* DefaultsTests.swift */; };
 		4EA0ADC0207040100020849D /* CopyFlowTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA0ADBF207040100020849D /* CopyFlowTestCase.swift */; };
+		4EA0ADC1207045D10020849D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E73F2F1EBEA9D700F559A1 /* Item.swift */; };
 		4EA0ADC32070494E0020849D /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA0ADC22070494E0020849D /* Defaults.swift */; };
 		4EA0ADC42070494E0020849D /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA0ADC22070494E0020849D /* Defaults.swift */; };
 		4EB3D85B20187A1200DD0A7C /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB3D85A20187A1200DD0A7C /* Globals.swift */; };
@@ -70,19 +71,19 @@
 		0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundFlow.swift; sourceTree = "<group>"; };
 		0D1289841FE70D1200BC8E51 /* ShortcutItemTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItemTestCase.swift; sourceTree = "<group>"; };
 		0D1289861FE7103E00BC8E51 /* LaunchTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchTestCase.swift; sourceTree = "<group>"; };
-		0D66D7741FCB76CD0023F7A4 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		0DAF67BF1FC90DA100390890 /* CopyContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyContext.swift; sourceTree = "<group>"; };
 		0DAF67C11FC93D2A00390890 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		0DAF67C31FC9508000390890 /* DefaultsContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsContext.swift; sourceTree = "<group>"; };
 		0DAF67C61FC950D200390890 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
-		0DAF67CA1FC9512C00390890 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		0DDA0AF51FC6783800839814 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		0DE864341FD3676000CE7188 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
 		0DE864361FD3764C00CE7188 /* ShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
-		4E4D27FB20423BE800F95CD7 /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
-		4E4D27FE20427EA100F95CD7 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
-		4E4D280120427FDD00F95CD7 /* Bool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		4E32D1CF2070618E00F83735 /* SessionBaseUITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBaseUITestCase.swift; sourceTree = "<group>"; };
+		4E4ACB4F206EF37400970D1E /* EditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
+		4E4ACB55206EF4A200970D1E /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
+		4E4ACB57206EF4A800970D1E /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		4E4ACB59206EF4AF00970D1E /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		4E4ACB5A206EF4AF00970D1E /* Bool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		4E5C8A56201D653200BA5C84 /* AppFlowTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowTestCase.swift; sourceTree = "<group>"; };
 		4E73E123201B12F6003FA9D1 /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
 		4E73E127201B1A61003FA9D1 /* DefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsTests.swift; sourceTree = "<group>"; };
@@ -144,23 +145,24 @@
 				60AB4EEF1E9582A70002AAE8 /* Assets.xcassets */,
 				60AB4EF11E9582A70002AAE8 /* LaunchScreen.storyboard */,
 			);
-			path = "Supporting Files";
-			sourceTree = "<group>";
+			name = "Supporting Files";
+			path = "/Users/garric/Developer/CopyPaste/CopyPaste/Supporting Files";
+			sourceTree = "<absolute>";
 		};
-		4E4D27FD20427DEC00F95CD7 /* UIKit Extensions */ = {
+		4E4ACB5D206EF4CD00970D1E /* UIKit Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				0D66D7741FCB76CD0023F7A4 /* UITableViewCell.swift */,
-				0DAF67CA1FC9512C00390890 /* UIViewController.swift */,
+				4E4ACB55206EF4A200970D1E /* UITableViewCell.swift */,
+				4E4ACB57206EF4A800970D1E /* UIViewController.swift */,
 			);
 			path = "UIKit Extensions";
 			sourceTree = "<group>";
 		};
-		4E4D280020427EB100F95CD7 /* Swift Extensions */ = {
+		4E4ACB5E206EF4DA00970D1E /* Swift Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				4E4D27FE20427EA100F95CD7 /* Array.swift */,
-				4E4D280120427FDD00F95CD7 /* Bool.swift */,
+				4E4ACB59206EF4AF00970D1E /* Array.swift */,
+				4E4ACB5A206EF4AF00970D1E /* Bool.swift */,
 			);
 			path = "Swift Extensions";
 			sourceTree = "<group>";
@@ -225,8 +227,8 @@
 				601D8BC61ED2067500AC1407 /* CopyFlow.swift */,
 				0DDA0AF51FC6783800839814 /* DataStore.swift */,
 				0DAF67C31FC9508000390890 /* DefaultsContext.swift */,
-				4E4D27FB20423BE800F95CD7 /* EditView.swift */,
 				4EA0ADC22070494E0020849D /* Defaults.swift */,
+				4E4ACB4F206EF37400970D1E /* EditView.swift */,
 				60E73F2B1EBE8E4100F559A1 /* EditViewController.swift */,
 				0D0300611FC8BB2D00FBF8FB /* ForegroundFlow.swift */,
 				60E73F2F1EBEA9D700F559A1 /* Item.swift */,
@@ -236,8 +238,8 @@
 				601D8BC41ED177E100AC1407 /* TableViewModel.swift */,
 				0DAF67C61FC950D200390890 /* WelcomeViewController.swift */,
 				0DAF67C51FC9509E00390890 /* Supporting Files */,
-				4E4D280020427EB100F95CD7 /* Swift Extensions */,
-				4E4D27FD20427DEC00F95CD7 /* UIKit Extensions */,
+				4E4ACB5E206EF4DA00970D1E /* Swift Extensions */,
+				4E4ACB5D206EF4CD00970D1E /* UIKit Extensions */,
 			);
 			path = CopyPaste;
 			sourceTree = "<group>";
@@ -388,6 +390,7 @@
 				4E32D1D02070618E00F83735 /* SessionBaseUITestCase.swift in Sources */,
 				600AB6C61EC8028F0051B426 /* UITestCase.swift in Sources */,
 				600AB6C21EC7FD590051B426 /* AppLaunchUITestCase.swift in Sources */,
+				4EA0ADC1207045D10020849D /* Item.swift in Sources */,
 				604B48651EC7ED4200DBA243 /* AddUITestCase.swift in Sources */,
 				4E3CC893201EBC9C0097E1D1 /* Globals.swift in Sources */,
 				60762C391ECFF63C00503ADB /* EditUIITestCase.swift in Sources */,
@@ -414,25 +417,25 @@
 			files = (
 				0D0300621FC8BB2D00FBF8FB /* ForegroundFlow.swift in Sources */,
 				0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */,
+				4E4ACB58206EF4A800970D1E /* UIViewController.swift in Sources */,
 				4E73E124201B12F6003FA9D1 /* AppFlow.swift in Sources */,
 				601D8BC51ED177E100AC1407 /* TableViewModel.swift in Sources */,
 				60E73F301EBEA9D700F559A1 /* Item.swift in Sources */,
 				0DAF67C71FC950D200390890 /* WelcomeViewController.swift in Sources */,
 				4EB3D85B20187A1200DD0A7C /* Globals.swift in Sources */,
 				601D8BC71ED2067500AC1407 /* CopyFlow.swift in Sources */,
-				0DAF67CB1FC9512C00390890 /* UIViewController.swift in Sources */,
-				4E4D27FF20427EA100F95CD7 /* Array.swift in Sources */,
+				4E4ACB5B206EF4AF00970D1E /* Array.swift in Sources */,
 				60AB4EEB1E9582A70002AAE8 /* TableViewController.swift in Sources */,
 				0DE864371FD3764C00CE7188 /* ShortcutItem.swift in Sources */,
+				4E4ACB50206EF37D00970D1E /* EditView.swift in Sources */,
+				4E4ACB5C206EF4AF00970D1E /* Bool.swift in Sources */,
 				0DE864351FD3676000CE7188 /* Launch.swift in Sources */,
-				4E4D280220427FDD00F95CD7 /* Bool.swift in Sources */,
 				4EA0ADC32070494E0020849D /* Defaults.swift in Sources */,
 				0DAF67C41FC9508000390890 /* DefaultsContext.swift in Sources */,
-				0D66D7751FCB76CD0023F7A4 /* UITableViewCell.swift in Sources */,
 				60AB4EE91E9582A70002AAE8 /* AppDelegate.swift in Sources */,
 				0DAF67C01FC90DA100390890 /* CopyContext.swift in Sources */,
 				60E73F2C1EBE8E4100F559A1 /* EditViewController.swift in Sources */,
-				4E4D27FC20423BE800F95CD7 /* EditView.swift in Sources */,
+				4E4ACB56206EF4A200970D1E /* UITableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
