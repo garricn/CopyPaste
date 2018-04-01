@@ -6,5 +6,5 @@ build/
 *.xcuserstate
 *.xcbkptlist
 *.xcsettings
-#*.xcworkspace
+*.xcworkspace
 xcuserdata
