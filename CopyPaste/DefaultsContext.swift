@@ -14,21 +14,30 @@ public final class DefaultsContext {
         self.dataStore = dataStore
 
         defaults = dataStore.decode(Defaults.self) ?? Defaults()
-        dataStore.encode(defaults)
+        
+        defer {
+            save(defaults)
+        }
 
-        // NOTE: - Too many decisions happing down there
-        // one debug in/output: [DefaultKey: DefaultValue] // to be determined
-        // not two: showWelcome and resetDefault
-        #if DEBUG
-            let environment = ProcessInfo.processInfo.environment
-            let key = Globals.EnvironmentVariables.showWelcome
-            if let value = environment[key], let bool = Bool(string: value) {
-                let defaults = Defaults(showWelcome: bool)
-                save(defaults)
-            } else if ProcessInfo.processInfo.environment[Globals.EnvironmentVariables.resetDefaults] != nil {
-                reset()
-            }
-        #endif
+        #if DEBUG // Start: Get Decoded Data from .utf8 encoding String
+        
+        // get string for key
+        guard let encodedString = ProcessInfo.processInfo.environment[Globals.EnvironmentVariables.defaults] else {
+            return
+        }
+        
+        // convert string to data
+        guard let data = encodedString.data(using: .utf8) else {
+            return
+        }
+        
+        // convert to data to items
+        guard let decodedDefaults = dataStore.decode(type: Defaults.self, from: data) else {
+            return
+        }
+        
+        self.defaults = decodedDefaults
+        #endif // End
     }
 
     public func save( _ defaults: Defaults) {
