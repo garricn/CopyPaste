@@ -7,7 +7,14 @@
 import XCTest
 
 final class AppLaunchUITestCase: UITestCase {
-
+    
+    override func tearDown() {
+        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.defaults)
+        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.items)
+        app.launchEnvironment.removeValue(forKey: UIApplicationLaunchOptionsKey.shortcutItem.rawValue)
+        super.tearDown()
+    }
+    
     func test_Fresh_Install_Launch() {
         setDefaults(to: Defaults())
         setItems(to: [])
@@ -17,30 +24,42 @@ final class AppLaunchUITestCase: UITestCase {
 
         assertAppIsDisplayingAllItems()
         assertAppIsDisplayingAddItemCell()
+        
         app.terminate()
-        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.resetDefaults)
+        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.defaults)
+        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.items)
+        app.launch()
+        
+        assertAppIsDisplayingAllItems()
+        assertAppIsDisplayingAddItemCell()
+    }
+    
+    func testSecondAppLaunch() {
+        setDefaults(to: Defaults(showWelcome: false))
+        setItems(to: [])
         app.launch()
         assertAppIsDisplayingAllItems()
         assertAppIsDisplayingAddItemCell()
-
     }
-
-    func test_NewItem_ShortcutItem_Launch() {
-        
-        app.launchEnvironment = [UIApplicationLaunchOptionsKey.shortcutItem.rawValue: Globals.ShortcutItemTypes.newItem,
-                                 Globals.EnvironmentVariables.showWelcome: "false"]
+    
+    func testLaunchWithData() {
+        setDefaults(to: Defaults(showWelcome: false))
+        setItems(to: [Item.init(body: "Body", copyCount: 0, title: "Title")])
         app.launch()
+        assertAppIsDisplayingAllItems()
+        let element = app.cells.staticTexts["Body"]
+        assertApp(isDisplaying: element)
+    }
+    
+    func test_NewItem_ShortcutItem_Launch() {
+        setDefaults(to: Defaults(showWelcome: false))
+        setItems(to: [])
+
+        app.launchEnvironment[UIApplicationLaunchOptionsKey.shortcutItem.rawValue] = Globals.ShortcutItemTypes.newItem
+        app.launch()
+
         let element = app.navigationBars["Add Item"]
         assertApp(isDisplaying: element)
-
         app.launchEnvironment.removeValue(forKey: UIApplicationLaunchOptionsKey.shortcutItem.rawValue)
-    }
-}
-
-final class HappyPathUITestCase: UITestCase {
-
-    func test_HappyPath() {
-        app.launchEnvironment[Globals.EnvironmentVariables.resetDefaults] = "true"
-        app.launchEnvironment[Globals.EnvironmentVariables.resetData] = "true"
     }
 }
