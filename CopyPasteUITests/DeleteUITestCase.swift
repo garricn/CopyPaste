@@ -4,14 +4,6 @@
 
 import XCTest
 
-class SessionBaseUITestCase: UITestCase {
-
-    override func setUp() {
-        super.setUp()
-        app.launchEnvironment[Globals.EnvironmentVariables.showWelcome] = "false"
-    }
-}
-
 final class DeleteUITestCase: SessionBaseUITestCase {
 
     override func setUp() {
