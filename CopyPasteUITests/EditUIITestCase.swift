@@ -12,7 +12,7 @@ class EditUITestCase: SessionBaseUITestCase {
     }
 
     override func tearDown() {
-        UITestHelper.debugPerform(resetAction: .data, application: XCUIApplication())
+        setItems(to: [])
         super.tearDown()
     }
 
