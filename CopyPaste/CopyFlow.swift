@@ -62,7 +62,7 @@ public final class CopyFlow {
             // Increment copy count
             let row = indexPath.row
             let item = self.items[row]
-            let newItem = Item(body: item.body, copyCount: item.copyCount + 1)
+            let newItem = Item(body: item.body, copyCount: item.copyCount + 1, title: item.title)
             self.items.remove(at: row)
             self.items.insert(newItem, at: row)
 
