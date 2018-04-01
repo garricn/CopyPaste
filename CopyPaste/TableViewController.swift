@@ -12,7 +12,7 @@ public final class TableViewController: UIViewController {
         }
     }
 
-    private let tableView: UITableView = .init()
+    private let tableView: UITableView
 
     private var debugDidTap: (() -> Void)?
     private var didTap: ((UIBarButtonItem) -> Void)?
@@ -22,7 +22,8 @@ public final class TableViewController: UIViewController {
 
     // MARK: - Life Cycle
 
-    public init(viewModel: TableViewModel = TableViewModel()) {
+    public init(tableView: UITableView = .init(), viewModel: TableViewModel = .init()) {
+        self.tableView = tableView
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
