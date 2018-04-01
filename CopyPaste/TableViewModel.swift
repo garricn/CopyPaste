@@ -35,6 +35,7 @@ public final class TableViewModel {
             cell.detailTextLabel?.text = item.body
         } else {
             cell.textLabel?.text = item.body
+            cell.detailTextLabel?.text = ""
         }
 
         cell.textLabel?.numberOfLines = 0
