@@ -9,8 +9,7 @@ import UIKit
 public final class CopyFlow {
 
     private(set) lazy var rootViewController: UINavigationController = {
-        let viewController = TableViewController(viewModel: TableViewModel(items: items))
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let navigationController = UINavigationController(rootViewController: inputView)
         navigationController.navigationBar.prefersLargeTitles = true
         return navigationController
     }()
@@ -25,9 +24,7 @@ public final class CopyFlow {
         }
     }
 
-    private var inputView: TableViewController {
-        return rootViewController.topViewController as! TableViewController
-    }
+    lazy var inputView: TableViewController = .init(viewModel: .init(items: items))
 
     public init(context: CopyContext<Item> = .init()) {
         self.context = context
