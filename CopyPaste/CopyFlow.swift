@@ -17,7 +17,7 @@ public final class CopyFlow {
     private let pasteboard: UIPasteboard = .general
     private let context: CopyContext<Item>
 
-    private var items: [Item] = [] {
+    private(set) var items: [Item] = [] {
         didSet {
             context.save(items)
             inputView.viewModel = TableViewModel(items: items)
