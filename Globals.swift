@@ -19,6 +19,8 @@ public enum Globals {
         static let resetData = "resetData"
         static let showWelcome = "showWelcome"
         static let resetDefaults = "resetDefaults"
+        static let defaults = "defaults"
+        static let items = "items"
         static let shortcutItemKey = "UIApplicationLaunchOptionsShortcutItemKey"
     }
     
