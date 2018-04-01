@@ -24,21 +24,21 @@ public final class CopyContext<D: Codable> {
         #if DEBUG // Start: Get Decoded Data from .utf8 encoding String
 
             // get string for key
-            guard let foo = ProcessInfo.processInfo.environment[Globals.EnvironmentVariables.resetData] else {
+            guard let encodedString = ProcessInfo.processInfo.environment[Globals.EnvironmentVariables.items] else {
                 return
             }
 
             // convert string to data
-            guard let data = foo.data(using: .utf8) else {
+            guard let data = encodedString.data(using: .utf8) else {
                 return
             }
 
             // convert to data to items
-            guard let items = dataStore.decode(type: [D].self, from: data) else {
+            guard let decodedItems = dataStore.decode(type: [D].self, from: data) else {
                 return
             }
 
-            self.items = items
+            self.items = decodedItems
         #endif // End
     }
 
