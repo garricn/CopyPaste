@@ -29,7 +29,6 @@ final class AddUITestCase: SessionBaseUITestCase {
     }
 
     func test_AddItemBarButton_Canceled_Item() {
-        
         let navigationBars = app.navigationBars
         navigationBars["All Items"].buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
@@ -39,7 +38,6 @@ final class AddUITestCase: SessionBaseUITestCase {
     }
 
     func test_AddItemBarButton_Saved_Item() {
-        
         let navigationBars = app.navigationBars
         navigationBars["All Items"].buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
@@ -69,7 +67,6 @@ final class AddUITestCase: SessionBaseUITestCase {
     }
 
     func test_AddItemCell_Saved_Item() {
-        
         app.cells.staticTexts["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars.buttons["Save"].tap()

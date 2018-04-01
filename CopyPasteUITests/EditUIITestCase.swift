@@ -8,7 +8,7 @@ class EditUITestCase: SessionBaseUITestCase {
 
     override func setUp() {
         super.setUp()
-        XCUIApplication().launch()
+        app.launch()
     }
 
     override func tearDown() {
@@ -17,7 +17,6 @@ class EditUITestCase: SessionBaseUITestCase {
     }
 
     func test_Edit_Canceled_With_No_Changes() {
-        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars["Add Item"].buttons["Save"].tap()
@@ -27,7 +26,6 @@ class EditUITestCase: SessionBaseUITestCase {
     }
 
     func test_Edit_Canceled_With_Changes() {
-        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars["Add Item"].buttons["Save"].tap()
@@ -38,7 +36,6 @@ class EditUITestCase: SessionBaseUITestCase {
     }
 
     func test_Edit_Saved_With_No_Changes() {
-        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars["Add Item"].buttons["Save"].tap()
@@ -48,7 +45,6 @@ class EditUITestCase: SessionBaseUITestCase {
     }
 
     func test_Edit_Saved_With_Changes() {
-        
         app.navigationBars.buttons["Add Item"].tap()
         app.textViews["Body"].typeText("This is just a test.")
         app.navigationBars["Add Item"].buttons["Save"].tap()
