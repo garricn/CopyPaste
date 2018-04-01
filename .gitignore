@@ -7,4 +7,5 @@ build/
 *.xcbkptlist
 *.xcsettings
 *.xcworkspace
-xcuserdata
+*.xcuserdata
+*.xcshareddata
