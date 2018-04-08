@@ -18,6 +18,7 @@ public final class TableViewController: UIViewController {
     private var didSelectRow: ((IndexPath, UITableView) -> Void)?
     private var didCommitEditing: ((UITableViewCellEditingStyle, IndexPath, UITableView) -> Void)?
     private var didTapAccessoryButtonForRow: ((IndexPath, UITableView) -> Void)?
+    private var didLongPress: ((IndexPath, UITableView) -> Void)?
     
     // MARK: - Life Cycle
 
@@ -76,6 +77,10 @@ public final class TableViewController: UIViewController {
         didTapAccessoryButtonForRow = action
     }
 
+    public func onDidLongPress(perform action: @escaping (IndexPath, UITableView) -> Void) {
+        didLongPress = action
+    }
+
     private func configureNavigationItems() {
         navigationItem.title = "All Items"
 
@@ -100,10 +105,20 @@ public final class TableViewController: UIViewController {
         tableView.estimatedRowHeight = 44
         tableView.dataSource = self
         tableView.delegate = self
+        let selector = #selector(didLongPress(sender:))
+        tableView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: selector))
     }
 
     @objc private func didTap(addBarButtonItem: UIBarButtonItem) {
         self.didTap?(addBarButtonItem)
+    }
+
+    @objc
+    private func didLongPress(sender: UILongPressGestureRecognizer) {
+        let location = sender.location(in: tableView)
+        if let indexPath = tableView.indexPathForRow(at: location) {
+            didLongPress?(indexPath, tableView)
+        }
     }
     
     #if DEBUG
