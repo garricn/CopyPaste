@@ -17,6 +17,7 @@
 		0DE864351FD3676000CE7188 /* Launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864341FD3676000CE7188 /* Launch.swift */; };
 		0DE864371FD3764C00CE7188 /* ShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864361FD3764C00CE7188 /* ShortcutItem.swift */; };
 		4E1552D9207AB6DE004C559E /* ItemTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1552D8207AB6DE004C559E /* ItemTestCase.swift */; };
+		4E1552DB207AD533004C559E /* CopyUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1552DA207AD533004C559E /* CopyUITestCase.swift */; };
 		4E32D1D02070618E00F83735 /* SessionBaseUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E32D1CF2070618E00F83735 /* SessionBaseUITestCase.swift */; };
 		4E3CC893201EBC9C0097E1D1 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB3D85A20187A1200DD0A7C /* Globals.swift */; };
 		4E3CC894201EBC9D0097E1D1 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB3D85A20187A1200DD0A7C /* Globals.swift */; };
@@ -80,6 +81,7 @@
 		0DE864341FD3676000CE7188 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
 		0DE864361FD3764C00CE7188 /* ShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
 		4E1552D8207AB6DE004C559E /* ItemTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTestCase.swift; sourceTree = "<group>"; };
+		4E1552DA207AD533004C559E /* CopyUITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyUITestCase.swift; sourceTree = "<group>"; };
 		4E32D1CF2070618E00F83735 /* SessionBaseUITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBaseUITestCase.swift; sourceTree = "<group>"; };
 		4E4ACB4F206EF37400970D1E /* EditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 		4E4ACB55206EF4A200970D1E /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				604B485E1EC7EC4A00DBA243 /* Info.plist */,
 				604B48641EC7ED4200DBA243 /* AddUITestCase.swift */,
 				60762C361ECFD48300503ADB /* DeleteUITestCase.swift */,
+				4E1552DA207AD533004C559E /* CopyUITestCase.swift */,
 				4E32D1CF2070618E00F83735 /* SessionBaseUITestCase.swift */,
 				60762C381ECFF63C00503ADB /* EditUIITestCase.swift */,
 				600AB6C11EC7FD590051B426 /* AppLaunchUITestCase.swift */,
@@ -392,6 +395,7 @@
 				60762C371ECFD48300503ADB /* DeleteUITestCase.swift in Sources */,
 				600AB6C41EC7FF390051B426 /* XCTestCaseExtensions.swift in Sources */,
 				4E32D1D02070618E00F83735 /* SessionBaseUITestCase.swift in Sources */,
+				4E1552DB207AD533004C559E /* CopyUITestCase.swift in Sources */,
 				4EE8CCB12071C72E0065A91E /* DataStore.swift in Sources */,
 				600AB6C61EC8028F0051B426 /* UITestCase.swift in Sources */,
 				600AB6C21EC7FD590051B426 /* AppLaunchUITestCase.swift in Sources */,
