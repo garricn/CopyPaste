@@ -16,6 +16,7 @@
 		0DDA0AF61FC6783800839814 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDA0AF51FC6783800839814 /* DataStore.swift */; };
 		0DE864351FD3676000CE7188 /* Launch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864341FD3676000CE7188 /* Launch.swift */; };
 		0DE864371FD3764C00CE7188 /* ShortcutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE864361FD3764C00CE7188 /* ShortcutItem.swift */; };
+		4E1552D7207A99F2004C559E /* DataStoreTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1552D6207A99F2004C559E /* DataStoreTestCase.swift */; };
 		4E1552D9207AB6DE004C559E /* ItemTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1552D8207AB6DE004C559E /* ItemTestCase.swift */; };
 		4E1552DB207AD533004C559E /* CopyUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E1552DA207AD533004C559E /* CopyUITestCase.swift */; };
 		4E32D1D02070618E00F83735 /* SessionBaseUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E32D1CF2070618E00F83735 /* SessionBaseUITestCase.swift */; };
@@ -80,6 +81,7 @@
 		0DDA0AF51FC6783800839814 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		0DE864341FD3676000CE7188 /* Launch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Launch.swift; sourceTree = "<group>"; };
 		0DE864361FD3764C00CE7188 /* ShortcutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutItem.swift; sourceTree = "<group>"; };
+		4E1552D6207A99F2004C559E /* DataStoreTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStoreTestCase.swift; sourceTree = "<group>"; };
 		4E1552D8207AB6DE004C559E /* ItemTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTestCase.swift; sourceTree = "<group>"; };
 		4E1552DA207AD533004C559E /* CopyUITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyUITestCase.swift; sourceTree = "<group>"; };
 		4E32D1CF2070618E00F83735 /* SessionBaseUITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBaseUITestCase.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				0D1289841FE70D1200BC8E51 /* ShortcutItemTestCase.swift */,
 				0D1289861FE7103E00BC8E51 /* LaunchTestCase.swift */,
 				4E73E127201B1A61003FA9D1 /* DefaultsTests.swift */,
+				4E1552D6207A99F2004C559E /* DataStoreTestCase.swift */,
 				4E5C8A56201D653200BA5C84 /* AppFlowTestCase.swift */,
 				4EA0ADBF207040100020849D /* CopyFlowTestCase.swift */,
 				4E1552D8207AB6DE004C559E /* ItemTestCase.swift */,
@@ -415,6 +418,7 @@
 				0D1289871FE7103E00BC8E51 /* LaunchTestCase.swift in Sources */,
 				4E3CC894201EBC9D0097E1D1 /* Globals.swift in Sources */,
 				4E73E128201B1A61003FA9D1 /* DefaultsTests.swift in Sources */,
+				4E1552D7207A99F2004C559E /* DataStoreTestCase.swift in Sources */,
 				0D1289851FE70D1200BC8E51 /* ShortcutItemTestCase.swift in Sources */,
 				607B179B1ED23F3F00CCAFD1 /* TableViewModelTestCase.swift in Sources */,
 				4E1552D9207AB6DE004C559E /* ItemTestCase.swift in Sources */,

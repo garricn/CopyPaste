@@ -57,27 +57,3 @@ class DefaultsTests: BaseTestCase {
         XCTAssertTrue(subject.data.showWelcome)
     }
 }
-
-class DataStoreTests: BaseTestCase {
-    
-    func testFoo() {
-        let name = "subject"
-        let subject = DataStore(name: "subject")
-        XCTAssertEqual(subject.name, name)
-        
-        let baseURL = Globals.dataDirectoryURL
-        XCTAssertEqual(subject.baseURL, baseURL)
-        
-        XCTAssertEqual(subject.location, subject.baseURL.appendingPathComponent(name))
-        
-        XCTAssertNil(subject.decode(Int.self))
-        
-        let item = Item(body: "body", copyCount: 0, title: "title")
-        subject.encode(item)
-        
-        let decoded = subject.decode(Item.self)!
-        XCTAssertEqual(decoded.body, item.body)
-        
-        try! subject.removeData(for: Item.self)        
-    }
-}
