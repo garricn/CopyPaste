@@ -2,6 +2,7 @@
 //  Copyright © 2017 SwiftCoders. All rights reserved.
 //
 
+import SafariServices
 import UIKit
 
 // TODO: - Rename to SessionFlow
@@ -78,6 +79,14 @@ public final class CopyFlow {
             }
         }
         
+        inputView.onDidLongPress { [weak self] indexPath, _ in
+            guard let presenter = self?.inputView, let item = self?.items.element(at: indexPath.row) else {
+                return
+            }
+
+            self?.startActionFlowIfNeeded(presenter: presenter, item: item)
+        }
+        
         #if DEBUG
         inputView.onDebugDidTap { [weak self] in
             guard let `self` = self else {
@@ -100,6 +109,17 @@ public final class CopyFlow {
         case let .newItem(completion):
             presentEditItemViewController(completion: completion)
         }
+    }
+    
+    private func startActionFlowIfNeeded(presenter: UIViewController, item: Item) {
+        guard let url = item.urls.first else {
+            return
+        }
+
+        let viewController = SFSafariViewController(url: url)
+        viewController.modalPresentationStyle = .overFullScreen
+        presenter.present(viewController, animated: true, completion: nil)
+
     }
 
     private func presentEditItemViewController(action: Action = .adding,
