@@ -9,6 +9,10 @@ class UITestCase: XCTestCase {
     private static let sharedApp: XCUIApplication = .init()
 
     var app: XCUIApplication { return UITestCase.sharedApp }
+    
+    public var allItemsElement: XCUIElement {
+        return app.navigationBars["All Items"]
+    }
 
     override func setUp() {
         super.setUp()
