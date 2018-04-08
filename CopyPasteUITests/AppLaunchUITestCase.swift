@@ -8,17 +8,10 @@ import XCTest
 
 final class AppLaunchUITestCase: UITestCase {
     
-    override func tearDown() {
-        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.defaults)
-        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.items)
-        app.launchEnvironment.removeValue(forKey: UIApplicationLaunchOptionsKey.shortcutItem.rawValue)
-        super.tearDown()
-    }
-    
     func test_Fresh_Install_Launch() {
-        setDefaults(to: Defaults())
-        setItems(to: [])
-        
+        resetDefaultsContext()
+        resetItemsContext()
+
         app.launch()
         app.buttons["Get Started"].tap()
 
@@ -26,8 +19,10 @@ final class AppLaunchUITestCase: UITestCase {
         assertAppIsDisplayingAddItemCell()
         
         app.terminate()
-        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.defaults)
-        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.items)
+        
+        removeDefaultsEnvironmentVariable()
+        removeItemsEnvironmentVariable()
+        
         app.launch()
         
         assertAppIsDisplayingAllItems()
@@ -35,31 +30,44 @@ final class AppLaunchUITestCase: UITestCase {
     }
     
     func testSecondAppLaunch() {
-        setDefaults(to: Defaults(showWelcome: false))
-        setItems(to: [])
+        addCodableEnvironmentVariable(Defaults(showWelcome: false), forName: Globals.EnvironmentVariables.defaults)
+        resetItemsContext()
+        
         app.launch()
         assertAppIsDisplayingAllItems()
         assertAppIsDisplayingAddItemCell()
+        
+        removeDefaultsEnvironmentVariable()
+        removeItemsEnvironmentVariable()
     }
     
     func testLaunchWithData() {
-        setDefaults(to: Defaults(showWelcome: false))
-        setItems(to: [Item.init(body: "Body", copyCount: 0, title: "Title")])
+        let defaults = Defaults(showWelcome: false)
+        addCodableEnvironmentVariable(defaults, forName: Globals.EnvironmentVariables.defaults)
+        let items = [Item(body: "Body", copyCount: 0, title: "Title")]
+        addCodableEnvironmentVariable(items, forName: Globals.EnvironmentVariables.items)
+
         app.launch()
         assertAppIsDisplayingAllItems()
-        let element = app.cells.staticTexts["Body"]
-        assertApp(isDisplaying: element)
+        assertApp(isDisplaying: app.cells.staticTexts["Body"])
+        
+        removeDefaultsEnvironmentVariable()
+        removeItemsEnvironmentVariable()
     }
     
     func test_NewItem_ShortcutItem_Launch() {
-        setDefaults(to: Defaults(showWelcome: false))
-        setItems(to: [])
-
-        app.launchEnvironment[UIApplicationLaunchOptionsKey.shortcutItem.rawValue] = Globals.ShortcutItemTypes.newItem
+        let defaults = Defaults(showWelcome: false)
+        addCodableEnvironmentVariable(defaults, forName: Globals.EnvironmentVariables.defaults)
+        
+        let key = Globals.EnvironmentVariables.shortcutItemKey
+        app.launchEnvironment[key] = Globals.ShortcutItemTypes.newItem
         app.launch()
 
         let element = app.navigationBars["Add Item"]
         assertApp(isDisplaying: element)
-        app.launchEnvironment.removeValue(forKey: UIApplicationLaunchOptionsKey.shortcutItem.rawValue)
+        
+        app.launchEnvironment.removeValue(forKey: key)
+        removeDefaultsEnvironmentVariable()
+        removeItemsEnvironmentVariable()
     }
 }

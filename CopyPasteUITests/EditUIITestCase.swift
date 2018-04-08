@@ -12,7 +12,7 @@ class EditUITestCase: SessionBaseUITestCase {
     }
 
     override func tearDown() {
-        setItems(to: [])
+        resetItemsContext()
         super.tearDown()
     }
 

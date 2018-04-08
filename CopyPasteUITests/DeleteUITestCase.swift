@@ -8,12 +8,12 @@ final class DeleteUITestCase: SessionBaseUITestCase {
 
     override func setUp() {
         super.setUp()
-        setItems(to: [])
+        resetItemsContext()
         app.launch()
     }
 
     override func tearDown() {
-        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.items)
+        removeItemsEnvironmentVariable()
         super.tearDown()
     }
 

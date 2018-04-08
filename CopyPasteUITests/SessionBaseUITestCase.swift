@@ -12,6 +12,6 @@ class SessionBaseUITestCase: UITestCase {
     
     override func setUp() {
         super.setUp()
-        setDefaults(to: Defaults(showWelcome: false))
+        addCodableEnvironmentVariable(Defaults(showWelcome: false), forName: Globals.EnvironmentVariables.defaults)
     }
 }

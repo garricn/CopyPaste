@@ -15,7 +15,7 @@ public final class CopyFlow {
     }()
 
     private let pasteboard: UIPasteboard = .general
-    private let context: CopyContext<Item>
+    private let context: DataContext<[Item]> = AppContext.shared.itemsContext
 
     private(set) var items: [Item] = [] {
         didSet {
@@ -26,22 +26,16 @@ public final class CopyFlow {
 
     lazy var inputView: TableViewController = .init(viewModel: .init(items: items))
 
-    public init(context: CopyContext<Item> = .init()) {
-        self.context = context
-        items = context.items
+    public init() {
+        items = context.data
     }
 
+    #if DEBUG
+    private lazy var debugFlow: DebugFlow = .init()
+    #endif
+    
     public func start(with parent: UIViewController, reason: AppFlow.Launch.Reason = .normal) {
         parent.add(rootViewController)
-
-        #if DEBUG
-        inputView.onDebugDidTap { [weak self] in
-            guard let `self` = self else {
-                return
-            }
-            self.rootViewController.present(self.makeDebugAlertController(), animated: true)
-        }
-        #endif
 
         inputView.onDidTapAddBarButtonItem { [weak self] _ in
             self?.presentEditItemViewController()
@@ -83,6 +77,15 @@ public final class CopyFlow {
                 self?.items.remove(at: indexPath.row)
             }
         }
+        
+        #if DEBUG
+        inputView.onDebugDidTap { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            self.debugFlow.start(presenter: self.rootViewController)
+        }
+        #endif
 
         switch reason {
         case .normal:
@@ -134,36 +137,6 @@ public final class CopyFlow {
         }
     }
 
-    #if DEBUG
-    private func makeDebugAlertController() -> UIAlertController {
-            let alert = UIAlertController(title: "RESET", message: nil, preferredStyle: .actionSheet)
-            
-            let dataTitle = "Data"
-            let dataHandler: (UIAlertAction) -> Void  = { _ in CopyContext<Item>().reset() }
-            let dataAction = UIAlertAction(title: dataTitle, style: .destructive, handler: dataHandler)
-            dataAction.accessibilityLabel = "resetData"
-            alert.addAction(dataAction)
-            
-            let defaultsTitle = "Defaults"
-            let defaultsHandler: (UIAlertAction) -> Void  = { _ in DefaultsContext().reset() }
-            let defaultsAction = UIAlertAction(title: defaultsTitle, style: .destructive, handler: defaultsHandler)
-            defaultsAction.accessibilityLabel = "resetDefaults"
-            alert.addAction(defaultsAction)
-            
-            let bothTitle = "Both"
-            let bothHandler: (UIAlertAction) -> Void  = { _ in CopyContext<Item>().reset(); DefaultsContext().reset() }
-            let bothAction = UIAlertAction(title: bothTitle, style: .destructive, handler: bothHandler)
-            bothAction.accessibilityLabel = "resetDataAndDefaults"
-            alert.addAction(bothAction)
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            cancelAction.accessibilityLabel = "cancel"
-            alert.addAction(cancelAction)
-            
-            return alert
-    }
-    #endif
-
     public enum Action {
         case adding
         case editing(Item, IndexPath)
@@ -187,4 +160,3 @@ public final class CopyFlow {
         }
     }
 }
-

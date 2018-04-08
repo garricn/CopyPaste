@@ -6,21 +6,40 @@ import Foundation
 
 public final class DataStore {
     
-    private let encoder: JSONEncoding
-    private let decoder: JSONDecoding
-    private let location: URL
+    let name: String
+    let baseURL: URL
+    let encoder: JSONEncoding
+    let decoder: JSONDecoding
+    let manager: FileManager
     
-    public init(encoder: JSONEncoding = JSONEncoder(),
-         decoder: JSONDecoding = JSONDecoder(),
-         location: URL = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!) {
+    var location: URL {
+        return baseURL.appendingPathComponent(name)
+    }
+    
+    public init(name: String,
+                baseURL: URL = Globals.dataDirectoryURL,
+                encoder: JSONEncoding = JSONEncoder(),
+                decoder: JSONDecoding = JSONDecoder(),
+                manager: FileManager = FileManager.default) {
+        self.name = name
+        self.baseURL = baseURL
         self.encoder = encoder
         self.decoder = decoder
-        self.location = location
+        
+        self.manager = manager
+        
+        do {
+            try self.manager.createDirectory(at: baseURL, withIntermediateDirectories: false, attributes: nil)
+        } catch {
+            if (error as NSError).code != 516 {
+                fatalError("Unexpected error!")
+            }
+        }
     }
     
     public func encode<E: Encodable>(_ encodable: E) {
         do {
-            try encoder.encode(encodable.self).write(to: location.appendingPathComponent(E.pathComponent))
+            try encoder.encode(encodable).write(to: location)
         } catch {
             fatalError("\(error)")
         }
@@ -28,7 +47,7 @@ public final class DataStore {
     
     public func decode<D: Decodable>(_ type: D.Type) -> D? {
         do {
-            let data = try Data(contentsOf: location.appendingPathComponent(D.pathComponent))
+            let data = try Data(contentsOf: location)
             let decodable = try decoder.decode(type, from: data)
             return decodable
         } catch {
@@ -43,7 +62,10 @@ public final class DataStore {
         } catch {
             return nil
         }
-
+    }
+    
+    public func removeData<E: Encodable>(for type: E.Type) throws {
+        try FileManager.default.removeItem(at: location)
     }
 }
 
@@ -57,15 +79,3 @@ public protocol JSONDecoding {
 
 extension JSONEncoder: JSONEncoding {}
 extension JSONDecoder: JSONDecoding {}
-
-private extension Encodable {
-    static var pathComponent: String {
-        return String.init(describing: self)
-    }
-}
-
-private extension Decodable {
-    static var pathComponent: String {
-        return String.init(describing: self)
-    }
-}

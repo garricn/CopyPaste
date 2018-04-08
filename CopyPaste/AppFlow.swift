@@ -4,6 +4,23 @@
 
 import UIKit
 
+public final class AppContext {
+    
+    static let shared: AppContext = .init()
+    
+    lazy var itemsContext: DataContext<[Item]> = {
+        let name = Globals.EnvironmentVariables.items
+        let context = DataContext<[Item]>(initialValue: [], store: DataStore(name: name))
+        return context
+    }()
+    
+    lazy var defaultsContext: DataContext<Defaults> = {
+        let name = Globals.EnvironmentVariables.defaults
+        let context = DataContext<Defaults>(initialValue: .init(), store: DataStore(name: name))
+        return context
+    }()
+}
+
 public final class AppFlow {
 
     internal lazy var foregroundFlow: ForegroundFlow = .init()

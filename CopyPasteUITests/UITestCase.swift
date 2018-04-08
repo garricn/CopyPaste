@@ -26,15 +26,32 @@ class UITestCase: XCTestCase {
         assertApp(isDisplaying: element)
     }
     
-    func setItems(to items: [Item]) {
-        let data = try! JSONEncoder().encode(items)
+    func addCodableEnvironmentVariable<E: Encodable>(_ encodable: E, forName name: String) {
+        let data = try! JSONEncoder().encode(encodable)
         let string = String(data: data, encoding: .utf8)
-        app.launchEnvironment[Globals.EnvironmentVariables.items] = string
+        let key = Globals.EnvironmentVariables.codables.appending(name)
+        app.launchEnvironment[key] = string
     }
     
-    func setDefaults(to defaults: Defaults) {
-        let data = try! JSONEncoder().encode(defaults)
-        let string = String(data: data, encoding: .utf8)
-        app.launchEnvironment[Globals.EnvironmentVariables.defaults] = string
+    func resetItemsContext() {
+        let empty: [Item] = []
+        addCodableEnvironmentVariable(empty, forName: Globals.EnvironmentVariables.items)
+    }
+    
+    func resetDefaultsContext() {
+        addCodableEnvironmentVariable(Defaults(), forName: Globals.EnvironmentVariables.defaults)
+    }
+    
+    func removeCodableEnvironmentVariable(name: String) {
+        let key = Globals.EnvironmentVariables.codables.appending(name)
+        app.launchEnvironment.removeValue(forKey: key)
+    }
+    
+    func removeItemsEnvironmentVariable() {
+        removeCodableEnvironmentVariable(name: Globals.EnvironmentVariables.items)
+    }
+    
+    func removeDefaultsEnvironmentVariable() {
+        removeCodableEnvironmentVariable(name: Globals.EnvironmentVariables.defaults)
     }
 }

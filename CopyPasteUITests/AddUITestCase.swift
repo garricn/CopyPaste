@@ -12,12 +12,12 @@ final class AddUITestCase: SessionBaseUITestCase {
 
     override func setUp() {
         super.setUp()
-        setItems(to: [])
+        resetItemsContext()
         app.launch()
     }
 
     override func tearDown() {
-        setItems(to: [])
+        removeItemsEnvironmentVariable()
         super.tearDown()
     }
 
@@ -46,7 +46,7 @@ final class AddUITestCase: SessionBaseUITestCase {
         assertAppIsDisplayingAllItems()
         assertApp(isDisplaying: item0)
         app.terminate()
-        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.items)
+        removeItemsEnvironmentVariable()
         app.launch()
         assertApp(isDisplaying: item0)
     }
@@ -75,7 +75,7 @@ final class AddUITestCase: SessionBaseUITestCase {
         assertAppIsDisplayingAllItems()
         assertApp(isDisplaying: item0)
         app.terminate()
-        app.launchEnvironment.removeValue(forKey: Globals.EnvironmentVariables.items)
+        removeItemsEnvironmentVariable()
         app.launch()
         assertApp(isDisplaying: item0)
     }

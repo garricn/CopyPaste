@@ -15,12 +15,12 @@ class CopyFlowTestCase: XCTestCase {
         // given
         let item = Item(body: "Body", copyCount: 0, title: "Title")
         let items: [Item] = [item]
-        let context: CopyContext<Item> = .init()
+        let context = AppContext.shared.itemsContext
         context.save(items)
         
         let tableView = UITableView()
         let viewController = TableViewController(tableView: tableView)
-        let subject = CopyFlow(context: context)
+        let subject = CopyFlow()
         subject.inputView = viewController
         subject.start(with: UIViewController())
         viewController.viewDidLoad()
@@ -34,5 +34,12 @@ class CopyFlowTestCase: XCTestCase {
         XCTAssertEqual(copiedItem.title, item.title)
         XCTAssertEqual(copiedItem.copyCount, item.copyCount + 1)
         XCTAssertEqual(UIPasteboard.general.string, copiedItem.body)
+    }
+}
+
+class BaseTestCase: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        try? FileManager.default.removeItem(at: Globals.dataDirectoryURL)
     }
 }

@@ -6,22 +6,24 @@ import UIKit
 
 public final class ForegroundFlow {
 
-    private(set) lazy var rootView: RootViewController = .init()
-    private(set) lazy var context: DefaultsContext = .init()
-    private(set) lazy var copyFlow: CopyFlow = .init()
+    lazy var rootView: RootViewController = .init()
+    lazy var context: DataContext<Defaults> = AppContext.shared.defaultsContext
+    lazy var copyFlow: CopyFlow = .init()
 
     public func start(for reason: AppFlow.Launch.Reason) {
-
-        switch context.defaults.showWelcome {
+        switch context.data.showWelcome {
         case false:
             copyFlow.start(with: rootView, reason: reason)
         case true:
             let view = WelcomeViewController()
-            view.onDidTapGetStarted {
-                view.dismiss(animated: true) { [unowned self] in
-                    self.copyFlow.start(with: self.rootView, reason: reason)
-                    self.context.save(Defaults(showWelcome: false))
+            view.onDidTapGetStarted { [weak self] in
+                guard let `self` = self else {
+                    return
                 }
+
+                view.dismiss(animated: true)
+                self.copyFlow.start(with: self.rootView, reason: reason)
+                self.context.save(Defaults(showWelcome: false))
             }
             rootView.present(view, animated: true, completion: nil)
         }

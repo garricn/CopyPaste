@@ -44,9 +44,10 @@ public extension AppFlow.Launch {
         var launchOptions: [UIApplicationLaunchOptionsKey: Any] = options ?? [:]
 
         #if DEBUG
-        if let type = ProcessInfo.processInfo.environment[Globals.EnvironmentVariables.shortcutItemKey] {
+        let key = Globals.EnvironmentVariables.shortcutItemKey
+        if let type = ProcessInfo.processInfo.environment[key] {
             let item = UIApplicationShortcutItem(type: type, localizedTitle: "")
-            let key = UIApplicationLaunchOptionsKey(Globals.EnvironmentVariables.shortcutItemKey)
+            let key = UIApplicationLaunchOptionsKey(key)
             launchOptions[key] = item
         }
         #endif
