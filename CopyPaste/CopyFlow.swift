@@ -160,3 +160,12 @@ public final class CopyFlow {
         }
     }
 }
+
+extension Item {
+    var urls: [URL] {
+        let detector = try? NSDataDetector(types: NSTextCheckingAllTypes)
+        let range = NSRange(location: 0, length: body.count)
+        let matches = detector?.matches(in: body, options: .init(rawValue: 0), range: range) ?? []
+        return matches.compactMap { $0.url }
+    }
+}
