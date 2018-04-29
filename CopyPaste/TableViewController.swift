@@ -44,23 +44,6 @@ public final class TableViewController: UIViewController {
         configureTableView()
     }
 
-    private lazy var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: nil)
-        controller.dimsBackgroundDuringPresentation = false
-        controller.hidesNavigationBarDuringPresentation = false
-        controller.obscuresBackgroundDuringPresentation = false
-        controller.searchBar.delegate = self
-        return controller
-    }()
-
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        if navigationItem.searchController == nil {
-            navigationItem.searchController = searchController
-        }
-    }
-
     public func onDidTapAddBarButtonItem(perform action: @escaping ((UIBarButtonItem) -> Void)) {
         didTap = action
     }
@@ -80,7 +63,7 @@ public final class TableViewController: UIViewController {
     public func onDidLongPress(perform action: @escaping (IndexPath, UITableView) -> Void) {
         didLongPress = action
     }
-
+    
     private func configureNavigationItems() {
         navigationItem.title = "All Items"
 
@@ -174,10 +157,5 @@ extension TableViewController: UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         didTapAccessoryButtonForRow?(indexPath, tableView)
-    }
-}
-
-extension TableViewController: UISearchBarDelegate {
-    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     }
 }
