@@ -37,65 +37,8 @@ public final class CopyFlow {
     
     public func start(with parent: UIViewController, reason: AppFlow.Launch.Reason = .normal) {
         parent.add(rootViewController)
-
-        inputView.onDidTapAddBarButtonItem { [weak self] _ in
-            self?.presentEditItemViewController()
-        }
-
-        inputView.onDidSelectRow { [weak self] indexPath, tableView in
-            tableView.deselectRow(at: indexPath, animated: true)
-
-            guard let `self` = self else {
-                return
-            }
-
-            guard !self.items.isEmpty else {
-                self.presentEditItemViewController()
-                return
-            }
-
-            // Increment copy count
-            let row = indexPath.row
-            let item = self.items[row]
-            let newItem = Item(body: item.body, copyCount: item.copyCount + 1, title: item.title)
-            self.items.remove(at: row)
-            self.items.insert(newItem, at: row)
-
-            // Copy body to pasteboard
-            self.pasteboard.string = newItem.body
-        }
-
-        inputView.onDidTapAccessoryButtonForRow { [weak self] indexPath, _ in
-            guard let `self` = self, let item = self.items.element(at: indexPath.row) else {
-                return
-            }
-
-            self.presentEditItemViewController(action: .editing(item, indexPath))
-        }
-
-        inputView.onDidCommitEditing { [weak self] edit, indexPath, _ in
-            if case .delete = edit {
-                self?.items.remove(at: indexPath.row)
-            }
-        }
+        configureInputView()
         
-        inputView.onDidLongPress { [weak self] indexPath, _ in
-            guard let presenter = self?.inputView, let item = self?.items.element(at: indexPath.row) else {
-                return
-            }
-
-            self?.startActionFlowIfNeeded(presenter: presenter, item: item)
-        }
-        
-        #if DEBUG
-        inputView.onDebugDidTap { [weak self] in
-            guard let `self` = self else {
-                return
-            }
-            self.debugFlow.start(presenter: self.rootViewController)
-        }
-        #endif
-
         switch reason {
         case .normal:
             break
@@ -111,6 +54,69 @@ public final class CopyFlow {
         }
     }
     
+    private func configureInputView() {
+        inputView.onDidTapAddBarButtonItem { [weak self] _ in
+            self?.presentEditItemViewController()
+        }
+        
+        inputView.onDidSelectRow { [weak self] indexPath, tableView in
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            guard let `self` = self else {
+                return
+            }
+            
+            guard !self.items.isEmpty else {
+                self.presentEditItemViewController()
+                return
+            }
+
+            // Increment copy count
+            let row = indexPath.row
+            let item = self.items[row]
+            let newItem = Item(body: item.body, copyCount: item.copyCount + 1, title: item.title)
+            self.items.remove(at: row)
+            self.items.insert(newItem, at: row)
+
+            // Copy body to pasteboard
+            self.pasteboard.string = newItem.body
+        }
+        
+        inputView.onDidTapAccessoryButtonForRow { [weak self] indexPath, _ in
+            guard let `self` = self, let item = self.items.element(at: indexPath.row) else {
+                return
+            }
+            
+            self.presentEditItemViewController(action: .editing(item, indexPath))
+        }
+        
+        inputView.onDidCommitEditing { [weak self] edit, indexPath, _ in
+            if case .delete = edit {
+                self?.items.remove(at: indexPath.row)
+            }
+        }
+        
+        inputView.onDidLongPress { [weak self] indexPath, _ in
+            guard let presenter = self?.inputView, let item = self?.items.element(at: indexPath.row) else {
+                return
+            }
+            
+            self?.startActionFlowIfNeeded(presenter: presenter, item: item)
+        }
+        
+        #if DEBUG
+        inputView.onDebugDidTap { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+            self.debugFlow.start(presenter: self.rootViewController)
+            self.debugFlow.onGet { [weak self] items in
+                self?.items = items
+            }
+        }
+        #endif
+    }
+
     private func startActionFlowIfNeeded(presenter: UIViewController, item: Item) {
         guard let url = item.urls.first else {
             return
